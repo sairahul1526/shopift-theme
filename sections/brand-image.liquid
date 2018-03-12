@@ -1,0 +1,148 @@
+<div class="main-brand brand-bottom" style="margin: {{ section.settings.home_mg_brands }}">
+<div class="container">
+  <div class="heading-block">
+    <h3 class="title">{{ section.settings.brand_title }}</h3>
+  </div>
+  <div id="logo-brand" class="" style="text-align: center;">
+
+    {% if section.blocks.size > 0 %}
+    {% for block in section.blocks %}
+		 {% if block.settings.brand_thumb1 != blank %}
+        <div class="item a-center">   
+          {% if block.settings.link != blank %}
+            <a href="{{ block.settings.link }}" class="logo-bar__link">
+          {% endif %}
+            {{ block.settings.brand_thumb1 | img_url: '160x160' | img_tag: section.settings.image.alt, 'logo-bar__image' }}
+              {% if block.settings.link != blank %}
+          </a>
+          {% endif %}
+        </div>  
+        {% else %}
+        <div class="logo-bar__item">
+            {{ 'logo' | placeholder_svg_tag: 'placeholder-svg' }}
+        </div>
+        {% endif %}
+   
+    
+    {% endfor %}
+    {% endif %}
+  </div>
+{% if section.settings.show_carousel_layout_brand == 'slide' %}
+  <script>
+    $(document).ready(function() {
+      $("#logo-brand").owlCarousel({
+        itemsCustom : [ 
+          [0, 1],
+          [450, 2],
+          [600, 3],
+          [700, 4],
+          [1000, 5],
+          [1200, 6],
+          [1400, 6],
+          [1600, 6]
+        ],
+        autoPlay : true,
+        stopOnHover : false,
+
+        lazyLoad : false,
+        lazyFollow : true,
+        lazyEffect : "fade",
+        pagination : true,
+
+        // Navigation
+        navigation : false,
+        //navigationText : ['<i class="cs-font clever-icon-prev"></i>','<i class="cs-font clever-icon-next"></i>'],
+        //rewindNav : true,
+        //scrollPerPage : false,
+
+      });
+    })
+  </script>
+  
+    {% endif %}
+</div>
+</div>
+{% schema %}
+  {
+  
+	"name": "Brand Logo",
+    "class": "index-section",
+    "max_blocks": 10,
+    "settings": [
+      {
+        "type": "text",
+        "id": "home_mg_brands",
+        "label": "Margin",
+        "default": "0px 0px 0px 0px"
+      },
+      {
+        "type": "text",
+        "id": "brand_title",
+        "label": "Heading",
+        "default": "Brand Logo"
+      },
+		{
+        "type": "select",
+        "id": "show_carousel_layout_brand",
+        "label": "Layout",
+        "options": [
+          {
+            "value": "slide",
+            "label": "Carousel"
+          },
+          {
+            "value": "grid",
+            "label": "Grid"
+          }
+        ],
+        "default": "slide"
+      }
+	],
+    "blocks": [
+        {
+          "type": "logo_image",
+          "name": "Logo",
+          "settings": [
+          {
+            "type": "image_picker",
+            "id": "brand_thumb1",
+            "label": "Logo"
+          },
+
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Link",
+          "info": "Optional"
+        }
+         ]
+      }
+	],
+    "presets": [
+        {
+          "name": "Brand Logo",
+          "category": "Image",
+          "blocks": [
+            {
+              "type": "logo_image"
+            },
+            {
+            	"type": "logo_image"
+            },
+            {
+            	"type": "logo_image"
+            },
+            {
+           		"type": "logo_image"
+            }
+          ]
+        }
+  	]
+ }
+{% endschema %}
+
+{% stylesheet %}
+{% endstylesheet %}
+
+{% javascript %}
+{% endjavascript %}

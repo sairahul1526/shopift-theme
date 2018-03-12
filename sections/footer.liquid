@@ -1,0 +1,964 @@
+<footer class="footer-container footer-layout-1  {% if  section.settings.enable_footer_fullwidth  %}full-width {%endif %}" style="padding:{{ section.settings.layout_footer }}">
+  {% unless section.settings.enable_footer_fullwidth %}
+  <div class="container">
+    {% endunless  %}
+    <div class="footer-top"> 
+      <div class="row">
+        <div class="footer-top-col-group">
+          {% for block in section.blocks %}
+          {%- case block.settings.width -%}
+          {% when '16%' %}
+          {%- assign class_width = 'col-md-2' -%}
+          {% when '25%' %}
+          {%- assign class_width = 'col-md-3' -%}
+          {% when '34%' %}
+          {%- assign class_width = 'col-md-4' -%}
+          {% when '42%' %}
+          {%- assign class_width = 'col-md-5' -%}
+          {% when '50%' %}
+          {%- assign class_width = 'col-md-6' -%}
+          {% when '58%' %}
+          {%- assign class_width = 'col-md-7' -%}
+          {% when '66%' %}
+          {%- assign class_width = 'col-md-8' -%}
+          {% when '75%' %}
+          {%- assign class_width = 'col-md-9' -%}
+          {% when '84%' %}
+          {%- assign class_width = 'col-md-10' -%}
+          {% when '100%' %}
+          {%- assign class_width = 'col-md-12' -%}
+          {%- endcase -%}
+          {%- case block.type -%}
+          {% when 'menu' %}
+          <div class="{{class_width}} col-sm-6 col-xs-12 {{ block.settings.menu_position }} {{ block.settings.menu_layout }}">
+            {% if block.settings.footer_heading != blank %}
+            <h3 class="module-title">
+              {% if settings.enable_multilang %}
+              <span class="lang1">{{ block.settings.footer_heading | split: '|' | first }}</span>
+              <span class="lang2">{{ block.settings.footer_heading | split: '|' | last }}</span>
+              {% else %}
+              {{ block.settings.footer_heading | split: '|' | first }}
+              {% endif %}
+            </h3>
+            {% endif %}
+            <ul class="content">
+
+              {%- assign footercol1 = block.settings.footercol1 -%}
+              {% for link in linklists[footercol1].links %}
+
+              <li><a href="{{ link.url }}">{{ link.title }}</a></li>
+              {% endfor %}
+            </ul>
+          </div>
+          {% when 'newsletter' %}
+          <div class="{{class_width}} col-sm-6 col-xs-12">
+            <div class="home-newsletter {{ block.settings.newsletter_position }}">
+              <div class="newsletter">
+                {% if block.settings.home_newsletter_title != blank %}
+                <div class="title_newsletter">
+                  {% if settings.enable_multilang %}
+                  <span class="lang1">{{ block.settings.home_newsletter_title | split: '|' | first }}</span>
+                  <span class="lang2">{{ block.settings.home_newsletter_title | split: '|' | last }}</span>
+                  {% else %}
+                  {{ block.settings.home_newsletter_title | split: '|' | first }}
+                  {% endif %}
+                </div>
+                {% endif %}
+                {% if block.settings.home_newsletter_subtitle != blank %}
+                <div class="subtitle_newsletter">
+                  {% if settings.enable_multilang %}
+                  <span class="lang1">{{ block.settings.home_newsletter_subtitle | split: '|' | first }}</span>
+                  <span class="lang2">{{ block.settings.home_newsletter_subtitle | split: '|' | last }}</span>
+                  {% else %}
+                  {{ block.settings.home_newsletter_subtitle | split: '|' | first }}
+                  {% endif %}
+                </div>
+                {% endif %}
+                <div class="content">
+                  <form action="{{ block.settings.mailing_list_form_action }}" method="post" name="mc-embedded-subscribe-form" target="_blank" class="input-group">
+                    <div class="input-group newsletter_form_content">
+                      <input  class="input__field input-group-field" type="email" value="" name="EMAIL" aria-label="Email Address" placeholder="{{ block.settings.footer_newsletter_content }}">
+                      <span class="input-group-btn">
+                        <input type="submit" class="btn harman_btn4" value="{{ block.settings.footer_newsletter_go }}" name="subscribe">
+                      </span>
+                    </div>
+                  </form>
+                </div>
+                {% if block.settings.home_newsletter_subtitle_2 != blank %}
+                <div class="subtitle2_newsletter">
+                  {% if settings.enable_multilang %}
+                  <span class="lang1">{{ block.settings.home_newsletter_subtitle_2 | split: '|' | first }}</span>
+                  <span class="lang2">{{ block.settings.home_newsletter_subtitle_2 | split: '|' | last }}</span>
+                  {% else %}
+                  {{ block.settings.home_newsletter_subtitle_2 | split: '|' | first }}
+                  {% endif %}
+                </div>
+                {% endif %}
+              </div>
+            </div>
+          </div>
+          {% when 'iconsocial' %}
+          <div class="{{class_width}} col-sm-6 col-xs-12 {{ block.settings.iconsocial_position }} {{ block.settings.iconsocial_layout }}">
+            {% if  block.settings.footer_column_3_title != blank %}
+            <h3 class="module-title">{{ block.settings.footer_column_3_title }}</h3>
+            {% endif %}
+            <div class="content custom-fotter-top">
+              <div class="footer-icon-share">
+                {% if block.settings.footer_column_4_icon_1 != blank %}
+                <a href="{{ block.settings.footer_column_4_icon_link_1 }}">
+                  <i class="{{ block.settings.footer_column_4_icon_1 }}"></i>
+                  <span>{{ block.settings.footer_column_4_icon_title_1 }}</span>
+                </a>
+                {% endif %}
+                {% if block.settings.footer_column_4_icon_2 != blank %}
+                <a href="{{ block.settings.footer_column_4_icon_link_2 }}">
+                  <i class="{{ block.settings.footer_column_4_icon_2 }}"></i>
+                  <span>{{ block.settings.footer_column_4_icon_title_2 }}</span>
+                </a>
+                {% endif %}
+                {% if block.settings.footer_column_4_icon_3 != blank %}
+                <a href="{{ block.settings.footer_column_4_icon_link_3 }}">
+                  <i class="{{ block.settings.footer_column_4_icon_3 }}"></i>
+                  <span>{{ block.settings.footer_column_4_icon_title_3 }}</span>
+                </a>
+                {% endif %}
+                {% if block.settings.footer_column_4_icon_4 != blank %}
+                <a href="{{ block.settings.footer_column_4_icon_link_4 }}">
+                  <i class="{{ block.settings.footer_column_4_icon_4 }}"></i>
+                  <span>{{ block.settings.footer_column_4_icon_title_4 }}</span>
+                </a>
+                {% endif %}
+                {% if block.settings.footer_column_4_icon_5 != blank %}
+                <a href="{{ block.settings.footer_column_4_icon_link_5 }}">
+                  <i class="{{ block.settings.footer_column_4_icon_5 }}"></i>
+                  <span>{{ block.settings.footer_column_4_icon_title_5 }}</span>
+                </a>
+                {% endif %}
+              </div>
+            </div>
+          </div>
+
+          {% when 'customtext' %}
+          <div class="{{class_width}} col-sm-6 col-xs-12">
+            {% if block.settings.footer_customtext != blank %}
+            <div class="text-footerbt {{ block.settings.customtext_position }}">
+              {% if settings.enable_multilang %}
+              <span class="lang1">{{ block.settings.footer_customtext | split: '|' | first }}</span>
+              <span class="lang2">{{ block.settings.footer_customtext | split: '|' | last }}</span>
+              {% else %}
+              {{ block.settings.footer_customtext | split: '|' | first }}
+              {% endif %}
+            </div>
+            {% endif %}
+          </div>
+          {% when 'separator' %}
+          <div class="{{ class_width }} " style="margin:{{block.settings.margin_separator }};">
+            <div class="" style="border-top: {{block.settings.separator_borderwidth}} {{block.settings.settinglink_style}} {{block.settings.color_navigation}}"></div>
+          </div>
+
+          {% when 'copyright' %}
+          <div class="{{class_width}} col-sm-6 col-xs-12">
+            <address class="{{ block.settings.copyright_position }}">
+              {% if settings.enable_multilang %}
+              <span class="lang1">{{ block.settings.footer_copyright | split: '|' | first }}</span>
+              <span class="lang2">{{ block.settings.footer_copyright | split: '|' | last }}</span>
+              {% else %}
+              {{ block.settings.footer_copyright | split: '|' | first }}
+              {% endif %}
+            </address>
+          </div>
+          {%- endcase -%}
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+    {% unless section.settings.enable_footer_fullwidth %}
+  </div>
+  {% endunless  %}
+
+
+</footer>
+
+
+{% include 'message-modal' %}
+<style>
+  {% if section.settings.enable_footer_background_image %}
+  .footer-container{
+    background-image:url("{{ section.settings.image_footer_background_imag | img_url: '1600x' }}");
+      background-position: {{ section.settings.bg_footer_position_x }} {{ section.settings.bg_footer_position_y }};
+      background-repeat: {{ section.settings.bg_footer_repeat }};
+      background-attachment: {{ section.settings.bg_footer_attachment }};
+      }
+  {% endif %}
+
+</style>
+{% schema %}
+{
+  "name": "Footer",
+
+  "settings": [
+    {
+        "type": "text",
+        "id": "layout_footer",
+        "label": "Margin",
+        "default": "0px 0px 0px 0px"
+      },
+      {
+        "type": "checkbox",
+        "id": "enable_footer_fullwidth",
+        "label": "Enable Footer Full Width "
+      },
+ 
+      {
+        "type": "checkbox",
+        "id": "enable_footer_background_image",
+        "label": "Enable Footer Background Image "
+      },
+        {
+          "type": "image_picker",
+          "id": "image_footer_background_imag",
+          "label": "Image"
+        },
+      {
+        "type": "select",
+        "id": "bg_footer_repeat",
+        "label": "Repeat",
+        "options": [
+          {
+            "value": "repeat",
+            "label": "Horizontally and vertically"
+          },
+          {
+            "value": "repeat-x",
+            "label": "Horizontally only"
+          },
+          {
+            "value": "repeat-y",
+            "label": "Vertically only"
+          },
+          {
+            "value": "no-repeat",
+            "label": "Don't repeat"
+          }
+        ]
+      },
+      {
+        "type": "radio",
+        "id": "bg_footer_position_x",
+        "label": "Horizontal position",
+        "options": [
+          {
+            "value": "left",
+            "label": "Left"
+          },
+          {
+            "value": "center",
+            "label": "Center"
+          },
+          {
+            "value": "right",
+            "label": "Right"
+          }
+        ]
+      },
+      {
+        "type": "radio",
+        "id": "bg_footer_position_y",
+        "label": "Vertical position",
+        "options": [
+          {
+            "value": "top",
+            "label": "Top"
+          },
+          {
+            "value": "center",
+            "label": "Center"
+          },
+          {
+            "value": "bottom",
+            "label": "Bottom"
+          }
+        ]
+      },
+      {
+        "type": "select",
+        "id": "bg_footer_attachment",
+        "label": "Attachment",
+        "options": [
+          {
+            "value": "scroll",
+            "label": "Scroll"
+          },
+          {
+            "value": "fixed",
+            "label": "Fixed"
+          }
+        ]
+      }
+  ],
+    "max_blocks": 9,
+    "blocks": [
+	 {
+        "type": "menu",
+        "name": "Menu",
+        "settings": [
+			{
+                  "type": "select",
+                  "id": "width",
+                  "label": "Container width",
+                  "default": "16%",
+                  "options": [
+                    {
+                      "value": "16%",
+                      "label": "2 Columns - 1/6"
+                    },
+                    {
+                      "value": "25%",
+                      "label": "3 Columns - 1/4"
+                    },
+                    {
+                      "value": "34%",
+                      "label": "4 Columns - 1/3"
+                    },
+                    {
+                      "value": "42%",
+                      "label": "5 Columns - 5/12"
+                    },
+                    {
+                      "value": "50%",
+                      "label": "6 Columns - 1/2"
+                    },
+                    {
+                      "value": "58%",
+                      "label": "7 Columns - 7/12"
+                    },
+                    {
+                      "value": "66%",
+                      "label": "8 Columns - 2/3"
+                    },
+                    {
+                      "value": "75%",
+                      "label": "9 Columns - 3/4"
+                    },
+                    {
+                      "value": "84%",
+                      "label": "10 Columns - 5/6"
+                    },
+                    {
+                      "value": "100%",
+                      "label": "12 Columns - 1/1"
+                    }
+                  ]
+                },
+				{
+                  "type": "select",
+                  "id": "menu_layout",
+                  "label": "Style",
+                  "options": [
+                    {
+                      "value": "horizontal",
+                      "label": "Horizontal"
+                    },
+                    {
+                      "value": "vertical",
+                      "label": "Vertical "
+                    }
+                  ],
+                  "default": "horizontal"
+                },
+				{
+                  "type": "select",
+                  "id": "menu_position",
+                  "label": "Alignment",
+                    "options": [
+                    {
+                      "value": "text-left",
+                      "label": "Left"
+                    },
+                    {
+                      "value": "text-right",
+                      "label": "Right"
+                    },
+                    {
+                      "value": "text-center",
+                      "label": "Center"
+                    }
+                  ]
+				},
+          {
+            "type": "text",
+            "id": "footer_heading",
+            "label": "Heading",
+            "default": "Heading"
+          },
+          {
+            "type": "link_list",
+            "id": "footercol1",
+            "label": "Link List"
+          }
+          
+        ]
+      },
+	{
+        "type": "newsletter",
+        "name": "Newsletter",
+        "settings": [
+          {
+                  "type": "select",
+                  "id": "width",
+                  "label": "Container width",
+                  "default": "16%",
+                  "options": [
+                    {
+                      "value": "16%",
+                      "label": "2 Columns - 1/6"
+                    },
+                    {
+                      "value": "25%",
+                      "label": "3 Columns - 1/4"
+                    },
+                    {
+                      "value": "34%",
+                      "label": "4 Columns - 1/3"
+                    },
+                    {
+                      "value": "42%",
+                      "label": "5 Columns - 5/12"
+                    },
+                    {
+                      "value": "50%",
+                      "label": "6 Columns - 1/2"
+                    },
+                    {
+                      "value": "58%",
+                      "label": "7 Columns - 7/12"
+                    },
+                    {
+                      "value": "66%",
+                      "label": "8 Columns - 2/3"
+                    },
+                    {
+                      "value": "75%",
+                      "label": "9 Columns - 3/4"
+                    },
+                    {
+                      "value": "84%",
+                      "label": "10 Columns - 5/6"
+                    },
+                    {
+                      "value": "100%",
+                      "label": "12 Columns - 1/1"
+                    }
+                  ]
+                },
+
+				{
+                  "type": "select",
+                  "id": "newsletter_position",
+                  "label": "Alignment",
+                    "options": [
+                    {
+                      "value": "text-left",
+                      "label": "Left"
+                    },
+                    {
+                      "value": "text-right",
+                      "label": "Right"
+                    },
+                    {
+                      "value": "text-center",
+                      "label": "Center"
+                    }
+                  ]
+				},
+         {
+            "type": "text",
+            "id": "home_newsletter_title",
+            "label": "Heading",
+            "default": "Newsletter"
+          },
+          {
+            "type": "text",
+            "id": "home_newsletter_subtitle",
+            "label": "Subheading",
+            "default": "Subscribe now to get daily updates "
+          },
+          {
+            "type": "textarea",
+            "id": "footer_newsletter_content",
+            "label": "Newsletter placeholder",
+            "default": "Email for Newsletter"
+          },
+          {
+            "type": "text",
+            "id": "home_newsletter_subtitle_2",
+            "label": "Bottom Heading",
+            "default": "Don’t worry we don’t spam"
+          },
+          {
+            "type": "textarea",
+            "id": "footer_newsletter_go",
+            "label": "Label Button",
+            "default": "subscribe"
+          },
+          {
+            "type": "text",
+            "id": "mailing_list_form_action",
+            "label": "MailChimp form action URL",
+            "info": "[Where do I find my MailChimp form action URL?](http:\/\/docs.shopify.com\/support\/configuration\/store-customization\/where-do-i-get-my-mailchimp-form-action)"
+          }
+        ]
+      },
+	{
+        "type": "iconsocial",
+        "name": "Icon Social",
+        "settings": [
+          {
+                  "type": "select",
+                  "id": "width",
+                  "label": "Container width",
+                  "default": "16%",
+                  "options": [
+                    {
+                      "value": "16%",
+                      "label": "2 Columns - 1/6"
+                    },
+                    {
+                      "value": "25%",
+                      "label": "3 Columns - 1/4"
+                    },
+                    {
+                      "value": "34%",
+                      "label": "4 Columns - 1/3"
+                    },
+                    {
+                      "value": "42%",
+                      "label": "5 Columns - 5/12"
+                    },
+                    {
+                      "value": "50%",
+                      "label": "6 Columns - 1/2"
+                    },
+                    {
+                      "value": "58%",
+                      "label": "7 Columns - 7/12"
+                    },
+                    {
+                      "value": "66%",
+                      "label": "8 Columns - 2/3"
+                    },
+                    {
+                      "value": "75%",
+                      "label": "9 Columns - 3/4"
+                    },
+                    {
+                      "value": "84%",
+                      "label": "10 Columns - 5/6"
+                    },
+                    {
+                      "value": "100%",
+                      "label": "12 Columns - 1/1"
+                    }
+                  ]
+                },
+				{
+                  "type": "select",
+                  "id": "iconsocial_layout",
+                  "label": "Style",
+                  "options": [
+                    {
+                      "value": "horizontal",
+                      "label": "Horizontal"
+                    },
+                    {
+                      "value": "vertical",
+                      "label": "Vertical "
+                    }
+                  ],
+                  "default": "horizontal"
+                },
+				{
+                  "type": "select",
+                  "id": "iconsocial_position",
+                  "label": "Alignment",
+                    "options": [
+                    {
+                      "value": "text-left",
+                      "label": "Left"
+                    },
+                    {
+                      "value": "text-right",
+                      "label": "Right"
+                    },
+                    {
+                      "value": "text-center",
+                      "label": "Center"
+                    }
+                  ]
+				},
+          {
+            "type": "text",
+            "id": "footer_column_3_title",
+            "label": "Social Title"
+          },
+          {
+            "type": "text",
+            "id": "footer_column_4_icon_1",
+            "label": "icon 1",
+            "default": "cs-font clever-icon-facebook",
+            "info": "add class of font icon"
+          },
+          {
+            "type": "text",
+            "id": "footer_column_4_icon_link_1",
+            "label": "Link Icon 1",
+            "default": "#"
+          },
+          {
+            "type": "text",
+            "id": "footer_column_4_icon_title_1",
+            "label": "Title Icon 1",
+            "default": "Facebook"
+          },
+          {
+            "type": "text",
+            "id": "footer_column_4_icon_2",
+            "label": "icon 2",
+            "default": "cs-font clever-icon-twitter",
+            "info": "add class of font icon"
+          },
+          {
+            "type": "text",
+            "id": "footer_column_4_icon_link_2",
+            "label": "Link Icon 2",
+            "default": "#"
+          },
+          {
+            "type": "text",
+            "id": "footer_column_4_icon_title_2",
+            "label": "Title Icon 2",
+            "default": "Twitter"
+          },
+          {
+            "type": "text",
+            "id": "footer_column_4_icon_3",
+            "label": "icon 3",
+            "default": "cs-font clever-icon-pinterest",
+            "info": "add class of font icon"
+          },
+          {
+            "type": "text",
+            "id": "footer_column_4_icon_link_3",
+            "label": "Link Icon 3",
+            "default": "#"
+          },
+          {
+            "type": "text",
+            "id": "footer_column_4_icon_title_3",
+            "label": "Title Icon 3",
+            "default": "Pinterest"
+          },
+          {
+            "type": "text",
+            "id": "footer_column_4_icon_4",
+            "label": "icon 4",
+            "default": "cs-font clever-icon-googleplus",
+            "info": "add class of font icon"
+          },
+          {
+            "type": "text",
+            "id": "footer_column_4_icon_link_4",
+            "label": "Link Icon 4",
+            "default": "#"
+          },
+          {
+            "type": "text",
+            "id": "footer_column_4_icon_title_4",
+            "label": "Title Icon 4",
+            "default": "Google+"
+          },
+          {
+            "type": "text",
+            "id": "footer_column_4_icon_5",
+            "label": "icon 5",
+            "default": "cs-font clever-icon-youtube",
+            "info": "add class of font icon"
+          },
+          {
+            "type": "text",
+            "id": "footer_column_4_icon_link_5",
+            "label": "Link Icon 5",
+            "default": "#"
+          },
+          {
+            "type": "text",
+            "id": "footer_column_4_icon_title_5",
+            "label": "Title Icon 5",
+            "default": "Instagram"
+          }
+        ]
+      },
+	{
+        "type": "copyright",
+        "name": "Copyright",
+        "settings": [
+			{
+                  "type": "select",
+                  "id": "width",
+                  "label": "Container width",
+                  "default": "16%",
+                  "options": [
+                    {
+                      "value": "16%",
+                      "label": "2 Columns - 1/6"
+                    },
+                    {
+                      "value": "25%",
+                      "label": "3 Columns - 1/4"
+                    },
+                    {
+                      "value": "34%",
+                      "label": "4 Columns - 1/3"
+                    },
+                    {
+                      "value": "42%",
+                      "label": "5 Columns - 5/12"
+                    },
+                    {
+                      "value": "50%",
+                      "label": "6 Columns - 1/2"
+                    },
+                    {
+                      "value": "58%",
+                      "label": "7 Columns - 7/12"
+                    },
+                    {
+                      "value": "66%",
+                      "label": "8 Columns - 2/3"
+                    },
+                    {
+                      "value": "75%",
+                      "label": "9 Columns - 3/4"
+                    },
+                    {
+                      "value": "84%",
+                      "label": "10 Columns - 5/6"
+                    },
+                    {
+                      "value": "100%",
+                      "label": "12 Columns - 1/1"
+                    }
+                  ]
+                },
+				{
+                  "type": "select",
+                  "id": "copyright_position",
+                  "label": "Alignment",
+                    "options": [
+                    {
+                      "value": "text-left",
+                      "label": "Left"
+                    },
+                    {
+                      "value": "text-right",
+                      "label": "Right"
+                    },
+                    {
+                      "value": "text-center",
+                      "label": "Center"
+                    }
+                  ]
+				},
+          {
+            "type": "textarea",
+            "id": "footer_copyright",
+            "label": "Copyright",
+            "default": "Copyright"
+          }
+          
+        ]
+      },
+	{
+        "type": "customtext",
+        "name": "Custom text",
+        "settings": [
+			{
+                  "type": "select",
+                  "id": "width",
+                  "label": "Container width",
+                  "default": "16%",
+                  "options": [
+                    {
+                      "value": "16%",
+                      "label": "2 Columns - 1/6"
+                    },
+                    {
+                      "value": "25%",
+                      "label": "3 Columns - 1/4"
+                    },
+                    {
+                      "value": "34%",
+                      "label": "4 Columns - 1/3"
+                    },
+                    {
+                      "value": "42%",
+                      "label": "5 Columns - 5/12"
+                    },
+                    {
+                      "value": "50%",
+                      "label": "6 Columns - 1/2"
+                    },
+                    {
+                      "value": "58%",
+                      "label": "7 Columns - 7/12"
+                    },
+                    {
+                      "value": "66%",
+                      "label": "8 Columns - 2/3"
+                    },
+                    {
+                      "value": "75%",
+                      "label": "9 Columns - 3/4"
+                    },
+                    {
+                      "value": "84%",
+                      "label": "10 Columns - 5/6"
+                    },
+                    {
+                      "value": "100%",
+                      "label": "12 Columns - 1/1"
+                    }
+                  ]
+                },
+				{
+                  "type": "select",
+                  "id": "customtext_position",
+                  "label": "Alignment",
+                    "options": [
+                    {
+                      "value": "text-left",
+                      "label": "Left"
+                    },
+                    {
+                      "value": "text-right",
+                      "label": "Right"
+                    },
+                    {
+                      "value": "text-center",
+                      "label": "Center"
+                    }
+                  ]
+				},
+          {
+            "type": "textarea",
+            "id": "footer_customtext",
+            "label": "Custom text",
+            "default": "Custom text"
+          }
+          
+        ]
+      },
+{
+              "type": "separator",
+              "name": "Separator",
+              "settings": [
+                  {
+                  "type": "select",
+                  "id": "width",
+                  "label": "Container width",
+                  "default": "16%",
+                  "options": [
+  					{
+                      "value": "8%",
+                      "label": "1 Column"
+                    },
+                    {
+                      "value": "16%",
+                      "label": "2 Columns - 1/6"
+                    },
+                    {
+                      "value": "25%",
+                      "label": "3 Columns - 1/4"
+                    },
+                    {
+                      "value": "34%",
+                      "label": "4 Columns - 1/3"
+                    },
+                    {
+                      "value": "42%",
+                      "label": "5 Columns - 5/12"
+                    },
+                    {
+                      "value": "50%",
+                      "label": "6 Columns - 1/2"
+                    },
+                    {
+                      "value": "58%",
+                      "label": "7 Columns - 7/12"
+                    },
+                    {
+                      "value": "66%",
+                      "label": "8 Columns - 2/3"
+                    },
+                    {
+                      "value": "75%",
+                      "label": "9 Columns - 3/4"
+                    },
+                    {
+                      "value": "84%",
+                      "label": "10 Columns - 5/6"
+                    },
+                    {
+                      "value": "100%",
+                      "label": "12 Columns - 1/1"
+                    }
+                  ]
+                },
+          		{
+                  "type": "text",
+                  "id": "margin_separator",
+                  "label": "Margin",
+                  "default": "0px 0px 0px 0px"
+                },
+				{
+                  "type": "select",
+                  "id": "settinglink_style",
+                  "label": "Style",
+                    "options": [
+                    {
+                      "value": "solid",
+                      "label": "Solid"
+                    },
+                    {
+                      "value": "dotted",
+                      "label": "Dotted"
+                    },
+                    {
+                      "value": "dashed",
+                      "label": "Dashed"
+                    },
+					{
+                      "value": "double",
+                      "label": "Double"
+                    }
+                  ]
+				},
+          		{
+                  "type": "text",
+                  "id": "separator_borderwidth",
+                  "label": "Border Width",
+                  "default": "1px"
+                },
+    {
+      "type": "color",
+      "id": "color_navigation",
+      "label": "Color",
+      "default": "#2d2d2d",
+      "info": "Default Value: #2d2d2d"
+    }
+
+              ]
+            }
+  ]
+}
+{% endschema %}

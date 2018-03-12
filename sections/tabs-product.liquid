@@ -1,0 +1,189 @@
+{% assign home_tabs_margin = section.settings.home_tabs_margin %}
+{% assign limit_of_columns_product = section.settings.limit_of_columns_product_1 %}
+{% assign row_limit_setting = section.settings.tabs_visible_item %}
+
+{% assign show_tabs_boxed = section.settings.show_tabs_boxed %}
+{% assign number_colum_layout = section.settings.show_carousel_layout_tabs %}
+{% assign number_colum = section.settings.grid %}
+{%- assign product_limit = section.settings.grid | times: section.settings.rows -%}
+<div class="tabs-product-home grid" style="margin:{{ section.settings.home_tabs_margin }}">
+  <div class="container">
+    <div class="row">
+      {% if section.settings.home_product_title_1 != blank %}
+      <div class="heading-block">
+        <h3 class="title">
+          {% if settings.enable_multilang %}
+          <span class="lang1">{{ section.settings.home_product_title_1 | split: '|' | first }}</span>
+          <span class="lang2">{{ section.settings.home_product_title_1 | split: '|' | last }}</span>
+          {% else %}
+          <span>{{ section.settings.home_product_title_1 | split: '|' | first }}</span>
+          {% endif %}
+        </h3>
+      </div>
+      {% endif %}
+      <div class="col-xs-12 heading-tabs">
+        <ul class="nav nav-tabs" role="tablist">
+          {% if section.blocks.size > 0 %}
+          {% for block in section.blocks %}
+          {% assign items_tab = block.settings.items_tab_1 %}
+          {% if block.settings.items_tab_1 != blank %}
+          <li role="presentation" class="{% if forloop.first %} active{% endif %}" ><a href="#{{block.id }}{{ forloop.index }}" role="tab" data-toggle="tab">
+            {{ items_tab  }}
+            </a>
+          </li>
+          {% endif %}
+          {% endfor %}
+
+          {% endif %}
+        </ul>
+      </div>
+      <div class="product-featured tabs-product">
+
+        <div class="product-featured-content">
+          <div class="tab-content">
+            {% if section.blocks.size > 0 %}
+            {% for block in section.blocks %}
+            {% assign tabs_collection = block.settings.tabnew_collection %}
+
+            <div class="tab-pane tabs-content fade {% if forloop.first %} in active{% endif %}" id="{{block.id }}{{ forloop.index }}">
+
+              {% assign owl_id = block.id %}
+              {% include 'carousel-product' %}
+
+            </div>
+
+            {% endfor %}
+            {% endif %}
+
+          </div>
+        </div>
+      </div>
+    </div>
+    <script type="text/javascript" >
+      $('.tabs-product .nav-tabs a').click(function (e) {
+        e.preventDefault()
+        $(this).tab('show')
+      })
+    </script>
+
+
+  </div>
+</div>
+
+
+{% schema %}
+  {
+    "name": "Product Tabs",
+    "class": "index-section",
+    "max_blocks": 5,
+    "settings": [
+      {
+        "type": "text",
+        "id": "home_tabs_margin",
+        "label": "Margin",
+        "default": "0px 0px 0px 0px"
+      },
+	
+	{
+        "type": "text",
+        "id": "home_product_title_1",
+        "label": "Heading",
+        "default": "ADD A TITLE"
+      }, 
+      {
+        "type": "select",
+        "id": "grid",
+        "label": "Products per row",
+        "default": "3",
+        "options": [
+          {
+            "value": "2",
+            "label": "2"
+          },
+          {
+            "value": "3",
+            "label": "3"
+          },
+          {
+            "value": "4",
+            "label": "4"
+          },
+          {
+            "value": "5",
+            "label": "5"
+          }
+        ]
+      },
+      {
+        "type": "select",
+        "id": "rows",
+        "label": "Rows",
+        "default": "2",
+        "options": [
+          {
+            "value": "1",
+            "label": "1"
+          },
+          {
+            "value": "2",
+            "label": "2"
+          },
+          {
+            "value": "3",
+            "label": "3"
+          },
+          {
+            "value": "4",
+            "label": "4"
+          },
+          {
+            "value": "5",
+            "label": "5"
+          }
+        ]
+      }
+    ],
+    "blocks": [
+      {
+        "type": "tabs",
+        "name": "Tabs",
+        "settings": [
+          {
+            "type": "text",
+            "id": "items_tab_1",
+            "label": "Lable Tabs",
+            "default": "tab "
+          },
+          {
+            "type": "collection",
+            "id": "tabnew_collection",
+            "label": "Collection to products from"
+          }
+        ]
+      }
+    ],
+    "presets": [
+      {
+        "name": "Product Tabs",
+        "category": "Collection",
+        "blocks": [
+          {
+            "type": "tabs"
+          },
+          {
+            "type": "tabs"
+          },
+          {
+            "type": "tabs"
+          }
+        ]
+      }
+    ]
+  }
+{% endschema %}
+
+{% stylesheet %}
+{% endstylesheet %}
+
+{% javascript %}
+{% endjavascript %}

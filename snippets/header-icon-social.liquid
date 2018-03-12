@@ -1,0 +1,28 @@
+{% if settings.show_header_social %}	
+<div class="social">
+  <ul>
+    <li>
+      {% if settings.social_top_1 != blank %}
+      	<a href="{{ settings.social_top_link_1 }}"> {{ settings.social_top_1 }}</a>
+      {% endif %}
+    </li>
+    <li>
+      {% if settings.social_top_2 != blank %}
+      	<a href="{{ settings.social_top_link_2 }}"> {{ settings.social_top_2 }}</a>
+      {% endif %}
+    </li>
+    <li>
+      {% if settings.social_top_3 != blank %}
+      	<a href="{{ settings.social_top_link_3 }}"> {{ settings.social_top_3 }}</a>
+      {% endif %}
+    </li>
+    <li>
+      {% if settings.social_top_4 != blank %}
+      	<a href="{{ settings.social_top_link_4 }}"> {{ settings.social_top_4 }}</a>
+      {% endif %}
+    </li>
+  </ul>
+  
+</div>
+
+{% endif %}

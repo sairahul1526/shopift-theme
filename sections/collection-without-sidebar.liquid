@@ -1,0 +1,428 @@
+
+
+{% assign display_image_cat = section.settings.display_image_cat %}
+{% assign image_category = section.settings.image_category %}
+{% assign collection_banner_title = section.settings.collection_banner_title %}
+{% assign collection_height_image = section.settings.collection_height_image %}
+
+{% assign sidebar_categories_title = section.settings.sidebar_categories_title %}
+
+
+
+
+{% assign collection_infinite_scrolling = section.settings.collection_infinite_scrolling %}
+{% assign collection_infinite_scrolling_text = section.settings.collection_infinite_scrolling_text %}
+{% assign collection_infinite_scrolling_no_more_product_text = section.settings.collection_infinite_scrolling_no_more_product_text %}
+
+
+{% if section.settings.isotope_collection_results_per_page != blank %}
+{% assign product_per_page = section.settings.isotope_collection_results_per_page %}
+{% else %}
+{% assign product_per_page = 14 %}
+{% endif %}
+
+<div class="row main_row col-isotope">
+  <div class="display-toolbar">
+    {% include 'toolbar' %}
+  </div>
+ 
+    <div class="col-xs-12 col-main display-toolbar no-sidebar collection-page no-padding-lr">  
+    {% include 'page-header' %}    
+    {% paginate collection.products by product_per_page %}
+
+    {% comment %}
+    Use .grid--rev so that the collection tags appear below the products on mobile
+    {% endcomment %}
+
+
+    {% comment %}
+    Use class grid-uniform to have evenly sized columns clear
+    each other properly at each breakpoint.
+    {% endcomment %}
+    <div class="product-grid-isotope-parent">
+      <div class="products-grid product-grid-item">
+
+        {% if collection.products.size > 0 %}      
+        {% paginate collection.products by product_per_page %}  
+        {% for product in collection.products %}
+        {% assign columns_product = section.settings.collection_results_per_row | plus: 0 %}
+        {% if section.settings.collection_results_per_row != blank and section.settings.collection_results_per_row != '5' %}
+        {% assign product_grid = 12 | divided_by: section.settings.collection_results_per_row %}
+        {% assign columns = 12 | divided_by: columns_product %}
+        <div class="col-lg-{{columns}} col-md-{{columns}} col-sm-4 col-xs-6">
+          {% else %}
+          <div class="item-col-5 col-sm-4 col-xs-6">
+            {% endif %}
+            {% include 'isotope-product' %}
+          </div>
+          {% else %}
+          {% for i in (1..9) %}
+          <div class="grid__item_add {{ grid_item_width }}">
+            <div class="grid-view-item">
+              <a href="#" class="grid-view-item__link">
+                {% if product.title %}
+                {%- assign compare_at_price = product.compare_at_price -%}
+                {%- assign price = product.price -%}
+                {%- assign price_varies = product.price_varies -%}
+                {%- assign available = product.available -%}
+                {% else %}
+                {%- assign compare_at_price = 1999 -%}
+                {%- assign price = 1999 -%}
+                {%- assign price_varies = false -%}
+                {%- assign available = true -%}
+                {% endif %}
+                <div class="grid-view-item__image">
+                  {% capture current %}{% cycle 1, 2, 3, 4, 5, 6 %}{% endcapture %}
+                  {{ 'product-' | append: current | placeholder_svg_tag: 'placeholder-svg' }}
+                </div>
+                <div class="h4 grid-view-item__title" {% if settings.enable_multilang %}data-translate="homepage.onboarding.product_title"{%endif%}>{{ 'homepage.onboarding.product_title' | t }}</div>
+                <div class="grid-view-item__meta">
+                  <s class="product-price__price">{{ compare_at_price | money }}</s>
+                </div>
+              </a>
+            </div>
+          </div>
+          {% endfor %}
+
+          {% endfor %}
+          {% endpaginate %}
+          {% else %}
+      <p style="text-align: center;" {% if settings.enable_multilang %}data-translate="collection.notice"{%endif%}>{{ 'collection.notice' | t }}</p>
+          {% endif %}
+
+        </div>
+      </div>
+
+      {% if paginate.pages > 1 %}
+      <div class="padding">
+        {% include 'pagination-page' %}
+      </div>
+      {% endif %}
+
+      {% endpaginate %}    
+    </div>
+       {% include 'collection-sidebar' %}
+  </div>
+<style>
+  @media (min-width: 992px){
+    .item-col-5{width:20%;}
+  }
+  
+  </style>
+
+{% schema %}
+{
+  "name": "Collection pages",
+  "settings": [
+
+      
+      {
+        "type": "text",
+        "id": "isotope_collection_results_per_page",
+        "label": "Products per page",
+        "default": "9"
+      },
+      {
+        "type": "select",
+        "id": "collection_results_per_row",
+        "label": "Products per row",
+        "options": [
+          {
+            "value": "3",
+            "label": "3"
+          },
+          {
+            "value": "4",
+            "label": "4"
+          },
+          {
+            "value": "5",
+            "label": "5"
+          },
+          {
+            "value": "6",
+            "label": "6"
+          }
+        ]
+      },
+	{
+        "type": "checkbox",
+        "id": "collection_infinite_scrolling",
+        "label": "Enable Infinite Scrolling (Show More Button)",
+        "default": true
+      },
+      {
+        "type": "text",
+        "id": "collection_infinite_scrolling_text",
+        "label": "Show More Button Text",
+        "default": "Show More"
+      },
+      {
+        "type": "text",
+        "id": "collection_infinite_scrolling_no_more_product_text",
+        "label": "All products loaded",
+        "default": "All products loaded"
+      },
+	 {
+        "type": "header",
+        "content": "Categories"
+      },
+      {
+        "type": "checkbox",
+        "id": "enable_categories",
+        "label": "Enable Categories",
+        "default": true
+      },
+      {
+        "type": "text",
+        "id": "sidebar_categories_title",
+        "label": "Categories Block Title",
+        "default": "Categories"
+      },
+	
+	 {
+        "type": "header",
+        "content": "Collection baner"
+      },
+    {
+        "type": "checkbox",
+        "id": "display_image_cat",
+        "label": "Display Image Category?",
+        "default": true
+      },
+      {
+        "type": "image_picker",
+        "id": "image_category",
+        "label": "Image Category"
+      },
+      {
+        "type": "text",
+        "id": "collection_height_image",
+        "label": "Height Image Category",
+        "default": "100"
+      },
+      {
+        "type": "textarea",
+        "id": "collection_banner_title",
+        "label": "Title",
+        "default": "Title Banner"
+      }
+
+      
+  ],
+	"blocks": [
+			
+			{
+              "type": "block_filter_color",
+              "name": "Filter By Color",
+              "settings": [
+                  
+                {
+                  "type": "text",
+                  "id": "shop_by_tags_1_title",
+                  "label": "Shop by tags 1 title",
+                  "default": "Shop By Color",
+                  "info": "i.e \"Shop by Color\"."
+                },
+                {
+                  "type": "text",
+                  "id": "shop_by_color_text_1",
+                  "label": "Shop by color text 1",
+                  "default": "Beige",
+                  "info": "i.e \"Red\"."
+                },
+                {
+                  "type": "image_picker",
+                  "id": "color-1",
+                  "label": "Shop by color image 1"
+                },
+                {
+                  "type": "text",
+                  "id": "shop_by_color_text_2",
+                  "label": "Shop by color text 2",
+                  "default": "Red"
+                },
+                {
+                  "type": "image_picker",
+                  "id": "color-2",
+                  "label": "Shop by color image 2"
+                },
+                {
+                  "type": "text",
+                  "id": "shop_by_color_text_3",
+                  "label": "Shop by color text 3",
+                  "default": "White"
+                },
+                {
+                  "type": "image_picker",
+                  "id": "color-3",
+                  "label": "Shop by color image 3"
+                },
+                {
+                  "type": "text",
+                  "id": "shop_by_color_text_4",
+                  "label": "Shop by color text 4",
+                  "default": "Pink"
+                },
+                {
+                  "type": "image_picker",
+                  "id": "color-4",
+                  "label": "Shop by color image 4"
+                },
+                {
+                  "type": "text",
+                  "id": "shop_by_color_text_5",
+                  "label": "Shop by color text 5",
+                  "default": "Silver"
+                },
+                {
+                  "type": "image_picker",
+                  "id": "color-5",
+                  "label": "Shop by color image 5"
+                },
+                {
+                  "type": "text",
+                  "id": "shop_by_color_text_6",
+                  "label": "Shop by color text 6",
+                  "default": "Blue"
+                },
+                {
+                  "type": "image_picker",
+                  "id": "color-6",
+                  "label": "Shop by color image 6"
+                },
+                {
+                  "type": "text",
+                  "id": "shop_by_color_text_7",
+                  "label": "Shop by color text 7",
+                  "default": "Gray"
+                },
+                {
+                  "type": "image_picker",
+                  "id": "color-7",
+                  "label": "Shop by color image 7"
+                },
+                {
+                  "type": "text",
+                  "id": "shop_by_color_text_8",
+                  "label": "Shop by color text 8",
+                  "default": "Black"
+                },
+                {
+                  "type": "image_picker",
+                  "id": "color-8",
+                  "label": "Shop by color image 8"
+                },
+                {
+                  "type": "text",
+                  "id": "shop_by_color_text_9",
+                  "label": "Shop by color text 9",
+                  "default": "Green"
+                },
+                {
+                  "type": "image_picker",
+                  "id": "color-9",
+                  "label": "Shop by color image 9"
+                },
+                {
+                  "type": "text",
+                  "id": "shop_by_color_text_10",
+                  "label": "Shop by color text 10"
+                },
+                {
+                  "type": "image_picker",
+                  "id": "color-10",
+                  "label": "Shop by color image 10"
+                }
+
+              ]
+            },
+			{
+              "type": "block_filter_size",
+              "name": "Filter By Size",
+              "settings": [
+                  
+                {
+                  "type": "text",
+                  "id": "shop_by_tags_2_title",
+                  "label": "Shop by tags 2 title",
+                  "default": "Shop By Size",
+                  "info": "i.e \"Shop by Size\"."
+                },
+                {
+                  "type": "text",
+                  "id": "shop_by_tags_2_list_tags",
+                  "label": "Shop by tags 2 list",
+                  "default": "S, M, L, XL, 2X, 3X",
+                  "info": "Separate by a comma, i.e \"XS, S, M, L, XL\"."
+                }
+
+              ]
+            },
+            {
+              "type": "block_filter_price",
+              "name": "Filter By Price",
+              "settings": [
+                  
+                {
+                  "type": "text",
+                  "id": "shop_by_tags_3_title",
+                  "label": "Shop by tags 3 title",
+                  "info": "i.e \"Shop by Price\"."
+                },
+                {
+                  "type": "text",
+                  "id": "shop_by_tags_3_list_tags",
+                  "label": "Shop by tags 3 list",
+                  "info": "Separate by a comma, i.e \"$100 - $300, $300 - $500\"."
+                }
+
+              ]
+            },
+			{
+              "type": "block_product",
+              "name": "Product Sidebar",
+              "settings": [
+                {
+                  "type": "text",
+                  "id": "featured_products_title_1",
+                  "label": "Featured Products",
+                  "default": "Featured Products"
+                },
+                {
+                  "type": "text",
+                  "id": "featured_products_limit_1",
+                  "label": "Number of products to show at block",
+                  "default": "12"
+                },
+                {
+                  "type": "collection",
+                  "id": "featured_products_collection",
+                  "label": "Collection to products from"
+                }
+
+              ]
+            },
+            {
+              "type": "block_text",
+              "name": "Custom Block Text",
+              "settings": [
+                  
+                {
+                  "type": "text",
+                  "id": "collection_custom_title",
+                  "label": "Block Title",
+                  "default": "Title"
+                },
+                {
+                  "type": "textarea",
+                  "id": "collection_custom_content",
+                  "label": "Block Content",
+                  "default": "Content"
+                }
+
+              ]
+            }
+	]
+}
+{% endschema %}

@@ -1,0 +1,168 @@
+
+
+{% if section.blocks.size > 0 %}
+{% for block in section.blocks %}
+{% if block.settings.block_home_image == blank %}
+<div class="block-timeline"  style="
+                                    margin:{{section.settings.block_home_7 }};height:{{section.settings.block_home_height_7}}">
+  {% else %}
+  <div class="block-timeline"  style="
+                                      background-image:url({{ block.settings.block_home_image | img_url: '2048x'}});margin:{{ section.settings.block_home_7 }};height:{{section.settings.block_home_height_7}}">
+    {% endif %}
+    {% if block.settings.block_home_image == blank %}
+    <div class="placeholder-background">
+
+      {{ 'lifestyle-1' | placeholder_svg_tag: 'placeholder-svg' }}
+    </div>
+    {% endif %}
+    <div class="container">
+
+      <div class="col-md-6 col-sm-8 col-xs-12">
+        {% if block.settings.home_block_title_7 != blank %}
+        <h2>
+          {% if settings.enable_multilang %}
+          <span class="lang1">{{ block.settings.home_block_title_7 | split: '|' | first }}</span>
+          <span class="lang2">{{ block.settings.home_block_title_7 | split: '|' | last }}</span>
+          {% else %}
+          {{ block.settings.home_block_title_7 | split: '|' | first }}
+          {% endif %}
+        </h2>
+        {% endif %}
+        {% if block.settings.home_block_sub_title_7 != blank %}
+        <p>
+          {% if settings.enable_multilang %}
+          <span class="lang1">{{ block.settings.home_block_sub_title_7 | split: '|' | first }}</span>
+          <span class="lang2">{{ block.settings.home_block_sub_title_7 | split: '|' | last }}</span>
+          {% else %}
+          {{ block.settings.home_block_sub_title_7 | split: '|' | first }}
+          {% endif %}
+        </p>
+        {% endif %}
+        {% if block.settings.home_block_countdown_7 != blank %}
+        <div class="timline">
+
+          <div id="cntdwn" class="timeline-block"></div>
+          <script>
+            //<![CDATA[
+            jQuery(document).ready(function($){
+              $(".timeline-block").lofCountDown({
+                TargetDate:"{{ block.settings.home_block_countdown_7 }}",
+
+                DisplayFormat:"<div class='day'><span class='no'>%%D%%</span><span class='text'>days</span></div><div class='hours'><span class='no'>%%H%%</span><span class='text'>hours</span></div><div class='min'><span class='no'>%%M%%</span><span class='text'>min</span></div><div class='second'><span class='no'>%%S%%</span><span class='text'>sec</span></div>",
+                FinishMessage: "Expired"
+              });
+            });
+            //]]>
+          </script>
+          {{ 'jquery.countdown.js' | asset_url | script_tag }}
+        </div>
+        {% endif %}
+        {% if settings.home_block_button_text_7 != blank %}
+        <div class="timeline-button"><a href="{{ block.settings.home_block_button_link_7 }}">
+          {% if settings.enable_multilang %}
+          <span class="lang1">{{ block.settings.home_block_button_text_7 | split: '|' | first }}</span>
+          <span class="lang2">{{ block.settings.home_block_button_text_7 | split: '|' | last }}</span>
+          {% else %}
+          {{ block.settings.home_block_button_text_7 | split: '|' | first }}
+          {% endif %}
+          </a></div>
+        {% endif %}
+      </div>
+
+    </div>
+
+  </div>
+  {% endfor %}
+  {% endif %}  
+
+
+{% schema %}
+  {
+    "name": "Deal Of The Day",
+    "class": "index-section",
+    "max_blocks": 1,
+    "settings": [
+		
+      {
+        "type": "checkbox",
+        "id": "enable_block_home_7",
+        "label": "Enable Home Deal Block?",
+		"default": true
+      },
+      {
+        "type": "text",
+        "id": "block_home_height_7",
+        "label": "Section Height",
+        "default": "400px"
+      },
+  
+      {
+        "type": "text",
+        "id": "block_home_7",
+        "label": "Margin",
+        "default": "0px 0px 0px 0px"
+      }
+	],
+	"blocks": [
+		{
+           "type": "block",
+           "name": "Block",
+           "settings": [
+              {
+                "type": "image_picker",
+                "id": "block_home_image",
+                "label": "Image"
+              },
+              {
+                "type": "text",
+                "id": "home_block_title_7",
+                "label": "Heading",
+                "default": "Deal Of The Day"
+              },
+              {
+                "type": "text",
+                "id": "home_block_sub_title_7",
+                "label": "Subheading",
+                "default": "Subheading"
+              },
+              {
+                "type": "text",
+                "id": "home_block_countdown_7",
+                "label": "Countdown",
+                "default": "2017\/12\/31 10:30:00"
+              },
+              {
+                "type": "text",
+                "id": "home_block_button_text_7",
+                "label": "Button Label",
+                "default": "Shop Now"
+              },
+              {
+                "type": "collection",
+                "id": "home_block_button_link_7",
+                "label": "Link"
+              }
+      		]
+    	}
+	],
+    "presets": [
+        {
+          "name": "Deal Of The Day",
+          "category": "Image",
+          "blocks": [
+            {
+              "type": "block"
+            }
+          ]
+        }
+  	]
+  }
+{% endschema %}
+
+{% stylesheet %}
+
+{% endstylesheet %}
+
+{% javascript %}
+
+{% endjavascript %}

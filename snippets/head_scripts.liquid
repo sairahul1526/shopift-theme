@@ -1,0 +1,18 @@
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.1/jquery.min.js"></script> 
+{{ 'jquery-cookie.min.js' | asset_url | script_tag }}
+{{ 'selectize.min.js' | asset_url | script_tag }}
+{% if template == "index"%}
+{{ "jquery.flexslider-min.js" | asset_url | script_tag }}
+{% endif %}
+{{ 'lazyloadxt.js' | asset_url | script_tag }}
+{% if template contains 'collection' %}
+{{ 'isotope.pkgd.min.js' | asset_url | script_tag }}
+{% endif %}
+{{ 'owl.carousel.min.js' | asset_url | script_tag }}
+
+<script>
+  window.ajax_cart = {{settings.ajax_cart}};window.money_format = "{{shop.money_with_currency_format}}";window.shop_currency = "{{ shop.currency }}";window.show_multiple_currencies = {{settings.enable_multiple_currencies}};window.loading_url = "{{ 'loading.gif' | asset_url}}"; window.use_color_swatch = {{ settings.use_color_swatch }};window.product_image_resize = {{settings.product_image_resize}};window.enable_sidebar_multiple_choice = {{ settings.enable_sidebar_multiple_choice}};window.file_url = "{{''|file_url}}";window.asset_url = "{{''|asset_url}}";window.images_size = {is_crop: {{ settings.product_image_crop }},ratio_width : {{ settings.product_image_ratio_width }},ratio_height : {{ settings.product_image_ratio_height }},};
+</script>
+{% if settings.enable_multilang %}
+    {% include 'translator' %}
+{% endif %}

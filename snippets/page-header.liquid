@@ -1,0 +1,14 @@
+{% if display_image_cat %}
+<header class="page-header em-effect06" style="height:{{ collection_height_image }}px;overflow:hidden;">
+  <div class="images em-eff06-03">
+   {% if image_category != blank %}
+        {{ image_category | img_url: '1600x800' | img_tag: block.settings.image.alt, 'feature-row__image' }}
+        {% else %}
+        {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
+        {% endif %}
+    
+     
+  </div>
+  <div class="collection-banner-title">{{ collection_banner_title }}</div>
+</header>
+{% endif %}

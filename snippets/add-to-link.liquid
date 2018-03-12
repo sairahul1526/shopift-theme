@@ -1,0 +1,8 @@
+<div class="add-to-link">
+  <div class="quickview-button">
+    <a href="javascript:void(0)" id="{{ product.handle }}" data-toggle="tooltip" data-placement="top" title="Quick View" class="sca-qv-button harman_btn3">
+      <span {% if settings.enable_multilang %}data-translate="product.quickview"{%endif%}>{{ 'product.quickview' | t }}</span>
+    </a>
+  </div>
+</div>
+{% include 'wishlist-product' %}

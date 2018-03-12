@@ -1,0 +1,23 @@
+<div class="col-md-3 col-sm-3 hidden-xs">
+    {% if section.settings.display_cuttom_block %}
+  <div class="block-collection">
+    <H3>{{ section.settings.collection_custom_title }}</H3>
+    <div class="collection-block-content">
+      {{ section.settings.collection_custom_content }}
+    </div>
+  </div>
+  {% endif %}
+  {% if section.settings.display_featured_products_collection %}
+  <div class="collection-right-product">
+    <h3>{{ section.settings.featured_products_title_1 }}</h3>
+    {% assign right_collection = section.settings.featured_products_collection %}
+    {% assign row_limit_setting_right = section.settings.featured_products_limit_1 %}
+    <div class="product-list">
+      {% for product in collections[right_collection].products limit: row_limit_setting_right %}          
+      {% assign current_collection = collections[right_collection] %}
+      {% include 'product-collection-item' %}
+      {% endfor %}
+    </div>
+  </div>
+  {% endif %}
+</div>

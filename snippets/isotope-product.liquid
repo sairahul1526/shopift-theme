@@ -1,0 +1,200 @@
+{% assign lable_sale = false %}
+{% if product.compare_at_price_min > product.price_min %}
+{% assign lable_sale = true %}
+{% endif %}
+
+{% assign lable_out = true %}
+{% if product.available  %}
+{% assign lable_out = false %}
+{% endif %}
+
+<div class="grid-item product-item" id="product-{{ product.id }}">
+
+  {% comment %}
+  Link to your product with the 'within: collection' filter for the link to be aware of the collection.
+  This allows you to create collection-based navigation on the product page.
+
+  Results of using 'within: collection':
+  - Instead of a URL with /products/product-handle
+  you would get /collections/collection-handle/products/product-handle
+
+  For more info on navigation within a collection
+  - http://docs.shopify.com/support/your-store/collections/how-to-navigate-within-a-collection
+
+  {% endcomment %}
+
+  <div class="product-inner {% if lable_out %} out-stock-product {% endif %}">
+    <div class="product-image">
+      {% if lable_sale or lable_out %}
+        <div class="product-label">
+          {% if lable_sale %}
+          -{{ product.compare_at_price_max | minus:product.price | times:100 | divided_by:product.compare_at_price_max |round: 0 }}%
+          {% endif %}
+          {% if lable_out %}
+          <span {% if settings.enable_multilang %}data-translate="product.out_of_stock"{%endif%}>{{ 'product.out_of_stock' | t }}</span>
+          {% endif %}
+        </div>
+        {% endif %}
+        {% if product.description contains "[label-icon-new]" %}
+        <div class="label-new" {% if settings.enable_multilang %}data-translate="product.label_icon_new"{%endif%}>{{ 'product.label_icon_new' | t }}</div>
+        {% endif %}
+     
+      {% if product.description contains "[label-icon-new]" %}
+      <div class="label-new">{{ 'product.label_icon_new' | t }}</div>
+      {% endif %}
+      {% if product.images.size > 1 and product.description contains "[item-gallery]" %}
+      <div id="myCarousel" class="carousel slide">
+        <div class="carousel-inner" role="listbox">
+          {% for image in product.images %}
+          <div class="item{% if forloop.first %} active{% endif %}">
+            <a href="{{ product.url | within: collection }}"><img src="{{ image | product_img_url: 'large' }}" alt="{{ product.featured_image.alt | escape }}"></a>
+          </div>
+          {% endfor %}
+        </div>
+        <!-- Controls --> 
+        <a class="carousel-control next" href="#myCarousel" data-slide="next"><i class="cs-font clever-icon-next"></i></a> <a href="#myCarousel" class="carousel-control prev" data-slide="prev"><i class="cs-font clever-icon-preview"></i></a> 
+
+      </div>
+
+      {% else %}
+
+      <a href="{{ product.url | within: collection }}" class="grid-image">
+        <img class="feature-images" src="{{ product.featured_image.src | product_img_url: 'large' }}" alt="{{ product.featured_image.alt | escape }}">
+        {% if settings.product_image_hover %}
+        <span class="product-image-hover" data-idproduct="{{ product.id }}">
+          {% for image in product.images %}
+          {% if forloop.first != true %}
+          <img alt="{{ product.title }}" src="{{ image.src | product_img_url: 'large' }}">
+          {% break %}
+          {% endif %}
+          {% endfor %}
+        </span>
+        {% endif %}
+      </a>
+      {% endif %}
+      {% include 'add-to-link' %}
+      {% if product.description contains "[countdown]" %}
+      <div class="countdown">
+        {% capture countdown_product %}{% include "content-shortcode" content: product.description shortcode: "[countdown]" %}{% endcapture %}
+
+        <div id="cntdwn" class="deal-clock lof-clock-{{ product.id }}-detail"></div>
+        <script>
+          //<![CDATA[
+          jQuery(document).ready(function($){
+            $(".lof-clock-{{ product.id }}-detail").lofCountDown({
+              TargetDate:"{{ countdown_product }}",
+
+              DisplayFormat:"<div class='day'><span class='no'>%%D%%</span><span class='text'>days</span></div><div class='hours'><span class='no'>%%H%%</span><span class='text'>hours</span></div><div class='min'><span class='no'>%%M%%</span><span class='text'>min</span></div><div class='second'><span class='no'>%%S%%</span><span class='text'>sec</span></div>",
+              FinishMessage: "Expired"
+              });
+          });
+          //]]>
+        </script>
+        {{ 'jquery.countdown.js' | asset_url | script_tag }}
+      </div>
+      {% endif %}
+    </div>
+
+    <div class="product-bottom">
+      <h3><a class="product-title" href="{{ product.url | within: collection }}">{{ product.title }}</a></h3>
+
+
+      <div class="product_loop hover">
+        <div class="product_loop_switcher">
+          <div class="price-box">
+            {% if lable_sale %}
+            <p class="sale">
+              <span class="old-price"> {{ product.compare_at_price_min | money }}</span>
+              <span class="special-price">{% if product.price_varies %}<em {% if settings.enable_multilang %}data-translate="from_price"{%endif%}>{{ 'from_price' | t }} </em>{% endif %}{{ product.price_min | money }}</span>
+            </p>
+            {% else %}
+            <p class="regular-product">
+              {% comment %}
+              You can show a leading 'from' or 'up to' by checking 'product.price_varies'
+              if your variants have different prices.
+              {% endcomment %}
+              <span >{% if product.price_varies %}<em {% if settings.enable_multilang %}data-translate="from_price"{%endif%}>{{ 'from_price' | t }} </em>{% endif %}{{ product.price_min | money }}</span>
+            </p>
+            {% endif %}
+          </div>
+          {% if settings.product_add_tocart %}
+          <div class="add-to-cart">
+            {% assign variantCount = product.variants | size %}
+            <form action="/cart/add" method="post" class="variants" id="product-actions-{{ product.id }}" enctype="multipart/form-data" style="padding:0px;">    
+              {% if lable_out %}
+              <input class="add-to-cart-btn" type="submit" {% if settings.enable_multilang %}data-translate="product.detail.unavailable"{%endif%} value="{{'product.detail.unavailable' | t}}" disabled="disabled" />
+              {% else %}
+              {% if variantCount > 1 %}
+              <button class="add-to-slect-btn" type="button" onclick="window.location.href='{{product.url}}'" {% if settings.enable_multilang %}data-translate="product.detail.sellect_option"{%endif%}>{{'product.detail.sellect_option' | t}}</button>
+              {% else %}
+              <input type="hidden" name="id" value="{{ product.variants[0].id }}" />      
+              <button class="add-to-cart-btn" type="submit" {% if settings.enable_multilang %}data-translate="product.detail.add_cart"{%endif%}>{{'product.detail.add_cart' | t}}</button>
+              {% endif %}
+              {% endif %}
+            </form>
+          </div>
+          {% endif %}
+        </div>
+      </div>
+      {% if settings.product_style_images_click %}
+      <ul class="color-swatch-item">  
+        {% for option in product.options %}
+        {% if option == 'Color' %}
+        {% assign index = forloop.index0 %}
+        {% assign colorlist = '' %}
+        {% assign color = '' %}
+        {% for variant in product.variants %}
+        {% capture color %}
+        {{ variant.options[index] }}
+        {% endcapture %}
+        {% unless colorlist contains color %} 
+        {% if variant.image.src != blank %}
+        <li><a href="javascript:void(0);" data-image="{{ variant.image.src | img_url: 'large' }}"><img src="{{ color | downcase | strip_newlines | strip_html | remove: '  ' | append: '.png' | replace: ' ', '-' | asset_url }}" alt="{{ color }}" /></a></li>
+        {% endif %}
+        {% capture tempList %}
+        {{colorlist | append: color | append: ' '}}
+        {% endcapture %}
+        {% assign colorlist = tempList %}
+        {% endunless %}
+        {% endfor %}
+        {% endif %}
+        {% endfor %}
+      </ul>
+      {% endif %}
+      {% if settings.display_product_reviews %}
+      <div class="review-prduct">
+        <span class="shopify-product-reviews-badge" data-id="{{ product.id }}"></span>
+      </div>
+      {% endif %}
+
+      {% if product.description contains "[short-description]" %}
+      <p class="short-description">
+        {% include "content-shortcode" content: product.description shortcode: "[short-description]" %}
+      </p>
+      {% else %}
+      {% assign content = product.description | remove: "[disable-icon-new]" %}
+      {% assign content = content | remove: "[item-gallery]" %}
+      {% assign content = content | remove: "[label-icon-new]" %}
+      {% assign content = content | remove: "[pre-order-label]" %}
+      {% assign content = content | remove: "[icon-new-always]" %}
+      {% if content contains '[countdown]' %}
+      {% assign content = content | split: '[/countdown]' | last %}
+      {% endif %}
+      {% if content contains '[video]' %}
+      {% assign content = content | split: '[/video]' | last %}
+      {% endif %}
+      {% if content contains '[short-description]' %}
+      {% assign content = content | split: '[/short-description]' | last %}
+      {% endif %}
+      {% if content contains '[custom_html]' %}
+      {% assign content = content | split: '[/custom_html]' | last %}
+      {% endif %}
+      {% if content contains '[tabs]' %}
+      {% assign content = content | split: '[/tabs]' | last %}
+      {% endif %}
+
+      <p class="short-description">{{ content | strip_html | truncatewords: 35 }}</p>
+      {%endif %}
+    </div>
+  </div>
+</div>

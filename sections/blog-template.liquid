@@ -1,0 +1,420 @@
+
+{% assign blog_display_newsletter = section.settings.blog_display_newsletter %}
+{% assign blog_title_newsletter = section.settings.blog_title_newsletter %}
+{% assign blog_newsletter_content = section.settings.blog_newsletter_content %}
+{% assign blog_newsletter_go = section.settings.blog_newsletter_go %}
+{% assign blog_sub_title_newsletter = section.settings.blog_sub_title_newsletter %}
+{% assign blog_mailing_list_form_action = section.settings.blog_mailing_list_form_action %}
+
+{% comment %}
+Loop through a defined number of articles with the 'paginate' tag.
+Don't forget to close the tag after your loop.
+{% endcomment %}
+
+{% paginate blog.articles by 5 %}
+
+{% comment %}
+This template is also used for listing out articles of a specific tag.
+You can change layouts or styles by checking if current_tags is true.
+{% endcomment %}
+
+<div class="container">
+  <div class="row">
+    <div class="col-xs-12 col-sm-8 col-md-9 col-lg-9 blog-layout-1 blog-left">
+      <div class="content-blog">
+        {% comment %}
+        Loop through each article in your blog. This is limited to what you set for pagination above.
+
+        For more info on article liquid tags:
+        - http://docs.shopify.com/themes/liquid-variables/article
+        {% endcomment %}
+
+        <ul class="list-blog">
+          {% for article in blog.articles %}
+          <div class="col-xs-12 col-sm-12 item">
+            <li class="blog-item">
+              <div class="image">
+                <a href="{{ article.url }}">
+                  {{ article | img_url: '1024x' | img_tag: article.title }}
+                </a>
+              </div>
+              <div class="blog-bottom">
+                <div class="date-author">
+                  <div class="left-blog">
+                    <span class="blog_author">{{ article.author }}</span>
+                    <span class="date-time">
+                      {{ article.published_at | date: '%b %d, %Y' }}
+                    </span>
+                  </div>
+                  <div class="right-blog">
+                    <ul class="user-tags">
+                      {% include 'tags-article' %}
+                    </ul>
+                  </div>
+                </div>
+                <h3 class="p10">{{ article.title | link_to: article.url }}</h3>
+                <div class="short-des">
+                  {% if article.excerpt.size > 0 %}
+                  {% if settings.enable_multilang %}
+                  <span class="lang1">{{ article.excerpt | split: '|' | first }}</span>
+                  <span class="lang2">{{ article.excerpt | split: '|' | last }}</span>
+                  {% else %}
+                  {{ article.excerpt | split: '|' | first }}
+                  {% endif %}
+                  {% else %}
+                  <p>
+                    {% if settings.enable_multilang %}
+                    <span class="lang1">{{ article.content | split: '|' | first | strip_html | truncatewords: 70 }}</span>
+                    <span class="lang2">{{ article.content | split: '|' | last | strip_html | truncatewords: 70 }}</span>
+                    {% else %}
+                    {{ article.content | split: '|' | first | strip_html | truncatewords: 70 }}
+                    {% endif %}
+                  </p>
+                  {% endif %}
+                </div>
+                <p class="button">
+                  <a href="{{ article.url }}" class="btn-readmore"  {% if settings.enable_multilang %}data-translate="blog.list_blog.readmore"{%endif%}>{{ 'blog.list_blog.readmore' | t }}</a>
+                </p>
+              </div>
+            </li>
+          </div>
+          {% endfor %}
+        </ul>
+        {% if paginate.pages > 1 %}
+        <div class="text-center pagination">
+          {% include 'pagination' %}
+        </div>
+        {% endif %}
+      </div>      
+    </div>
+    <div class="col-xs-12 col-sm-4 col-md-3 col-lg-3 sidebar">
+      {% if section.settings.display_blog_aboutme %}
+      <div class="widget-title">
+        <h3>
+          {% if settings.enable_multilang %}
+          <span class="lang1">{{ section.settings.blog_aboutme_title | split: '|' | first }}</span>
+          <span class="lang2">{{  section.settings.blog_aboutme_title | split: '|' | last }}</span>
+          {% else %}
+          {{  section.settings.blog_aboutme_title | split: '|' | first }}
+          {% endif %}
+        </h3>
+        <div class="aboutme-container">
+          <img class="" src="{{ section.settings.blog_image_aboutme | img_url: '1024x1024' }}">
+
+          <div class="aboutme-content">
+            {% if settings.enable_multilang %}
+            <span class="lang1">{{ section.settings.blog_aboutme_content | split: '|' | first }}</span>
+            <span class="lang2">{{  section.settings.blog_aboutme_content | split: '|' | last }}</span>
+            {% else %}
+            {{  section.settings.blog_aboutme_content | split: '|' | first }}
+            {% endif %}
+          </div>
+          <div class="aboutme-name">
+            {% if settings.enable_multilang %}
+            <span class="lang1">{{ section.settings.blog_aboutme_name | split: '|' | first }}</span>
+            <span class="lang2">{{  section.settings.blog_aboutme_name | split: '|' | last }}</span>
+            {% else %}
+            {{  section.settings.blog_aboutme_name | split: '|' | first }}
+            {% endif %}
+          </div>
+        </div>
+      </div>
+      {% endif %}
+
+      {% if section.settings.display_blog_follow_us %}
+      <div class="widget-title">
+        <h3>
+          {% if settings.enable_multilang %}
+          <span class="lang1">{{ section.settings.blog_follow_title | split: '|' | first }}</span>
+          <span class="lang2">{{  section.settings.blog_follow_title | split: '|' | last }}</span>
+          {% else %}
+          {{  section.settings.blog_follow_title | split: '|' | first }}
+          {% endif %}
+        </h3>
+        <div class="followus-container">
+          <div class="followus-content">
+            {% if section.settings.blog_follow_column_4_icon_1 != blank %}
+            <a href="{{ section.settings.blog_follow_column_4_icon_link_1 }}">
+              <i class="{{ section.settings.blog_follow_column_4_icon_1 }}"></i>
+            </a>
+            {% endif %}
+            {% if section.settings.blog_follow_column_4_icon_2 != blank %}
+            <a href="{{ section.settings.blog_follow_column_4_icon_link_2 }}">
+              <i class="{{ section.settings.blog_follow_column_4_icon_2 }}"></i>
+            </a>
+            {% endif %}
+            {% if section.settings.blog_follow_column_4_icon_3 != blank %}
+            <a href="{{ section.settings.blog_follow_column_4_icon_link_3 }}">
+              <i class="{{ section.settings.blog_follow_column_4_icon_3 }}"></i>
+            </a>
+            {% endif %}
+            {% if section.settings.blog_follow_column_4_icon_4 != blank %}
+            <a href="{{ section.settings.blog_follow_column_4_icon_link_4 }}">
+              <i class="{{ section.settings.blog_follow_column_4_icon_4 }}"></i>
+            </a>
+            {% endif %}
+            {% if section.settings.blog_follow_column_4_icon_5 != blank %}
+            <a href="{{ section.settings.blog_follow_column_4_icon_link_5 }}">
+              <i class="{{ section.settings.blog_follow_column_4_icon_5 }}"></i>
+            </a>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+      {% endif %}
+      <div class="blog-newsletter">
+        {% include 'blog-newsletter' %}
+      </div>
+      {% include 'widget_article' %}
+      {% if section.settings.display_blog_banner %}
+      <div class="blog_banner">
+        <div class="blog-banner-iamge">
+
+          {% if section.settings.blog_banner_image  != blank %}
+          <img class="" src="{{ section.settings.blog_banner_image | img_url: '1024x1024' }}">
+
+
+          {% else %}
+          {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
+          {% endif %}
+        </div>
+        <div class="blog-banner-container">
+          <p class="blog-banner-title">
+            {% if settings.enable_multilang %}
+            <span class="lang1">{{ section.settings.blog_banner_title | split: '|' | first }}</span>
+            <span class="lang2">{{  section.settings.blog_banner_title | split: '|' | last }}</span>
+            {% else %}
+            {{  section.settings.blog_banner_title | split: '|' | first }}
+            {% endif %}
+          </p>
+          <a href="{{ section.settings.blog_banner_link }}">{{ section.settings.blog_banner_textlink }} <i class="cs-font clever-icon-arrow-right-bold"></i></a>
+        </div>
+      </div>
+      {% endif %}
+      <div class="widget widget-tags">
+        {% if section.settings.display_blog_tags %}
+        {% if blog.all_tags.size > 0 %}
+        <div class="widget-title">
+          <h3><span>Tags</span></h3>
+        </div>
+        <div class="widget-content">
+          <ul class="tags">
+            <li{% unless current_tags %} class="active"{% endunless %}>
+              <a href="{{ shop.url}}/blogs/{{ blog.handle }}">All</a>
+            </li>
+            {% for tag in blog.all_tags %}
+            {% if current_tags contains tag %}
+            <li class="active">{{ tag | link_to_remove_tag: tag }}</li>
+            {% else %}
+            <li>{{ tag | link_to_tag: tag }}</li>
+            {% endif %}
+            {% endfor %}
+          </ul>
+        </div>
+        {% endif %}
+        {% endif %}
+      </div>
+    </div>
+  </div>
+
+  {% endpaginate %}
+  <script>
+    jQuery('.main-content > .container').removeClass('container');
+  </script>
+{% schema %}
+  {
+    "name": "Blog Sidebar",
+    "settings": [
+  		{
+        "type": "header",
+        "content": "About Me"
+      },
+      {
+        "type": "checkbox",
+        "id": "display_blog_aboutme",
+        "label": "Show About Me ?"
+      },
+      {
+        "type": "text",
+        "id": "blog_aboutme_title",
+        "label": "Title",
+        "default": "About Me"
+      },
+      {
+        "type": "image_picker",
+        "id": "blog_image_aboutme",
+        "label": "About Me Images"
+      },
+      {
+        "type": "textarea",
+        "id": "blog_aboutme_content",
+        "label": "Content",
+        "default": "Content"
+      },
+      {
+        "type": "text",
+        "id": "blog_aboutme_name",
+        "label": "Name",
+        "default": "Name"
+      },
+      {
+        "type": "header",
+        "content": "Follow Us"
+      },
+      {
+        "type": "checkbox",
+        "id": "display_blog_follow_us",
+        "label": "Show Follow Us?"
+      },
+      {
+        "type": "text",
+        "id": "blog_follow_title",
+        "label": "Title"
+      },
+      {
+        "type": "text",
+        "id": "blog_follow_column_4_icon_1",
+        "label": "icon 1",
+        "default": "fa fa-rocket",
+        "info": "add class of font icon"
+      },
+      {
+        "type": "text",
+        "id": "blog_follow_column_4_icon_link_1",
+        "label": "Link Icon 1",
+        "default": "#"
+      },
+      {
+        "type": "text",
+        "id": "blog_follow_column_4_icon_2",
+        "label": "icon 2",
+        "default": "fa fa-rocket",
+        "info": "add class of font icon"
+      },
+      {
+        "type": "text",
+        "id": "blog_follow_column_4_icon_link_2",
+        "label": "Link Icon 2",
+        "default": "#"
+      },
+      {
+        "type": "text",
+        "id": "blog_follow_column_4_icon_3",
+        "label": "icon 3",
+        "default": "fa fa-rocket",
+        "info": "add class of font icon"
+      },
+      {
+        "type": "text",
+        "id": "blog_follow_column_4_icon_link_3",
+        "label": "Link Icon 3",
+        "default": "#"
+      },
+      {
+        "type": "text",
+        "id": "blog_follow_column_4_icon_4",
+        "label": "icon 4",
+        "default": "fa fa-rocket",
+        "info": "add class of font icon"
+      },
+      {
+        "type": "text",
+        "id": "blog_follow_column_4_icon_link_4",
+        "label": "Link Icon 4",
+        "default": "#"
+      },
+      {
+        "type": "text",
+        "id": "blog_follow_column_4_icon_5",
+        "label": "icon 5",
+        "default": "fa fa-rocket",
+        "info": "add class of font icon"
+      },
+      {
+        "type": "text",
+        "id": "blog_follow_column_4_icon_link_5",
+        "label": "Link Icon 5",
+        "default": "#"
+      },
+      {
+        "type": "header",
+        "content": "Banner Sidebar Blog"
+      },
+      {
+        "type": "checkbox",
+        "id": "display_blog_banner",
+        "label": "Show Banner Blog ?"
+      },
+      {
+        "type": "image_picker",
+        "id": "blog_banner_image",
+        "label": "Banner Images Blog"
+      },
+      {
+        "type": "text",
+        "id": "blog_banner_title",
+        "label": "Title"
+      },
+      {
+        "type": "text",
+        "id": "blog_banner_link",
+        "label": "Link"
+      },
+      {
+        "type": "text",
+        "id": "blog_banner_textlink",
+        "label": "Text Link"
+      },
+      {
+        "type": "header",
+        "content": "Blog Newsletter"
+      },
+      {
+        "type": "checkbox",
+        "id": "blog_display_newsletter",
+        "label": "Show newsletter home?",
+        "default": true
+      },
+      {
+        "type": "textarea",
+        "id": "blog_title_newsletter",
+        "label": "Title",
+        "default": "Content"
+      },
+      {
+        "type": "textarea",
+        "id": "blog_newsletter_content",
+        "label": "Placeholder",
+        "default": "Email for Newsletter"
+      },
+      {
+        "type": "textarea",
+        "id": "blog_newsletter_go",
+        "label": "Button Text",
+        "default": "subcribe"
+      },
+      {
+        "type": "textarea",
+        "id": "blog_sub_title_newsletter",
+        "label": "Sub Title",
+        "default": "Content"
+      },
+      {
+        "type": "text",
+        "id": "blog_mailing_list_form_action",
+        "label": "MailChimp form action URL",
+        "info": "[Where do I find my MailChimp form action URL?](http:\/\/docs.shopify.com\/support\/configuration\/store-customization\/where-do-i-get-my-mailchimp-form-action)"
+      }
+  	]
+  }
+{% endschema %}
+
+{% stylesheet %}
+{% endstylesheet %}
+
+{% javascript %}
+{% endjavascript %}
+
+
+  
+  

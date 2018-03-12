@@ -1,0 +1,153 @@
+<div class="toolbar">
+
+  <div class="toolbar-mode">
+    <div class="filter-collection-left">
+      <a {% if settings.enable_multilang %}data-translate="collection.toolbar.filter"{%endif%}><i class="cs-font clever-icon-slider-3"></i> {{ 'collection.toolbar.filter' | t }}</a>
+    </div>
+    <div class="collection-view">
+      <label {% if settings.enable_multilang %}data-translate="collection.toolbar.label_view"{%endif%}>{{ 'collection.toolbar.label_view' | t }}</label>
+      <a title="Grid view" class="change-view col-1" data-view="1-col">
+        1 col
+
+      </a>
+      <a title="Grid view" class="change-view col-2{% if collection_results_per_row == '2' %} active{% endif %}" data-view="2-col">
+        2 col
+
+      </a>
+      <a title="Grid view" class="change-view col-3{% if collection_results_per_row == '3' %} active{% endif %}" data-view="3-col">
+        3 col
+
+      </a>
+      <a title="Grid view" class="change-view col-4{% if collection_results_per_row == '4' %} active{% endif %}" data-view="4-col">
+        4 col
+
+      </a>
+      <a title="Grid view" class="change-view col-5{% if collection_results_per_row == '5' %} active{% endif %}" data-view="5-col">
+        5 col
+
+      </a>
+      <a title="Grid view" class="change-view col-6{% if collection_results_per_row == '6' %} active{% endif %}" data-view="6-col">
+        6 col
+
+      </a>
+
+    </div>
+
+
+
+    <div class="browse-tags">
+      <label {% if settings.enable_multilang %}data-translate="collection.toolbar.label_softby"{%endif%}>{{ 'collection.toolbar.label_softby' |t }}</label>
+      <select class="sort-by">
+        <option value="manual" {% if settings.enable_multilang %}data-translate="collection.toolbar.manual"{%endif%}>{{ 'collection.toolbar.manual' | t }}</option>
+        <option value="price-ascending" {% if settings.enable_multilang %}data-translate="collection.toolbar.price_ascending"{%endif%}>{{ 'collection.toolbar.price_ascending' | t }}</option>
+        <option value="price-descending" {% if settings.enable_multilang %}data-translate="collection.toolbar.price_descending"{%endif%}>{{ 'collection.toolbar.price_descending' | t }}</option>
+        <option value="title-ascending" {% if settings.enable_multilang %}data-translate="collection.toolbar.title_ascending"{%endif%}>{{ 'collection.toolbar.title_ascending' | t }}</option>
+        <option value="title-descending" {% if settings.enable_multilang %}data-translate="collection.toolbar.title_descending"{%endif%}>{{ 'collection.toolbar.title_descending' | t }}</option>
+        <option value="created-ascending" {% if settings.enable_multilang %}data-translate="collection.toolbar.created_ascending"{%endif%}>{{ 'collection.toolbar.created_ascending' | t }}</option>
+        <option value="created-descending" {% if settings.enable_multilang %}data-translate="collection.toolbar.created_descending"{%endif%}>{{ 'collection.toolbar.created_descending' | t }}</option>
+        <option value="best-selling" {% if settings.enable_multilang %}data-translate="collection.toolbar.best_selling"{%endif%}>{{ 'collection.toolbar.best_selling' | t }}</option>
+      </select>           
+    </div>
+  </div>
+
+</div>
+
+<style>
+  body .filter-collection-left{display:block}
+</style>
+<script>
+
+  jQuery(window).scroll(function() {    
+    var scroll = jQuery(window).scrollTop();
+    if (scroll > 140) {
+      jQuery(".collection-page > .toolbar").addClass("ticky-ticky");
+    }else{
+      jQuery(".collection-page > .toolbar").removeClass("ticky-ticky");
+    }
+  });
+
+  jQuery('.sort-by')
+  .val('{{ collection.sort_by | default: collection.default_sort_by  }}')
+       .bind('change', function() {
+    Shopify.queryParams.sort_by = jQuery(this).val();
+    location.search = jQuery.param(Shopify.queryParams).replace(/\+/g, '%20');
+  });
+
+
+
+  jQuery(function() {
+    jQuery('.close-sibade').on('click', function(){
+      jQuery('.wrapper-container').removeClass('show-fillter');
+    });
+    $('.filter-collection-left > a').click( function(){
+      if ( $('.wrapper-container').hasClass('show-fillter') ) {
+        $('.wrapper-container').removeClass('show-fillter');
+      } else {
+        $('.wrapper-container').removeClass('show-fillter');
+        $('.wrapper-container').addClass('show-fillter');    
+      }
+    });
+
+    jQuery('body.template-collection .collection-view a').on('click', function() {
+      jQuery('.collection-view a.active').removeClass('active');
+      jQuery(this).addClass('active');
+
+    });
+    jQuery('body.template-collection .change-view.col-1').on('click', function() {
+      jQuery('body.template-collection .products-grid').find('.col-sm-4').removeClass('col-xs-6');
+      jQuery('body.template-collection .products-grid').find('.col-sm-4').addClass('col-xs-12');
+      jQuery('body.template-collection .products-grid').find('.col-sm-4').removeClass('col-md-3');
+      jQuery('body.template-collection .products-grid').find('.col-sm-4').removeClass('col-md-4');
+      jQuery('body.template-collection .products-grid').find('.col-sm-4').removeClass('col-md-2');
+      jQuery('body.template-collection .products-grid').find('.col-sm-4').removeClass('col-md-6');
+      jQuery('body.template-collection .products-grid').find('.col-sm-4').removeClass('item-col-5');
+
+    });
+    jQuery('body.template-collection .change-view.col-2').on('click', function() {
+      jQuery('body.template-collection .products-grid').find('.col-sm-4').removeClass('col-md-3');
+      jQuery('body.template-collection .products-grid').find('.col-sm-4').removeClass('col-md-4');
+      jQuery('body.template-collection .products-grid').find('.col-sm-4').addClass('col-xs-6');
+      jQuery('body.template-collection .products-grid').find('.col-sm-4').removeClass('col-md-2');
+      jQuery('body.template-collection .products-grid').find('.col-sm-4').addClass('col-md-6');
+      jQuery('body.template-collection .products-grid').find('.col-sm-4').removeClass('item-col-5');
+      jQuery('body.template-collection .products-grid').find('.col-sm-4').removeClass('col-xs-12');
+
+    });
+    jQuery('body.template-collection .change-view.col-3').on('click', function() {
+      jQuery('body.template-collection .products-grid').find('.col-sm-4').removeClass('col-md-3');
+      jQuery('body.template-collection .products-grid').find('.col-sm-4').removeClass('col-md-6');
+      jQuery('body.template-collection .products-grid').find('.col-sm-4').removeClass('col-md-2');
+      jQuery('body.template-collection .products-grid').find('.col-sm-4').addClass('col-md-4');
+      jQuery('body.template-collection .products-grid').find('.col-sm-4').removeClass('item-col-5');
+
+    }); 
+    jQuery('body.template-collection .change-view.col-4').on('click', function() {
+      jQuery('body.template-collection .products-grid').find('.col-sm-4').removeClass('col-md-4');
+      jQuery('body.template-collection .products-grid').find('.col-sm-4').removeClass('col-md-6');
+      jQuery('body.template-collection .products-grid').find('.col-sm-4').removeClass('col-md-2');
+      jQuery('body.template-collection .products-grid').find('.col-sm-4').addClass('col-md-3');
+      jQuery('body.template-collection .products-grid').find('.col-sm-4').removeClass('item-col-5');
+
+    });
+    jQuery('body.template-collection .change-view.col-6').on('click', function() {
+      jQuery('body.template-collection .products-grid').find('.col-sm-4').removeClass('col-md-3');
+      jQuery('body.template-collection .products-grid').find('.col-sm-4').removeClass('col-md-6');
+      jQuery('body.template-collection .products-grid').find('.col-sm-4').removeClass('col-md-4');
+      jQuery('body.template-collection .products-grid').find('.col-sm-4').addClass('col-md-2');
+      jQuery('body.template-collection .products-grid').find('.col-sm-4').removeClass('item-col-5');
+
+    });
+    jQuery('body.template-collection .change-view.col-5').on('click', function() {
+      jQuery('body.template-collection .products-grid').find('.col-sm-4').removeClass('col-md-3');
+      jQuery('body.template-collection .products-grid').find('.col-sm-4').removeClass('col-md-6');
+      jQuery('body.template-collection .products-grid').find('.col-sm-4').removeClass('col-md-4');
+      jQuery('body.template-collection .products-grid').find('.col-sm-4').removeClass('col-md-2');
+      jQuery('body.template-collection .products-grid').find('.col-sm-4').addClass('item-col-5');
+
+    });
+
+
+  });
+
+
+</script>

@@ -1,0 +1,1867 @@
+<div data-section-id="{{ section.id }}" data-section-type="header-section" class="header-{{ section.settings.header_layout_position }} {% if section.settings.enable_header_verticalmenu %} header-vertical-left {% endif %}">
+
+  <div id="header-content">
+    <div class="header {% if  section.settings.enable_header_fullwidth  %}full-width {%endif %}">
+      {% unless section.settings.enable_header_fullwidth %}
+      <div class="container">
+        <div class="row">
+          {% endunless  %}
+          <div class="header-inner">
+            {% for block in section.blocks %}
+            {%- case block.settings.width -%}
+            {% when '8%' %}
+            {%- assign class_width = 'col-md-1' -%}
+            {% when '16%' %}
+            {%- assign class_width = 'col-md-2' -%}
+            {% when '25%' %}
+            {%- assign class_width = 'col-md-3' -%}
+            {% when '34%' %}
+            {%- assign class_width = 'col-md-4' -%}
+            {% when '42%' %}
+            {%- assign class_width = 'col-md-5' -%}
+            {% when '50%' %}
+            {%- assign class_width = 'col-md-6' -%}
+            {% when '58%' %}
+            {%- assign class_width = 'col-md-7' -%}
+            {% when '66%' %}
+            {%- assign class_width = 'col-md-8' -%}
+            {% when '75%' %}
+            {%- assign class_width = 'col-md-9' -%}
+            {% when '84%' %}
+            {%- assign class_width = 'col-md-10' -%}
+            {% when '100%' %}
+            {%- assign class_width = 'col-md-12' -%}
+            {%- endcase -%}
+            {%- case block.type -%}
+            {% when 'customtext' %}
+            <div class="header-topbar {{class_width}} hidden-sm hidden-xs" style="margin:{{block.settings.margin_customtext }}">
+              <div class=" topbar-left {{ block.settings.customtest_position }}" >
+                {% if settings.enable_multilang %}
+                <span class="lang1">{{ block.settings.header_customtext | split: '|' | first }}</span>
+                <span class="lang2">{{ block.settings.header_customtext | split: '|' | last }}</span>
+                {% else %}
+                {{ block.settings.header_customtext | split: '|' | first }}
+                {% endif %}
+              </div>
+            </div>
+            {% when 'settinglink' %}
+            <div class="header-topbar {{ class_width }} col-sm-12 col-sx-12 " style="margin:{{block.settings.margin_settinglink }}">
+              <div class="header-top-currency {{ block.settings.settinglink_position }}" >
+                <div class="top-currency">
+                  <span class="dropdown-icon">
+                    <i class="cs-font clever-icon-user-2"></i>
+                  </span>
+                  <div class="top-bar-dropdown">
+
+                    <div class="cusstom-link">
+                      {% if shop.customer_accounts_enabled %}
+                      {% if customer %}
+                      <ul class="customer-links">
+                        {% if settings.enable_wishlist %}
+                        <li class="wishlist-menu">
+                          <i class="icon_heart" aria-hidden="true"></i>
+                          <a href="/pages/wish-list" title="My Wishlist" {% if settings.enable_multilang %}data-translate="header.custom_link_wishlist"{%endif%}>{{ 'header.custom_link_wishlist' | t }}</a>
+                        </li>
+                        {% endif %}
+                        <li><i class="icon_check_alt" aria-hidden="true"></i><a href="/checkout"><span {% if settings.enable_multilang %}data-translate="header.custom_link_checkout"{%endif%}>{{ 'header.custom_link_checkout' | t }}</span></a></li>
+                        <li>
+                          <a href="/account/logout" {% if settings.enable_multilang %}data-translate="header.custom_link_logout"{%endif%}>{{ 'header.custom_link_logout' | t }}</a>
+                        </li>
+                        <li>
+                          <a href="/account" {% if settings.enable_multilang %}data-translate="header.custom_link_account"{%endif%}>{{ 'header.custom_link_account' | t }}</a>
+                        </li>
+                      </ul>
+                      {% else %}
+                      <ul class="customer-links">
+                        {% if settings.enable_wishlist %}
+                        <li class="wishlist-menu">
+                          <i class="icon_heart" aria-hidden="true"></i>
+                          <a href="/pages/wish-list" title="My Wishlist" {% if settings.enable_multilang %}data-translate="header.custom_link_wishlist"{%endif%}>{{ 'header.custom_link_wishlist' | t }}</a>
+                        </li>
+                        {% endif %}
+                        <li><i class="icon_check_alt" aria-hidden="true"></i><a href="/checkout"><span {% if settings.enable_multilang %}data-translate="header.custom_link_checkout"{%endif%}>{{ 'header.custom_link_checkout' | t }}</span></a></li>
+                        <li><i class="icon_lock-open" aria-hidden="true"></i>
+
+                          <a href="/account/login" {% if settings.enable_multilang %}data-translate="header.custom_link_login"{%endif%}>{{ 'header.custom_link_login' | t }}</a>
+                        </li>
+                        <li><i class="icon_profile" aria-hidden="true"></i>
+                          {% if shop.customer_accounts_optional %}
+
+                          <a href="/account/register" {% if settings.enable_multilang %}data-translate="header.custom_link_create_account"{%endif%}>{{ 'header.custom_link_create_account' | t }}</a>
+                          {% endif %}
+                        </li>
+                      </ul>
+                      {% endif %}
+                      {% endif %}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {% when 'separator' %}
+            <div class="{{ class_width }} " style="margin:{{block.settings.margin_separator }};">
+              <div class="" style="border-top: {{block.settings.separator_borderwidth}} {{block.settings.settinglink_style}} {{block.settings.color_navigation}}"></div>
+            </div> 
+            {% when 'currency_switcher' %}
+            <div class="header-topbar {{ block.settings.currency_switcher_position }} {{ class_width }} col-sm-12 col-sx-12 " style="margin:{{block.settings.margin_currency_switcher }}">
+              {% include 'new-currency-top' %}
+            </div>
+            {% when 'logo' %}
+
+            <div class="{{ class_width }} col-sm-4 col-xs-12 logo-container {{ block.settings.logo_position }}" style="margin:{{block.settings.margin_logo }}">
+              {% if template.name == 'index' %}
+              <h1 class="logo" itemscope itemtype="http://schema.org/Organization">
+                {% else %}
+                <div class="logo" itemscope itemtype="http://schema.org/Organization">
+                  {% endif %}
+                  {% if block.settings.logo != blank %}
+                  <a href="/"><img src="{{ block.settings.logo | img_url: '2048x' }}" alt="{{ shop.name }}" style="height:{{ block.settings.logo_height }}; width:{{block.settings.logo_width }}"/></a>
+                  {% else %}
+                  <a class="site-header__logo-link" href="/" itemprop="url">{{ shop.name }}</a>
+                  {% endif %}
+                  {% if template.name == 'index' %}
+                  </h1>
+                {% else %}
+                </div>
+              {% endif %}
+            </div>
+            {% when 'search' %}
+            <div class="{{ class_width }} col-sm-4 col-xs-12 search-mobile-dark {{ block.settings.search_position }}" style="margin:{{block.settings.margin_search }}">
+              <div class="search-top-container">
+                <div id="search-top">
+                  <div class="icon-search"><i class="cs-font clever-icon-search-4"> </i></div>
+                  <div class="search-form" style="display: none;">
+                    <div class="search-close">
+                      <i class="cs-font clever-icon-close"></i>
+                    </div>
+                    <div class="header-search-icon">
+                      <i class="cs-font clever-icon-search-4"></i>
+                    </div>
+                    {% include 'search-bar' %}
+                  </div>
+                  <div class="overlay-search"></div>
+                </div>
+              </div>
+              <div class="overlay-search"></div>
+            </div>
+            {% when 'menu' %}
+            {% if class_width == 'col-md-12' %}<div class="menu-main-home">{% endif %}
+            <div class="{{ class_width }} {% if class_width != 'col-md-12' %}menu-main-home {% endif %} col-sm-4 col-xs-12 menu " style="margin:{{block.settings.margin_menu }}">
+              {% assign main_menu = block.settings.menu_header %}
+              <div class="logo-sticky">
+                <a href="/"><img src="{{ block.settings.logo_sticky | img_url: '2048x' }}" alt="{{ shop.name }}" style="height:{{ block.settings.logo_height }}; width:{{block.settings.logo_width }}"/></a>
+              </div>
+              <div class="col-xs-4 toggle-me">
+                <div class="toggle-menu">
+                  <button class="navbar-toggle btn-menu-canvas" data-toggle="offcanvas" data-target="#off-canvas-nav">
+                    <i class="cs-font clever-icon-menu-5"></i>
+                  </button>
+                </div>
+              </div>
+              <div class="menu-top col-sm-offset-{{block.settings.offset_menu}}">
+                <div class="menu-action">{% include 'site-nav' %}</div>
+              </div>
+              <style>
+                {% if block.settings.menu_position == "text-left" %} 
+                .menu-main-home .megamenu {
+                  text-align: left;
+                }
+                {% endif %}
+                {% if block.settings.menu_position == "text-right" %} 
+                .menu-main-home .megamenu {
+                  text-align: right;
+                }
+                {% endif %}
+                {% if block.settings.menu_position == "text-center" %} 
+                .menu-main-home .megamenu {
+                  text-align: center;
+                }
+                {% endif %}
+              </style>
+            </div>
+            {% if class_width == 'col-md-12' %}</div>{% endif %}
+            {% when 'cart' %}
+            <div class="{{ class_width }} col-sm-3 col-xs-12 cart-ticky menu {{ block.settings.cart_position }}" style="margin:{{block.settings.margin_cart }}">
+              {% if block.settings.enable_headercart_wishlist %}
+              <div class="wishlist-header">
+                <a href="/pages/wish-list" title="My Wishlist"><i class="cs-font clever-icon-heart-o" aria-hidden="true"></i></a>
+              </div>
+              {% endif %}
+              <div class="header-cart 1">
+                <!--%include 'customer_links' %-->
+                <div class="top-cart">
+                  <div class="top-cart">
+                    <a href="#" id="cartToggle">
+                      <i class="cs-font {{ block.settings.header_icon_cart }}"></i>
+                      <span id="cart-count">{{ cart.item_count }}</span>
+                    </a> 
+                  </div>
+                  <div id="dropdown-cart"> 
+                    <div class="continue-shoping"><span {% if settings.enable_multilang %}data-translate="header.my_cart"{%endif%}>{{ 'header.my_cart' | t }}</span><a><i class="cs-font clever-icon-close"></i></a></div>
+                    <div class="cart-empty">
+                      <p>{{ 'header.no_product' | t }}</p>
+                    </div>
+                    <div class="mini_cart_header">
+                      <ol class="cart-list">  
+                        {% for item in cart.items %}
+                        <li class="item" id="cart-item-{{item.id}}">
+                          <a href="{{item.url}}" title="{{item.title}}" class="product-image"><img src="{{ item.image | product_img_url: 'small' }}" alt="{{item.title}}"></a>
+                          <div class="product-inner">
+
+                            <p class="product-name"><a href="{{item.url}}">{{ item.product.title }}</a></p>
+                            <div class="option">
+                              {% if item.product.variants.size != 0 %}
+                              {% unless item.variant.title contains 'Default' %}
+                              <small>{{ item.variant.title }}</small>
+                              {% endunless %}
+                              {% endif %}
+                            </div>
+                            <div class="cart-collateral">
+                              <span class="qty-cart" {% if settings.enable_multilang %}data-translate="header.qty"{%endif%}>{{ 'header.qty' | t }}:  {{item.quantity}}</span>
+                              <span class="price">{{item.price | money}}</span>
+                            </div>
+                            <a href="javascript:void(0)" title="Remove Item" class="btn-remove"><i class="cs-font clever-icon-close"></i></a>
+                          </div>
+                        </li>
+                        {% endfor %}
+                      </ol>
+                      <div class="wrap-btcart">
+                        <div class="summary">                
+                          <p class="total">
+                            <span class="label" style="color:#000" {% if settings.enable_multilang %}data-translate="header.total"{%endif%}>{{ 'header.total' | t }}:</span>
+                            <span class="price">{{cart.total_price | money}}</span> 
+                          </p>
+                        </div>
+                        <div class="actions">
+                          <div class="view-cart"><a class="harman_btn4" href="/cart" {% if settings.enable_multilang %}data-translate="header.viewcart"{%endif%}>{{ 'header.viewcart' | t }}</a></div>
+                          <button class="btn harman_btn4" onclick="window.location='/checkout'" {% if settings.enable_multilang %}data-translate="header.checkout"{%endif%}>{{ 'header.checkout' | t }}</button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  {% comment %}
+                  If customer accounts are enabled, provide login and create account links
+                  {% endcomment %}
+                </div> <!-- End Top Header --> 
+              </div>
+            </div>
+            {% when 'allicon' %}
+            <div class="header-cart-container {{ class_width }} menu {{ block.settings.icon_position}}" style="margin:{{block.settings.margin_allicon }}">
+              {% if block.settings.display_allicon_search %}
+              <div class="search-top-container">
+                <div id="search-top">
+                  <div class="icon-search"><i class="cs-font clever-icon-search-4"> </i></div>
+                  <div class="search-form" style="display: none;">
+                    <div class="search-close">
+                      <i class="cs-font clever-icon-close"></i>
+                    </div>
+                    <div class="header-search-icon">
+                      <i class="cs-font clever-icon-search-4"></i>
+                    </div>
+                    {% include 'search-bar' %}
+                  </div>
+                  <div class="overlay-search"></div>
+                </div>
+              </div>
+              {%endif %}
+              {% if block.settings.display_allicon_settings %}
+              <div class="top-currency">
+                <span class="dropdown-icon">
+                  <i class="cs-font clever-icon-user-2"></i>
+                </span>
+                <div class="top-bar-dropdown">
+                  {% include 'new-currency-top' %}
+
+                  {% if settings.enable_multilang %}	
+                  <div class="language-currency ">
+                    <div class="language-switcher switcher-wrap">
+                      <div class="title-selector"><span  {% if settings.enable_multilang %}data-translate="header.language"{%endif%}>{{ 'header.language' | t }}</span></div>
+                      <ul class="select-language clearfix">
+                        <li><a href="javascript:void(0);" class="active" data-lang="1">
+                          {{ settings.lange_1 }}
+                          </a></li>
+                        <li><a href="javascript:void(0);" data-lang="2">{{ settings.lange_2 }}</a></li>
+                      </ul>
+                      <script> 
+                        translator.updateLangSwitcher(); 
+                      </script>
+                    </div>
+                  </div>
+                  {% endif %}
+                  <div class="cusstom-link">
+                    {% if shop.customer_accounts_enabled %}
+                    {% if customer %}
+                    <ul class="customer-links">
+                      {% if settings.enable_wishlist %}
+                      <li class="wishlist-menu">
+                        <i class="icon_heart" aria-hidden="true"></i>
+                        <a href="/pages/wish-list" title="My Wishlist" {% if settings.enable_multilang %}data-translate="header.custom_link_wishlist"{%endif%}>{{ 'header.custom_link_wishlist' | t }}</a>
+                      </li>
+                      {% endif %}
+                      <li><i class="icon_check_alt" aria-hidden="true"></i><a href="/checkout"><span {% if settings.enable_multilang %}data-translate="header.custom_link_checkout"{%endif%}>{{ 'header.custom_link_checkout' | t }}</span></a></li>
+                      <li>
+                        <a href="/account/logout" {% if settings.enable_multilang %}data-translate="header.custom_link_logout"{%endif%}>{{ 'header.custom_link_logout' | t }}</a>
+                      </li>
+                      <li>
+                        <a href="/account" {% if settings.enable_multilang %}data-translate="header.custom_link_account"{%endif%}>{{ 'header.custom_link_account' | t }}</a>
+                      </li>
+                    </ul>
+                    {% else %}
+                    <ul class="customer-links">
+                      {% if settings.enable_wishlist %}
+                      <li class="wishlist-menu">
+                        <i class="icon_heart" aria-hidden="true"></i>
+                        <a href="/pages/wish-list" title="My Wishlist" {% if settings.enable_multilang %}data-translate="header.custom_link_wishlist"{%endif%}>{{ 'header.custom_link_wishlist' | t }}</a>
+                      </li>
+                      {% endif %}
+                      <li><i class="icon_check_alt" aria-hidden="true"></i><a href="/checkout"><span {% if settings.enable_multilang %}data-translate="header.custom_link_checkout"{%endif%}>{{ 'header.custom_link_checkout' | t }}</span></a></li>
+                      <li><i class="icon_lock-open" aria-hidden="true"></i>
+
+                        <a href="/account/login" {% if settings.enable_multilang %}data-translate="header.custom_link_login"{%endif%}>{{ 'header.custom_link_login' | t }}</a>
+                      </li>
+                      <li><i class="icon_profile" aria-hidden="true"></i>
+                        {% if shop.customer_accounts_optional %}
+                        <a href="/account/register" {% if settings.enable_multilang %}data-translate="header.custom_link_create_account"{%endif%}>{{ 'header.custom_link_create_account' | t }}</a>
+                        {% endif %}
+                      </li>
+                    </ul>
+                    {% endif %}
+                    {% endif %}
+                  </div>
+                </div>
+              </div>
+              {%endif %}
+              {% if block.settings.enable_header_wishlist %}
+              <div class="wishlist-header">
+                <a href="/pages/wish-list" title="My Wishlist"><i class="cs-font clever-icon-heart-o" aria-hidden="true"></i></a>
+              </div>
+              {% endif %}
+              {% if block.settings.display_allicon_cart %}
+              <div class="header-cart">
+                <!--%include 'customer_links' %-->
+                <div class="top-cart">
+                  <div class="top-cart">
+                    <a href="#" id="cartToggle">
+                      <span class="icon top-icon-cart">
+                        <span id="cart-count">{{ cart.item_count }}</span>
+                        <i class="cs-font {{ block.settings.header_icon_cart }}"></i>
+                      </span>
+                    </a> 
+                  </div>
+                  <div id="dropdown-cart"> 
+                    <div class="continue-shoping"><span {% if settings.enable_multilang %}data-translate="header.my_cart"{%endif%}>{{ 'header.my_cart' | t }}</span><a><i class="cs-font clever-icon-close"></i></a></div>
+                    <div class="cart-empty">
+                      <p {% if settings.enable_multilang %}data-translate="header.no_product"{%endif%}>{{ 'header.no_product' | t }}</p>
+                    </div>
+                    <div class="mini_cart_header">
+                      <ol class="cart-list">  
+                        {% for item in cart.items %}
+                        <li class="item" id="cart-item-{{item.id}}">
+                          <a href="{{item.url}}" title="{{item.title}}" class="product-image"><img src="{{ item.image | product_img_url: 'small' }}" alt="{{item.title}}"></a>
+                          <div class="product-inner">
+
+                            <p class="product-name"><a href="{{item.url}}">{{ item.product.title }}</a></p>
+                            <div class="option">
+                              {% if item.product.variants.size != 0 %}
+                              {% unless item.variant.title contains 'Default' %}
+                              <small>{{ item.variant.title }}</small>
+                              {% endunless %}
+                              {% endif %}
+                            </div>
+                            <div class="cart-collateral">
+                              <span class="qty-cart" {% if settings.enable_multilang %}data-translate="header.qty"{%endif%}>{{ 'header.qty' | t }}:  {{item.quantity}}</span>
+                              <span class="price">{{item.price | money}}</span>
+                            </div>
+                            <a href="javascript:void(0)" title="Remove Item" class="btn-remove"><i class="cs-font clever-icon-close"></i></a>
+                          </div>
+                        </li>
+                        {% endfor %}
+                      </ol>
+                      <div class="wrap-btcart">
+                        <div class="summary">                
+                          <p class="total">
+                            <span class="label" style="color:#000" {% if settings.enable_multilang %}data-translate="header.total"{%endif%}>{{ 'header.total' | t }}:</span>
+                            <span class="price">{{cart.total_price | money}}</span> 
+                          </p>
+                        </div>
+                        <div class="actions">
+                          <div class="view-cart"><a class="harman_btn4" href="/cart" {% if settings.enable_multilang %}data-translate="header.viewcart"{%endif%}>{{ 'header.viewcart' | t }}</a></div>
+                          <button class="btn harman_btn4" onclick="window.location='/checkout'" {% if settings.enable_multilang %}data-translate="header.checkout"{%endif%}>{{ 'header.checkout' | t }}</button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  {% comment %}
+                  If customer accounts are enabled, provide login and create account links
+                  {% endcomment %}
+                </div> <!-- End Top Header --> 
+              </div>
+              {%endif %}
+            </div>
+            {% when 'copyright' %}
+            <div class="{{class_width}} col-sm-6 col-xs-12 header-copyright" style="margin:{{ block.settings.copyright_margin }}">
+              <address class="{{ block.settings.copyright_position }}">
+                {% if settings.enable_multilang %}
+                <span class="lang1">{{ block.settings.footer_copyright | split: '|' | first }}</span>
+                <span class="lang2">{{ block.settings.footer_copyright | split: '|' | last }}</span>
+                {% else %}
+                {{ block.settings.footer_copyright | split: '|' | first }}
+                {% endif %}
+              </address>
+            </div>
+            {% when 'iconsocial' %}
+            <div class="{{class_width}} col-sm-6 col-xs-12 header-icon-share {{ block.settings.iconsocial_position }} {{ block.settings.iconsocial_layout }}" style="margin:{{ block.settings.iconsocial_margin }}">
+              {% if  block.settings.footer_column_3_title != blank %}
+              <h3 class="module-title">
+                {% if settings.enable_multilang %}
+                <span class="lang1">{{ block.settings.footer_column_3_title | split: '|' | first }}</span>
+                <span class="lang2">{{ block.settings.footer_column_3_title | split: '|' | last }}</span>
+                {% else %}
+                {{ block.settings.footer_column_3_title | split: '|' | first }}
+                {% endif %}
+              </h3>
+              {% endif %}
+              <div class="footer-icon-share">
+                {% if block.settings.footer_column_4_icon_1 != blank %}
+                <a href="{{ block.settings.footer_column_4_icon_link_1 }}">
+                  <i class="{{ block.settings.footer_column_4_icon_1 }}"></i>
+
+                </a>
+                {% endif %}
+                {% if block.settings.footer_column_4_icon_2 != blank %}
+                <a href="{{ block.settings.footer_column_4_icon_link_2 }}">
+                  <i class="{{ block.settings.footer_column_4_icon_2 }}"></i>
+
+                </a>
+                {% endif %}
+                {% if block.settings.footer_column_4_icon_3 != blank %}
+                <a href="{{ block.settings.footer_column_4_icon_link_3 }}">
+                  <i class="{{ block.settings.footer_column_4_icon_3 }}"></i>
+
+                </a>
+                {% endif %}
+                {% if block.settings.footer_column_4_icon_4 != blank %}
+                <a href="{{ block.settings.footer_column_4_icon_link_4 }}">
+                  <i class="{{ block.settings.footer_column_4_icon_4 }}"></i>
+                </a>
+                {% endif %}
+                {% if block.settings.footer_column_4_icon_5 != blank %}
+                <a href="{{ block.settings.footer_column_4_icon_link_5 }}">
+                  <i class="{{ block.settings.footer_column_4_icon_5 }}"></i>
+                </a>
+                {% endif %}
+              </div>
+            </div>
+
+            {%- endcase -%}
+            {% endfor %}
+            {% unless section.settings.enable_header_fullwidth %}
+          </div>
+        </div>
+        {% endunless  %}
+      </div>
+    </div>
+    <div class="nm-page-overlay"></div>
+
+  </div>
+</div>
+
+      {% if section.settings.enable_header_verticalmenu  %}
+      <script>
+      	 jQuery('body').addClass("header-layout-8");
+        </script>
+      {% endif %}
+
+      {% if section.settings.header_layout_mobile == 'modern' %}
+      <script>
+        jQuery('body').addClass("modern-canvas");
+      </script>
+      {% endif %}
+      <script>
+        jQuery('#header-content .icon-search').click(function(){
+          jQuery('#search-top .search-form').fadeIn('300');        
+          jQuery('body').addClass('active-search');
+          jQuery('#search-top').addClass('active');
+        });
+        jQuery('#header-content .search-close').click(function(){
+          jQuery('#search-top .search-form').fadeOut('300'); 
+          jQuery('body').removeClass('active-search');
+          jQuery('#search-top').removeClass('active');
+        });
+        $(document).ready(function() {
+          $( ".dropdown-sub").hover(
+            function() {
+              $( this ).parent().addClass("has_arrow");
+            }, function() {
+              $( this ).parent().removeClass("has_arrow");
+
+            }
+          );
+        });
+        jQuery('.top-cart a').click(function(){
+
+          jQuery('#dropdown-cart').addClass('active');
+          jQuery('.wrapper-container').addClass('show-cart');
+          jQuery('body').css( "overflow", "hidden" );
+
+        });
+
+        jQuery('.continue-shoping a').click(function(){
+
+          jQuery('#dropdown-cart').removeClass('active');
+          jQuery('.wrapper-container').removeClass('show-cart');
+          jQuery('body').css( "overflow", "visible" );
+
+        });
+        jQuery(document).mouseup(function (e){
+
+          var container = jQuery("#dropdown-cart");
+
+          if (!container.is(e.target) // if the target of the click isn't the container...
+              && container.has(e.target).length === 0) // ... nor a descendant of the container
+          {
+            jQuery('#dropdown-cart').removeClass('active');
+            jQuery('.wrapper-container').removeClass('show-cart');
+            jQuery('body').css( "overflow", "visible" );
+          }
+
+        });
+
+jQuery('#header-content .clever-icon-search-4').click(function(){
+      jQuery('#search-top .search-form').fadeIn('300');        
+      jQuery('.overlay-search').css({"display": "block", "transform": "scale(1, 1)"});
+    });
+    jQuery('#header-content .search-close').click(function(){
+      jQuery('#search-top .search-form').fadeOut('300'); 
+      jQuery('.overlay-search').removeAttr("style");
+    });
+      </script>
+      {% schema %}
+      {
+      "name": "Header",
+        "settings": [
+          {
+            "type": "checkbox",
+            "id": "enable_header_fullwidth",
+            "label": "Enable Full Width"
+          },
+			{
+            "type": "checkbox",
+            "id": "enable_header_verticalmenu",
+            "label": "Enable Header Verticalmenu"
+          },
+          {
+            "type": "select",
+            "id": "header_layout_position",
+            "label": "Header position",
+            "options": [
+              {
+                "value": "absolute",
+                "label": "Absolute"
+              },
+              {
+                "value": "relative",
+                "label": "Relative"
+              }
+            ]
+          }
+
+
+        ],
+          "blocks": [
+            {
+              "type": "customtext",
+              "name": "Custom text",
+              "settings": [
+                  {
+                  "type": "select",
+                  "id": "width",
+                  "label": "Container width",
+                  "default": "16%",
+                  "options": [
+  					{
+                      "value": "8%",
+                      "label": "1 Column"
+                    },
+                    {
+                      "value": "16%",
+                      "label": "2 Columns - 1/6"
+                    },
+                    {
+                      "value": "25%",
+                      "label": "3 Columns - 1/4"
+                    },
+                    {
+                      "value": "34%",
+                      "label": "4 Columns - 1/3"
+                    },
+                    {
+                      "value": "42%",
+                      "label": "5 Columns - 5/12"
+                    },
+                    {
+                      "value": "50%",
+                      "label": "6 Columns - 1/2"
+                    },
+                    {
+                      "value": "58%",
+                      "label": "7 Columns - 7/12"
+                    },
+                    {
+                      "value": "66%",
+                      "label": "8 Columns - 2/3"
+                    },
+                    {
+                      "value": "75%",
+                      "label": "9 Columns - 3/4"
+                    },
+                    {
+                      "value": "84%",
+                      "label": "10 Columns - 5/6"
+                    },
+                    {
+                      "value": "100%",
+                      "label": "12 Columns - 1/1"
+                    }
+                  ]
+                },
+				{
+                  "type": "select",
+                  "id": "customtest_position",
+                  "label": "Alignment",
+                    "options": [
+                    {
+                      "value": "text-left",
+                      "label": "Left"
+                    },
+                    {
+                      "value": "text-right",
+                      "label": "Right"
+                    },
+                    {
+                      "value": "text-center",
+                      "label": "Center"
+                    }
+                  ]
+				},
+          		{
+                  "type": "text",
+                  "id": "margin_customtext",
+                  "label": "Margin",
+                  "default": "0px 0px 0px 0px"
+                },
+                {
+                  "type": "textarea",
+                  "id": "header_customtext",
+                  "label": "Custom text",
+                  "default": "Custom text"
+                }
+
+              ]
+            },
+             {
+              "type": "settinglink",
+              "name": "Customer Links",
+              "settings": [
+                  {
+                  "type": "select",
+                  "id": "width",
+                  "label": "Container width",
+                  "default": "16%",
+                  "options": [
+  					{
+                      "value": "8%",
+                      "label": "1 Column"
+                    },
+                    {
+                      "value": "16%",
+                      "label": "2 Columns - 1/6"
+                    },
+                    {
+                      "value": "25%",
+                      "label": "3 Columns - 1/4"
+                    },
+                    {
+                      "value": "34%",
+                      "label": "4 Columns - 1/3"
+                    },
+                    {
+                      "value": "42%",
+                      "label": "5 Columns - 5/12"
+                    },
+                    {
+                      "value": "50%",
+                      "label": "6 Columns - 1/2"
+                    },
+                    {
+                      "value": "58%",
+                      "label": "7 Columns - 7/12"
+                    },
+                    {
+                      "value": "66%",
+                      "label": "8 Columns - 2/3"
+                    },
+                    {
+                      "value": "75%",
+                      "label": "9 Columns - 3/4"
+                    },
+                    {
+                      "value": "84%",
+                      "label": "10 Columns - 5/6"
+                    },
+                    {
+                      "value": "100%",
+                      "label": "12 Columns - 1/1"
+                    }
+                  ]
+                },
+				
+				{
+                  "type": "select",
+                  "id": "settinglink_position",
+                  "label": "Alignment",
+                    "options": [
+                    {
+                      "value": "text-left",
+                      "label": "Left"
+                    },
+                    {
+                      "value": "text-right",
+                      "label": "Right"
+                    },
+                    {
+                      "value": "text-center",
+                      "label": "Center"
+                    }
+                  ]
+				},
+          		{
+                  "type": "text",
+                  "id": "margin_settinglink",
+                  "label": "Margin",
+                  "default": "0px 0px 0px 0px"
+                }
+
+              ]
+            },
+             {
+              "type": "currency_switcher",
+              "name": "Currency Switcher ",
+              "settings": [
+                  {
+                  "type": "select",
+                  "id": "width",
+                  "label": "Container width",
+                  "default": "16%",
+                  "options": [
+  					{
+                      "value": "8%",
+                      "label": "1 Column"
+                    },
+                    {
+                      "value": "16%",
+                      "label": "2 Columns - 1/6"
+                    },
+                    {
+                      "value": "25%",
+                      "label": "3 Columns - 1/4"
+                    },
+                    {
+                      "value": "34%",
+                      "label": "4 Columns - 1/3"
+                    },
+                    {
+                      "value": "42%",
+                      "label": "5 Columns - 5/12"
+                    },
+                    {
+                      "value": "50%",
+                      "label": "6 Columns - 1/2"
+                    },
+                    {
+                      "value": "58%",
+                      "label": "7 Columns - 7/12"
+                    },
+                    {
+                      "value": "66%",
+                      "label": "8 Columns - 2/3"
+                    },
+                    {
+                      "value": "75%",
+                      "label": "9 Columns - 3/4"
+                    },
+                    {
+                      "value": "84%",
+                      "label": "10 Columns - 5/6"
+                    },
+                    {
+                      "value": "100%",
+                      "label": "12 Columns - 1/1"
+                    }
+                  ]
+                },
+				
+				{
+                  "type": "select",
+                  "id": "currency_switcher_position",
+                  "label": "Alignment",
+                    "options": [
+                    {
+                      "value": "text-left",
+                      "label": "Left"
+                    },
+                    {
+                      "value": "text-right",
+                      "label": "Right"
+                    },
+                    {
+                      "value": "text-center",
+                      "label": "Center"
+                    }
+                  ]
+				},
+          		{
+                  "type": "text",
+                  "id": "margin_currency_switcher",
+                  "label": "Margin",
+                  "default": "0px 0px 0px 0px"
+                }
+
+              ]
+            },
+             {
+              "type": "search",
+              "name": "Search",
+              "settings": [
+                  {
+                  "type": "select",
+                  "id": "width",
+                  "label": "Container width",
+                  "default": "16%",
+                  "options": [
+  					{
+                      "value": "8%",
+                      "label": "1 Column"
+                    },
+                    {
+                      "value": "16%",
+                      "label": "2 Columns - 1/6"
+                    },
+                    {
+                      "value": "25%",
+                      "label": "3 Columns - 1/4"
+                    },
+                    {
+                      "value": "34%",
+                      "label": "4 Columns - 1/3"
+                    },
+                    {
+                      "value": "42%",
+                      "label": "5 Columns - 5/12"
+                    },
+                    {
+                      "value": "50%",
+                      "label": "6 Columns - 1/2"
+                    },
+                    {
+                      "value": "58%",
+                      "label": "7 Columns - 7/12"
+                    },
+                    {
+                      "value": "66%",
+                      "label": "8 Columns - 2/3"
+                    },
+                    {
+                      "value": "75%",
+                      "label": "9 Columns - 3/4"
+                    },
+                    {
+                      "value": "84%",
+                      "label": "10 Columns - 5/6"
+                    },
+                    {
+                      "value": "100%",
+                      "label": "12 Columns - 1/1"
+                    }
+                  ]
+                },
+				
+				{
+                  "type": "select",
+                  "id": "search_position",
+                  "label": "Alignment",
+                    "options": [
+                    {
+                      "value": "text-left",
+                      "label": "Left"
+                    },
+                    {
+                      "value": "text-right",
+                      "label": "Right"
+                    },
+                    {
+                      "value": "text-center",
+                      "label": "Center"
+                    }
+                  ]
+				},
+          		{
+                  "type": "text",
+                  "id": "margin_search",
+                  "label": "Margin",
+                  "default": "0px 0px 0px 0px"
+                }
+
+              ]
+            },
+            {
+              "type": "cart",
+              "name": "Wishlist, Cart",
+              "settings": [
+                  {
+                  "type": "select",
+                  "id": "width",
+                  "label": "Container width",
+                  "default": "16%",
+                  "options": [
+  					{
+                      "value": "8%",
+                      "label": "1 Column"
+                    },
+                    {
+                      "value": "16%",
+                      "label": "2 Columns - 1/6"
+                    },
+                    {
+                      "value": "25%",
+                      "label": "3 Columns - 1/4"
+                    },
+                    {
+                      "value": "34%",
+                      "label": "4 Columns - 1/3"
+                    },
+                    {
+                      "value": "42%",
+                      "label": "5 Columns - 5/12"
+                    },
+                    {
+                      "value": "50%",
+                      "label": "6 Columns - 1/2"
+                    },
+                    {
+                      "value": "58%",
+                      "label": "7 Columns - 7/12"
+                    },
+                    {
+                      "value": "66%",
+                      "label": "8 Columns - 2/3"
+                    },
+                    {
+                      "value": "75%",
+                      "label": "9 Columns - 3/4"
+                    },
+                    {
+                      "value": "84%",
+                      "label": "10 Columns - 5/6"
+                    },
+                    {
+                      "value": "100%",
+                      "label": "12 Columns - 1/1"
+                    }
+                  ]
+                },
+				{
+                  "type": "select",
+                  "id": "cart_position",
+                  "label": "Alignment",
+                    "options": [
+                    {
+                      "value": "text-left",
+                      "label": "Left"
+                    },
+                    {
+                      "value": "text-right",
+                      "label": "Right"
+                    },
+                    {
+                      "value": "text-center",
+                      "label": "Center"
+                    }
+                  ]
+				},
+          		{
+                  "type": "text",
+                  "id": "margin_cart",
+                  "label": "Margin",
+                  "default": "0px 0px 0px 0px"
+                },
+                {
+                  "type": "checkbox",
+                  "id": "enable_headercart_wishlist",
+                  "label": "Enable Wish List",
+        			"default": true
+                },
+                {
+                  "type": "select",
+                  "id": "header_icon_cart",
+                  "label": "Header Icon Cart",
+                  "options": [
+                    {
+                      "value": "clever-icon-bag",
+                      "label": "Cart 1"
+                    },
+                    {
+                      "value": "clever-icon-briefcase",
+                      "label": "Cart 2"
+                    },
+                    {
+                      "value": "clever-icon-cart-15",
+                      "label": "Cart 3"
+                    },
+                    {
+                      "value": "clever-icon-cart-14",
+                      "label": "Cart 4"
+                    },
+                    {
+                      "value": "clever-icon-cart-13",
+                      "label": "Cart 5"
+                    },
+                    {
+                      "value": "clever-icon-cart-12",
+                      "label": "Cart 6"
+                    },
+                    {
+                      "value": "clever-icon-cart-11",
+                      "label": "Cart 7"
+                    },
+                    {
+                      "value": "clever-icon-cart-10",
+                      "label": "Cart 8"
+                    },
+                    {
+                      "value": "clever-icon-cart-9",
+                      "label": "Cart 9"
+                    },
+                    {
+                      "value": "clever-icon-cart-8",
+                      "label": "Cart 10"
+                    },
+                    {
+                      "value": "clever-icon-cart-7",
+                      "label": "Cart 11"
+                    },
+                    {
+                      "value": "clever-icon-cart-6",
+                      "label": "Cart 12"
+                    },
+                    {
+                      "value": "clever-icon-cart-5",
+                      "label": "Cart 13"
+                    },
+                    {
+                      "value": "clever-icon-cart-4",
+                      "label": "Cart 14"
+                    },
+                    {
+                      "value": "clever-icon-cart-3",
+                      "label": "Cart 15"
+                    },
+                    {
+                      "value": "clever-icon-cart-2",
+                      "label": "Cart 16"
+                    },
+                    {
+                      "value": "clever-icon-cart-1",
+                      "label": "Cart 17"
+                    },
+                    {
+                      "value": "clever-icon-bag-black-fashion-model",
+                      "label": "Cart 18"
+                    },
+                    {
+                      "value": "clever-icon-online-purchase",
+                      "label": "Cart 19"
+                    }
+                  ]
+                }
+
+              ]
+            },
+            {
+              "type": "logo",
+              "name": "Logo",
+              "settings": [
+                  {
+                  "type": "select",
+                  "id": "width",
+                  "label": "Container width",
+                  "default": "16%",
+                  "options": [
+  					{
+                      "value": "8%",
+                      "label": "1 Column"
+                    },
+                    {
+                      "value": "16%",
+                      "label": "2 Columns - 1/6"
+                    },
+                    {
+                      "value": "25%",
+                      "label": "3 Columns - 1/4"
+                    },
+                    {
+                      "value": "34%",
+                      "label": "4 Columns - 1/3"
+                    },
+                    {
+                      "value": "42%",
+                      "label": "5 Columns - 5/12"
+                    },
+                    {
+                      "value": "50%",
+                      "label": "6 Columns - 1/2"
+                    },
+                    {
+                      "value": "58%",
+                      "label": "7 Columns - 7/12"
+                    },
+                    {
+                      "value": "66%",
+                      "label": "8 Columns - 2/3"
+                    },
+                    {
+                      "value": "75%",
+                      "label": "9 Columns - 3/4"
+                    },
+                    {
+                      "value": "84%",
+                      "label": "10 Columns - 5/6"
+                    },
+                    {
+                      "value": "100%",
+                      "label": "12 Columns - 1/1"
+                    }
+                  ]
+                },
+				{
+                  "type": "select",
+                  "id": "logo_position",
+                  "label": "Alignment",
+                    "options": [
+                    {
+                      "value": "text-left",
+                      "label": "Left"
+                    },
+                    {
+                      "value": "text-right",
+                      "label": "Right"
+                    },
+                    {
+                      "value": "text-center",
+                      "label": "Center"
+                    }
+                  ]
+				},
+				
+                {
+                  "type": "text",
+                  "id": "logo_width",
+                  "label": "width",
+                  "default": "120px"
+                },
+                {
+                  "type": "text",
+                  "id": "logo_height",
+                  "label": "height",
+                  "default": "70px"
+                },
+                {
+                  "type": "image_picker",
+                  "id": "logo",
+                  "label": "Logo image"
+                },
+          		{
+                  "type": "text",
+                  "id": "margin_logo",
+                  "label": "Margin",
+                  "default": "0px 0px 0px 0px"
+                }
+
+              ]
+            },
+           {
+              "type": "menu",
+              "name": "Menu",
+              "settings": [
+				{
+                  "type": "select",
+                  "id": "offset_menu",
+                  "label": "Offset width",
+                  "default": "2",
+                  "options": [
+					{
+                      "value": "0",
+                      "label": "0 Column"
+                    },
+                    {
+                      "value": "1",
+                      "label": "1 Column"
+                    },
+                    {
+                      "value": "2",
+                      "label": "2 Columns - 1/6"
+                    },
+                    {
+                      "value": "3",
+                      "label": "3 Columns - 1/4"
+                    },
+                    {
+                      "value": "4",
+                      "label": "4 Columns - 1/3"
+                    },
+                    {
+                      "value": "5",
+                      "label": "5 Columns - 5/12"
+                    },
+                    {
+                      "value": "6",
+                      "label": "6 Columns - 1/2"
+                    }
+                  ]
+                },
+                  {
+                  "type": "select",
+                  "id": "width",
+                  "label": "Container width",
+                  "default": "16%",
+                  "options": [
+  					{
+                      "value": "8%",
+                      "label": "1 Column"
+                    },
+                    {
+                      "value": "16%",
+                      "label": "2 Columns - 1/6"
+                    },
+                    {
+                      "value": "25%",
+                      "label": "3 Columns - 1/4"
+                    },
+                    {
+                      "value": "34%",
+                      "label": "4 Columns - 1/3"
+                    },
+                    {
+                      "value": "42%",
+                      "label": "5 Columns - 5/12"
+                    },
+                    {
+                      "value": "50%",
+                      "label": "6 Columns - 1/2"
+                    },
+                    {
+                      "value": "58%",
+                      "label": "7 Columns - 7/12"
+                    },
+                    {
+                      "value": "66%",
+                      "label": "8 Columns - 2/3"
+                    },
+                    {
+                      "value": "75%",
+                      "label": "9 Columns - 3/4"
+                    },
+                    {
+                      "value": "84%",
+                      "label": "10 Columns - 5/6"
+                    },
+                    {
+                      "value": "100%",
+                      "label": "12 Columns - 1/1"
+                    }
+                  ]
+                },
+                {
+                  "type": "link_list",
+                  "id": "menu_header",
+                  "label": "Main Menu"
+                },
+                {
+                  "type": "select",
+                  "id": "menu_position",
+                  "label": "Alignment",
+                    "options": [
+                    {
+                      "value": "text-left",
+                      "label": "Left"
+                    },
+                    {
+                      "value": "text-right",
+                      "label": "Right"
+                    },
+                    {
+                      "value": "text-center",
+                      "label": "Center"
+                    }
+                  ]
+				},
+          		{
+                  "type": "text",
+                  "id": "margin_menu",
+                  "label": "Margin",
+                  "default": "0px 0px 0px 0px"
+                },
+                {
+                  "type": "image_picker",
+                  "id": "logo_sticky",
+                  "label": "Logo Sticky Image"
+                },
+
+                {
+                  "type": "text",
+                  "id": "logo_width",
+                  "label": "width",
+                  "default": "120px"
+                },
+                {
+                  "type": "text",
+                  "id": "logo_height",
+                  "label": "height",
+                  "default": "70px"
+                }
+            
+          ]
+
+
+          },
+        {
+             "type": "allicon",
+              "name": "Search, Cart, Settings",
+              "settings": [
+                  {
+                  "type": "select",
+                  "id": "width",
+                  "label": "Container width",
+                  "default": "16%",
+                  "options": [
+  					{
+                      "value": "8%",
+                      "label": "1 Column"
+                    },
+                    {
+                      "value": "16%",
+                      "label": "2 Columns - 1/6"
+                    },
+                    {
+                      "value": "25%",
+                      "label": "3 Columns - 1/4"
+                    },
+                    {
+                      "value": "34%",
+                      "label": "4 Columns - 1/3"
+                    },
+                    {
+                      "value": "42%",
+                      "label": "5 Columns - 5/12"
+                    },
+                    {
+                      "value": "50%",
+                      "label": "6 Columns - 1/2"
+                    },
+                    {
+                      "value": "58%",
+                      "label": "7 Columns - 7/12"
+                    },
+                    {
+                      "value": "66%",
+                      "label": "8 Columns - 2/3"
+                    },
+                    {
+                      "value": "75%",
+                      "label": "9 Columns - 3/4"
+                    },
+                    {
+                      "value": "84%",
+                      "label": "10 Columns - 5/6"
+                    },
+                    {
+                      "value": "100%",
+                      "label": "12 Columns - 1/1"
+                    }
+                  ]
+                },
+                {
+                  "type": "select",
+                  "id": "icon_position",
+                  "label": "Alignment",
+                    "options": [
+                    {
+                      "value": "text-left",
+                      "label": "Left"
+                    },
+                    {
+                      "value": "text-right",
+                      "label": "Right"
+                    },
+                    {
+                      "value": "text-center",
+                      "label": "Center"
+                    }
+                  ]
+				},
+          		{
+                  "type": "text",
+                  "id": "margin_allicon",
+                  "label": "Margin",
+                  "default": "0px 0px 0px 0px"
+                },
+                {
+                  "type": "checkbox",
+                  "id": "display_allicon_settings",
+                  "label": "Enable Settings",
+        			"default": true
+                },
+                {
+                  "type": "checkbox",
+                  "id": "enable_header_wishlist",
+                  "label": "Enable Wish List",
+        			"default": true
+                },
+                {
+                  "type": "checkbox",
+                  "id": "display_allicon_cart",
+                  "label": "Enable Cart",
+        		  "default": true
+                },
+                {
+                  "type": "checkbox",
+                  "id": "display_allicon_search",
+                  "label": "Enable Search",
+        	  	  "default": true
+                },
+                {
+                  "type": "select",
+                  "id": "header_icon_cart",
+                  "label": "Header Icon Cart",
+                  "options": [
+                    {
+                      "value": "clever-icon-bag",
+                      "label": "Cart 1"
+                    },
+                    {
+                      "value": "clever-icon-briefcase",
+                      "label": "Cart 2"
+                    },
+                    {
+                      "value": "clever-icon-cart-15",
+                      "label": "Cart 3"
+                    },
+                    {
+                      "value": "clever-icon-cart-14",
+                      "label": "Cart 4"
+                    },
+                    {
+                      "value": "clever-icon-cart-13",
+                      "label": "Cart 5"
+                    },
+                    {
+                      "value": "clever-icon-cart-12",
+                      "label": "Cart 6"
+                    },
+                    {
+                      "value": "clever-icon-cart-11",
+                      "label": "Cart 7"
+                    },
+                    {
+                      "value": "clever-icon-cart-10",
+                      "label": "Cart 8"
+                    },
+                    {
+                      "value": "clever-icon-cart-9",
+                      "label": "Cart 9"
+                    },
+                    {
+                      "value": "clever-icon-cart-8",
+                      "label": "Cart 10"
+                    },
+                    {
+                      "value": "clever-icon-cart-7",
+                      "label": "Cart 11"
+                    },
+                    {
+                      "value": "clever-icon-cart-6",
+                      "label": "Cart 12"
+                    },
+                    {
+                      "value": "clever-icon-cart-5",
+                      "label": "Cart 13"
+                    },
+                    {
+                      "value": "clever-icon-cart-4",
+                      "label": "Cart 14"
+                    },
+                    {
+                      "value": "clever-icon-cart-3",
+                      "label": "Cart 15"
+                    },
+                    {
+                      "value": "clever-icon-cart-2",
+                      "label": "Cart 16"
+                    },
+                    {
+                      "value": "clever-icon-cart-1",
+                      "label": "Cart 17"
+                    },
+                    {
+                      "value": "clever-icon-bag-black-fashion-model",
+                      "label": "Cart 18"
+                    },
+                    {
+                      "value": "clever-icon-online-purchase",
+                      "label": "Cart 19"
+                    }
+                  ]
+                }
+
+              ]
+            },
+{
+        "type": "iconsocial",
+        "name": "Icon Social",
+        "settings": [
+          {
+                  "type": "select",
+                  "id": "width",
+                  "label": "Container width",
+                  "default": "16%",
+                  "options": [
+                    {
+                      "value": "16%",
+                      "label": "2 Columns - 1/6"
+                    },
+                    {
+                      "value": "25%",
+                      "label": "3 Columns - 1/4"
+                    },
+                    {
+                      "value": "34%",
+                      "label": "4 Columns - 1/3"
+                    },
+                    {
+                      "value": "42%",
+                      "label": "5 Columns - 5/12"
+                    },
+                    {
+                      "value": "50%",
+                      "label": "6 Columns - 1/2"
+                    },
+                    {
+                      "value": "58%",
+                      "label": "7 Columns - 7/12"
+                    },
+                    {
+                      "value": "66%",
+                      "label": "8 Columns - 2/3"
+                    },
+                    {
+                      "value": "75%",
+                      "label": "9 Columns - 3/4"
+                    },
+                    {
+                      "value": "84%",
+                      "label": "10 Columns - 5/6"
+                    },
+                    {
+                      "value": "100%",
+                      "label": "12 Columns - 1/1"
+                    }
+                  ]
+                },
+				{
+                  "type": "select",
+                  "id": "iconsocial_position",
+                  "label": "Alignment",
+                    "options": [
+                    {
+                      "value": "text-left",
+                      "label": "Left"
+                    },
+                    {
+                      "value": "text-right",
+                      "label": "Right"
+                    },
+                    {
+                      "value": "text-center",
+                      "label": "Center"
+                    }
+                  ]
+				},
+          		{
+                  "type": "text",
+                  "id": "iconsocial_margin",
+                  "label": "Margin",
+                  "default": "0px 0px 0px 0px"
+                },
+          {
+            "type": "text",
+            "id": "footer_column_3_title",
+            "label": "Social Title"
+          },
+          {
+            "type": "text",
+            "id": "footer_column_4_icon_1",
+            "label": "icon 1",
+            "default": "cs-font clever-icon-facebook",
+            "info": "add class of font icon"
+          },
+          {
+            "type": "text",
+            "id": "footer_column_4_icon_link_1",
+            "label": "Link Icon 1",
+            "default": "#"
+          },
+          {
+            "type": "text",
+            "id": "footer_column_4_icon_2",
+            "label": "icon 2",
+            "default": "cs-font clever-icon-twitter",
+            "info": "add class of font icon"
+          },
+          {
+            "type": "text",
+            "id": "footer_column_4_icon_link_2",
+            "label": "Link Icon 2",
+            "default": "#"
+          },
+          {
+            "type": "text",
+            "id": "footer_column_4_icon_3",
+            "label": "icon 3",
+            "default": "cs-font clever-icon-pinterest",
+            "info": "add class of font icon"
+          },
+          {
+            "type": "text",
+            "id": "footer_column_4_icon_link_3",
+            "label": "Link Icon 3",
+            "default": "#"
+          },
+          {
+            "type": "text",
+            "id": "footer_column_4_icon_4",
+            "label": "icon 4",
+            "default": "cs-font clever-icon-googleplus",
+            "info": "add class of font icon"
+          },
+          {
+            "type": "text",
+            "id": "footer_column_4_icon_link_4",
+            "label": "Link Icon 4",
+            "default": "#"
+          },
+          {
+            "type": "text",
+            "id": "footer_column_4_icon_5",
+            "label": "icon 5",
+            "default": "cs-font clever-icon-youtube",
+            "info": "add class of font icon"
+          },
+          {
+            "type": "text",
+            "id": "footer_column_4_icon_link_5",
+            "label": "Link Icon 5",
+            "default": "#"
+          }
+        ]
+      },
+	{
+        "type": "copyright",
+        "name": "Copyright",
+        "settings": [
+			{
+                  "type": "select",
+                  "id": "width",
+                  "label": "Container width",
+                  "default": "16%",
+                  "options": [
+                    {
+                      "value": "16%",
+                      "label": "2 Columns - 1/6"
+                    },
+                    {
+                      "value": "25%",
+                      "label": "3 Columns - 1/4"
+                    },
+                    {
+                      "value": "34%",
+                      "label": "4 Columns - 1/3"
+                    },
+                    {
+                      "value": "42%",
+                      "label": "5 Columns - 5/12"
+                    },
+                    {
+                      "value": "50%",
+                      "label": "6 Columns - 1/2"
+                    },
+                    {
+                      "value": "58%",
+                      "label": "7 Columns - 7/12"
+                    },
+                    {
+                      "value": "66%",
+                      "label": "8 Columns - 2/3"
+                    },
+                    {
+                      "value": "75%",
+                      "label": "9 Columns - 3/4"
+                    },
+                    {
+                      "value": "84%",
+                      "label": "10 Columns - 5/6"
+                    },
+                    {
+                      "value": "100%",
+                      "label": "12 Columns - 1/1"
+                    }
+                  ]
+                },
+				{
+                  "type": "select",
+                  "id": "copyright_position",
+                  "label": "Alignment",
+                    "options": [
+                    {
+                      "value": "text-left",
+                      "label": "Left"
+                    },
+                    {
+                      "value": "text-right",
+                      "label": "Right"
+                    },
+                    {
+                      "value": "text-center",
+                      "label": "Center"
+                    }
+                  ]
+				},
+          		{
+                  "type": "text",
+                  "id": "copyright_margin",
+                  "label": "Margin",
+                  "default": "0px 0px 0px 0px"
+                },
+          {
+            "type": "textarea",
+            "id": "footer_copyright",
+            "label": "Copyright",
+            "default": "Copyright"
+          }
+          
+        ]
+      },
+             {
+              "type": "separator",
+              "name": "Separator",
+              "settings": [
+                  {
+                  "type": "select",
+                  "id": "width",
+                  "label": "Container width",
+                  "default": "16%",
+                  "options": [
+  					{
+                      "value": "8%",
+                      "label": "1 Column"
+                    },
+                    {
+                      "value": "16%",
+                      "label": "2 Columns - 1/6"
+                    },
+                    {
+                      "value": "25%",
+                      "label": "3 Columns - 1/4"
+                    },
+                    {
+                      "value": "34%",
+                      "label": "4 Columns - 1/3"
+                    },
+                    {
+                      "value": "42%",
+                      "label": "5 Columns - 5/12"
+                    },
+                    {
+                      "value": "50%",
+                      "label": "6 Columns - 1/2"
+                    },
+                    {
+                      "value": "58%",
+                      "label": "7 Columns - 7/12"
+                    },
+                    {
+                      "value": "66%",
+                      "label": "8 Columns - 2/3"
+                    },
+                    {
+                      "value": "75%",
+                      "label": "9 Columns - 3/4"
+                    },
+                    {
+                      "value": "84%",
+                      "label": "10 Columns - 5/6"
+                    },
+                    {
+                      "value": "100%",
+                      "label": "12 Columns - 1/1"
+                    }
+                  ]
+                },
+          		{
+                  "type": "text",
+                  "id": "margin_separator",
+                  "label": "Margin",
+                  "default": "0px 0px 0px 0px"
+                },
+				{
+                  "type": "select",
+                  "id": "settinglink_style",
+                  "label": "Style",
+                    "options": [
+                    {
+                      "value": "solid",
+                      "label": "Solid"
+                    },
+                    {
+                      "value": "dotted",
+                      "label": "Dotted"
+                    },
+                    {
+                      "value": "dashed",
+                      "label": "Dashed"
+                    },
+					{
+                      "value": "double",
+                      "label": "Double"
+                    }
+                  ]
+				},
+          		{
+                  "type": "text",
+                  "id": "separator_borderwidth",
+                  "label": "Border Width",
+                  "default": "1px"
+                },
+    {
+      "type": "color",
+      "id": "color_navigation",
+      "label": "Color",
+      "default": "#2d2d2d",
+      "info": "Default Value: #2d2d2d"
+    }
+
+              ]
+            }
+		]
+      }
+      {% endschema %}

@@ -1,0 +1,17 @@
+{% if settings.home_product_title_1 != blank %}
+<div class="heading-block">
+  <h3 class="title">{{ settings.home_product_title_1 }}</h3>
+</div>
+{% endif %}
+<div class="row">
+  {% if settings.enable_product_1 %}
+  <div class="top-product">
+    {% assign tabs_collection = settings.collection_product_1 %}
+    {% assign row_limit_setting = settings.product_list_limit_1 %}
+    {% assign number_colum_layout = settings.show_carousel_layout_product_1 %}
+    {% assign number_colum = settings.limit_of_columns_product_1 %}
+    {% assign owl_id = 'owl_tabsale' %}
+    {% include 'carousel-product' %}
+  </div>
+  {% endif %}
+</div>

@@ -1,0 +1,20 @@
+{% if settings.enable_about_icon %}
+<div class="row">
+  {% for i in (1..3) %}
+  {% capture about_icon %}about_icon_{{ i }}{% endcapture %}
+  {% capture about_icon_title %}about_icon_title_{{ i }}{% endcapture %}
+  <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4 item-icon">
+    <div class="feature-box-hover">
+      <div class="feature-box">
+        <div class="feature-box-icon primary">
+          <i class="{{ settings[about_icon] }}"></i>
+        </div>
+        <div class="feature-box-info">
+          <h4>{{ settings[about_icon_title] }}</h4>
+        </div>
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+{% endif %}

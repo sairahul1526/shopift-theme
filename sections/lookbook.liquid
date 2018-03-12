@@ -1,0 +1,303 @@
+
+<div class="home5-block-collection" style="margin:{{ section.settings.home_block_5 }}; min-height:{{section.settings.min_height}};background-color:#eaeaea;">
+  <div id="fullpage" class="block-slide-5">
+
+    {% for block in section.blocks %}
+    <div class="main-slide-content main-slide-{{ i }} section"  id="section{{ i }}" style="color:{{block.settings.lookboo_color_1}};background-color:{{ block.settings.lookbookshowblock_color_1 }};position:relative;">
+      <h2>
+        {% if settings.enable_multilang %}
+        <span class="lang1">{{ block.settings.lookbook_text_title_1 | split: '|' | first }}</span>
+        <span class="lang2">{{ block.settings.lookbook_text_title_1 | split: '|' | last }}</span>
+        {% else %}
+        {{ block.settings.lookbook_text_title_1 | split: '|' | first }}
+        {% endif %}
+      </h2>
+      <div class="slide-item slide-item-{{ i }}" style="background-image:url({{ block.settings.lookbook-img-1 | img_url: '2048x' }});">
+
+        {% assign product_slide = block.settings.lookbook_block3_pr_1_1 %}
+        {% assign _product1 = all_products[product_slide] %}
+        {% assign product_slide = block.settings.lookbook_block3_pr_1_2 %}
+        {% assign _product2 = all_products[product_slide] %}
+        {% assign product_slide = block.settings.lookbook_block3_pr_1_3 %}
+        {% assign _product3 = all_products[product_slide] %}
+        {% assign product_slide = block.settings.lookbook_block3_pr_1_4 %}
+        {% assign _product4 = all_products[product_slide] %}
+
+        <div class="lookbook">
+          <div class="hint pro1" style="{{ block.settings.lookbook_block3_coord_pr_1_1  }}">
+            <span>1</span><span class="hint__dot"></span>
+            <div class="link-product {{ block.settings.lookbook_block3_tool_pr1_1 }}">
+              <a  href="{{ _product1.url | within: collection }}">
+                <span class="hint-title">{{ _product1.title }}</span>
+              </a>
+              <span class="hint-price">{{ _product1.selected_or_first_available_variant.price | money }}</span>
+            </div>
+          </div>
+        </div>
+        <div class="lookbook">
+          <div class="hint pro2" style="{{ block.settings.lookbook_block3_coord_pr_1_2  }}">
+            <span>2</span><span class="hint__dot"></span>
+            <div class="link-product {{ block.settings.lookbook_block3_tool_pr1_2 }}">
+              <a  href="{{ _product2.url | within: collection }}">
+                <span class="hint-title">{{ _product2.title }}</span>
+              </a>
+              <span class="hint-price">{{ _product2.selected_or_first_available_variant.price | money }}</span>
+            </div>
+          </div>
+        </div>
+        <div class="lookbook">
+          <div class="hint pro3" style="{{ block.settings.lookbook_block3_coord_pr_1_3  }}">
+            <span>3</span><span class="hint__dot"></span>
+            <div class="link-product {{ block.settings.lookbook_block3_tool_pr1_3 }}">
+              <a  href="{{ _product3.url | within: collection }}">
+                <span class="hint-title">{{ _product3.title }}</span>
+              </a>
+              <span class="hint-price">{{ _product3.selected_or_first_available_variant.price | money }}</span>
+            </div>
+          </div>
+        </div>
+        <div class="lookbook">
+          <div class="hint pro4" style="{{ block.settings.lookbook_block3_coord_pr_1_4  }}">
+            <span>4</span><span class="hint__dot"></span>
+            <div class="link-product {{ block.settings.lookbook_block3_tool_pr1_4 }}">
+              <a  href="{{ _product4.url | within: collection }}">
+                <span class="hint-title">{{ _product4.title }}</span>
+              </a>
+              <span class="hint-price">{{ _product4.selected_or_first_available_variant.price | money }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</div>
+<script>
+
+  $(document).ready(function() {
+    var header_height = jQuery('#header-content' ).outerHeight();
+    var footer_height = jQuery('.footer-container' ).outerHeight();
+
+    var heightimgrs = jQuery( window ).height() - footer_height;
+
+    $('.block-slide-5').height(heightimgrs);
+    $('.main-slide-content').height(heightimgrs);
+
+    $( window ).resize(function() {
+      var header_height = jQuery('#header-content' ).height();
+      var footer_height = jQuery('.footer-container' ).height();
+
+      var heightimgrs = jQuery( window ).height() - footer_height;
+      $('.block-slide-5').height(heightimgrs);
+      $('.main-slide-content').height(heightimgrs);
+    });
+    $(".block-slide-5").owlCarousel({
+      itemsCustom : [ 
+        [0, 1],
+
+        [1600, 1]
+      ],
+      autoPlay : true,
+      stopOnHover : false,
+      lazyLoad : false,
+      lazyFollow : true,
+      lazyEffect : "fade",
+      pagination : false,
+      navigation : true,
+      navigationText : ['<i class="cs-font clever-icon-prev"></i>','<i class="cs-font clever-icon-next"></i>'],
+      //rewindNav : true,
+      //scrollPerPage : false,
+
+    });
+  });
+</script>
+
+
+{% schema %}
+  {
+  
+	"name": "Lookbook",
+    "class": "index-section",
+    "max_blocks": 5,
+    "settings": [
+      {
+        "type": "text",
+        "id": "home_block_5",
+        "label": "Margin",
+        "default": "0px 0px 0px 0px"
+      },
+
+      {
+        "type": "text",
+        "id": "min_height",
+        "label": "Height",
+        "default": "600px"
+      }
+	],
+    "blocks": [
+        {
+          "type": "block",
+          "name": "Block",
+          "settings": [
+         
+          {
+            "type": "color",
+            "id": "lookbookshowblock_color_1",
+            "label": "Background Color",
+            "default": "#2d2d2d",
+            "info": "Default Value: #2d2d2d"
+          },
+		 {
+            "type": "color",
+            "id": "lookboo_color_1",
+            "label": "Color Text",
+            "default": "#2d2d2d",
+            "info": "Default Value: #2d2d2d"
+          },
+          {
+            "type": "image_picker",
+            "id": "lookbook-img-1",
+            "label": "Background Image"
+          },
+          {
+            "type": "text",
+            "id": "lookbook_text_title_1",
+            "label": "Text Title",
+            "default": "Title"
+          },
+          {
+            "type": "product",
+            "id": "lookbook_block3_pr_1_1",
+            "label": "Select Product 1"
+          },
+          {
+            "type": "text",
+            "id": "lookbook_block3_coord_pr_1_1",
+            "label": "Coordinates 1",
+            "default": "top: 17.8%; left: 63.5%;",
+            "info": "top: 17.8%; left: 63.5%;"
+          },
+          {
+            "type": "select",
+            "id": "lookbook_block3_tool_pr1_1",
+            "options": [
+              {
+                "value": "left",
+                "label": "Left"
+              },
+              {
+                "value": "right",
+                "label": "Right"
+              }
+            ],
+        	"default": "left",
+            "label": "Show Tool From"
+          },
+          {
+            "type": "product",
+            "id": "lookbook_block3_pr_1_2",
+            "label": "Select Product 2"
+          },
+          {
+            "type": "text",
+            "id": "lookbook_block3_coord_pr_1_2",
+            "label": "Coordinates 2",
+            "default": "top: 17.8%; left: 63.5%;",
+            "info": "top: 17.8%; left: 63.5%;"
+          },
+          {
+            "type": "select",
+            "id": "lookbook_block3_tool_pr1_2",
+            "options": [
+              {
+                "value": "left",
+                "label": "Left"
+              },
+              {
+                "value": "right",
+                "label": "Right"
+              }
+            ],
+        	"default": "left",
+            "label": "Show Tool From"
+          },
+          {
+            "type": "product",
+            "id": "lookbook_block3_pr_1_3",
+            "label": "Select Product 3"
+          },
+          {
+            "type": "text",
+            "id": "lookbook_block3_coord_pr_1_3",
+            "label": "Coordinates 3",
+            "default": "top: 17.8%; left: 63.5%;",
+            "info": "top: 17.8%; left: 63.5%;"
+          },
+          {
+            "type": "select",
+            "id": "lookbook_block3_tool_pr1_3",
+            "options": [
+              {
+                "value": "left",
+                "label": "Left"
+              },
+              {
+                "value": "right",
+                "label": "Right"
+              }
+            ],
+        	"default": "left",
+            "label": "Show Tool From"
+          },
+          {
+            "type": "product",
+            "id": "lookbook_block3_pr_1_4",
+            "label": "Select Product 4"
+          },
+          {
+            "type": "text",
+            "id": "lookbook_block3_coord_pr_1_4",
+            "label": "Coordinates 4",
+            "default": "top: 17.8%; left: 63.5%;",
+            "info": "top: 17.8%; left: 63.5%;"
+          },
+          {
+            "type": "select",
+            "id": "lookbook_block3_tool_pr1_4",
+            "options": [
+              {
+                "value": "left",
+                "label": "Left"
+              },
+              {
+                "value": "right",
+                "label": "Right"
+              }
+            ],
+        	"default": "left",
+            "label": "Show Tool From"
+          }
+         ]
+      }
+	],
+    "presets": [
+        {
+          "name": "Lookbook",
+          "category": "Image",
+          "blocks": [
+            {
+              "type": "block"
+            }
+          ]
+        }
+  	]
+ }
+{% endschema %}
+
+{% stylesheet %}
+
+{% endstylesheet %}
+
+{% javascript %}
+
+{% endjavascript %}

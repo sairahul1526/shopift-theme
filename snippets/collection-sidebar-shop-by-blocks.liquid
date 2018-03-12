@@ -1,0 +1,202 @@
+{% comment %}
+Refined tags
+{% endcomment %}
+{% if current_tags == blank %}
+{% assign has_refined = false %}
+{% else %}
+{% assign has_refined = true %}
+{% endif %}
+
+
+<div class="sidebar-block">
+  {% if enable_shop_by_tags_1 %}
+  <div class="sidebar-custom sidebar-tag color">
+    {% assign tags = shop_by_tags_1_list_tags | split: ',' %}
+    <div class="title">
+      <h3>
+        <span>{{ shop_by_tags_1_title }}</span>
+        <span class="novetty_caret"><i class="fa fa-caret-down" aria-hidden="true"></i></span>
+      </h3>
+    </div>
+    <div class="content">
+      <ul class="widget-content">
+        {% if section.settings.shop_by_color_text_1 != blank %}
+        {% assign tag = section.settings.shop_by_color_text_1|strip %} 
+        {% if collection.tags contains tag %}
+        <li class="col-xs-6">
+          {% assign tag_value = tag | handleize %}
+          <input type="checkbox" value="{{ tag_value }}" {% if current_tags contains tag %}checked{% endif %}/>
+          <a href="javascript:void(0)"  {% if current_tags contains tag %} class="active" {% endif %} title="{{tag}}">
+            {{ tag_value }}<span class="count">({{ collection.all_products_count }})</span>
+          </a>
+        </li>
+        {% endif %}
+        {% endif %}
+        {% if section.settings.shop_by_color_text_2 != blank %}
+        {% assign tag = section.settings.shop_by_color_text_2|strip %} 
+        {% if collection.tags contains tag %}
+        <li class="col-xs-6">
+          {% assign tag_value = tag | handleize %}
+          <input type="checkbox" value="{{ tag_value }}" {% if current_tags contains tag %}checked{% endif %}/>
+          <a href="javascript:void(0)"  {% if current_tags contains tag %} class="active" {% endif %} title="{{tag}}">
+            {{ tag_value }}<span class="count">({{ collection.all_products_count }})</span>
+          </a>
+        </li>
+        {% endif %}
+        {% endif %}
+        {% if section.settings.shop_by_color_text_3 != blank %}
+        {% assign tag = section.settings.shop_by_color_text_3|strip %} 
+        {% if collection.tags contains tag %}
+        <li class="col-xs-6">
+          {% assign tag_value = tag | handleize %}
+          <input type="checkbox" value="{{ tag_value }}" {% if current_tags contains tag %}checked{% endif %}/>
+          <a href="javascript:void(0)"  {% if current_tags contains tag %} class="active" {% endif %} title="{{tag}}">
+            {{ tag_value }}<span class="count">({{ collection.all_products_count }})</span>
+          </a>
+        </li>
+        {% endif %}
+        {% endif %}
+        {% if section.settings.shop_by_color_text_4 != blank %}
+        {% assign tag = section.settings.shop_by_color_text_4|strip %} 
+        {% if collection.tags contains tag %}
+        <li class="col-xs-6">
+          {% assign tag_value = tag | handleize %}
+          <input type="checkbox" value="{{ tag_value }}" {% if current_tags contains tag %}checked{% endif %}/>
+          <a href="javascript:void(0)"  {% if current_tags contains tag %} class="active" {% endif %} title="{{tag}}">
+            {{ tag_value }}<span class="count">({{ collection.all_products_count }})</span>
+          </a>
+        </li>
+        {% endif %}
+        {% endif %}
+        {% if section.settings.shop_by_color_text_5 != blank %}
+        {% assign tag = section.settings.shop_by_color_text_5|strip %} 
+        {% if collection.tags contains tag %}
+        <li class="col-xs-6">
+          {% assign tag_value = tag | handleize %}
+          <input type="checkbox" value="{{ tag_value }}" {% if current_tags contains tag %}checked{% endif %}/>
+          <a href="javascript:void(0)"  {% if current_tags contains tag %} class="active" {% endif %} title="{{tag}}">
+            {{ tag_value }}<span class="count">({{ collection.all_products_count }})</span>
+          </a>
+        </li>
+        {% endif %}
+        {% endif %}
+        {% if section.settings.shop_by_color_text_6 != blank %}
+        {% assign tag = section.settings.shop_by_color_text_6|strip %} 
+        {% if collection.tags contains tag %}
+        <li class="col-xs-6">
+          {% assign tag_value = tag | handleize %}
+          <input type="checkbox" value="{{ tag_value }}" {% if current_tags contains tag %}checked{% endif %}/>
+          <a href="javascript:void(0)"  {% if current_tags contains tag %} class="active" {% endif %} title="{{tag}}">
+            {{ tag_value }}<span class="count">({{ collection.all_products_count }})</span>
+          </a>
+        </li>
+        {% endif %}
+        {% endif %}
+        {% if section.settings.shop_by_color_text_7 != blank %}
+        {% assign tag = section.settings.shop_by_color_text_7|strip %} 
+        {% if collection.tags contains tag %}
+        <li class="col-xs-6">
+          {% assign tag_value = tag | handleize %}
+          <input type="checkbox" value="{{ tag_value }}" {% if current_tags contains tag %}checked{% endif %}/>
+          <a href="javascript:void(0)"  {% if current_tags contains tag %} class="active" {% endif %} title="{{tag}}">
+            {{ tag_value }}<span class="count">({{ collection.all_products_count }})</span>
+          </a>
+        </li>
+        {% endif %}
+        {% endif %}   
+        {% if section.settings.shop_by_color_text_8 != blank %}
+        {% assign tag = section.settings.shop_by_color_text_8|strip %} 
+        {% if collection.tags contains tag %}
+        <li class="col-xs-6">
+          {% assign tag_value = tag | handleize %}
+          <input type="checkbox" value="{{ tag_value }}" {% if current_tags contains tag %}checked{% endif %}/>
+          <a href="javascript:void(0)"  {% if current_tags contains tag %} class="active" {% endif %} title="{{tag}}">
+            {{ tag_value }}<span class="count">({{ collection.all_products_count }})</span>
+          </a>
+        </li>
+        {% endif %}
+        {% endif %}   
+        {% if section.settings.shop_by_color_text_9 != blank %}
+        {% assign tag = section.settings.shop_by_color_text_9|strip %} 
+        {% if collection.tags contains tag %}
+        <li class="col-xs-6">
+          {% assign tag_value = tag | handleize %}
+          <input type="checkbox" value="{{ tag_value }}" {% if current_tags contains tag %}checked{% endif %}/>
+          <a href="javascript:void(0)"  {% if current_tags contains tag %} class="active" {% endif %} title="{{tag}}">
+            {{ tag_value }}<span class="count">({{ collection.all_products_count }})</span>
+          </a>
+        </li>
+        {% endif %}
+        {% endif %}
+        {% if section.settings.shop_by_color_text_10 != blank %}
+        {% assign tag = section.settings.shop_by_color_text_10|strip %} 
+        {% if collection.tags contains tag %}
+        <li class="col-xs-6">
+          {% assign tag_value = tag | handleize %}
+          <input type="checkbox" value="{{ tag_value }}" {% if current_tags contains tag %}checked{% endif %}/>
+          <a href="javascript:void(0)"  {% if current_tags contains tag %} class="active" {% endif %} title="{{tag}}">
+            {{ tag_value }}<span class="count">({{ collection.all_products_count }})</span>
+          </a>
+        </li>
+        {% endif %}
+        {% endif %}
+
+      </ul>
+    </div>
+  </div>
+  {% endif %}
+
+  {% if enable_shop_by_tags_2 %}
+  <div class="sidebar-custom sidebar-tag size">
+    {% assign tags = shop_by_tags_2_list_tags | split: ',' %}
+    <div class="title">
+      <h3>
+        <span>{{ shop_by_tags_2_title }}</span>
+        <span class="novetty_caret"><i class="fa fa-caret-down" aria-hidden="true"></i></span>
+      </h3>
+    </div>
+    <div class="content">
+      <ul class="widget-content">
+        {% for t in tags %}
+        {% assign tag = t | strip %}
+        {% assign tag_value = tag | handleize %}
+        {% if current_tags contains tag %}
+        <li><input type="checkbox" value="{{ tag_value }}" checked/><label>{{tag}}</label><span class="count">({{ collection.all_products_count }})</span></li>
+        {% elsif collection.tags contains tag %}
+        <li><input type="checkbox" value="{{ tag_value }}"/><label>{{tag}}</label><span class="count">({{ collection.all_products_count }})</span></li>
+        {% endif %}
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+  {% endif %}
+
+  {% if enable_shop_by_tags_3 %}
+  <div class="sidebar-custom sidebar-tag">
+    {% assign tags = shop_by_tags_3_list_tags | split: ',' %}
+    <div class="title">
+      <h3>
+        <span>{{ shop_by_tags_3_title }}</span>
+        <span class="novetty_caret"><i class="fa fa-caret-down" aria-hidden="true"></i></span>
+      </h3>
+    </div>
+    <div class="content">
+      <ul class="widget-content">
+        {% for t in tags %}
+        {% assign tag = t | strip %}
+        {% assign tag_value = tag | handleize %}
+        
+        
+        
+        {% if current_tags contains tag %}                
+        	<li><input type="checkbox" value="{{ tag_value }}" checked/><label>{{tag}}</label><span class="count"></span></li>        
+        {% elsif collection.tags contains tag %}        
+       		<li><input type="checkbox" value="{{ tag_value }}"/><label>{{tag}}</label><span class="count"></span></li>                        
+        {% endif %}
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+  {% endif %}
+
+</div>

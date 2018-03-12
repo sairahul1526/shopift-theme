@@ -1,0 +1,229 @@
+
+<div class="home-product-loadmore" style=" margin:{{section.settings.loadmore_margin}}">
+  {% if section.settings.enable_full_width_load %}
+  <div class="">
+    {% else %}
+    <div class="container">
+      {% endif  %}
+
+      {% if section.settings.tabs_title_block != blank %}
+      <div class="block-title"><h2>
+        {% if settings.enable_multilang %}
+        <span class="lang1">{{ section.settings.tabs_title_block | split: '|' | first }}</span>
+        <span class="lang2">{{ section.settings.tabs_title_block | split: '|' | last }}</span>
+        {% else %}
+        <span>{{ section.settings.tabs_title_block | split: '|' | first }}</span>
+        {% endif %}
+        </h2></div>
+      {% endif %}
+
+      <div class="product-loadmore">
+        {% assign tabnew_collection = section.settings.tabnew_collection %}
+
+        <div class="container_custom">
+
+          <div class="load-product">
+            <div class="products-grid">
+              {% for product in collections[tabnew_collection].products limit:section.settings.product_list_limit_all %}
+              {% assign product_limitation = 0 %}
+              {% if section.settings.display_infinite_scrolling_homepage %}
+              {% assign product_limitation = section.settings.product_list_limit | plus: 0 %}
+              {% assign productIndex = forloop.index |minus:1 | modulo: product_limitation %}
+              {% else %}
+              {% assign productIndex = forloop.index |minus:1 %}
+              {% endif %}
+              {% assign infinite_scrolling_homepage = section.settings.display_infinite_scrolling_homepage %}
+
+              {% include 'load-more-product-item' %}	  
+              {% else %}
+              {% for i in (1..10) %}
+              <div class="grids-item grid__item {{ grid_item_width }} " style="width:20%;padding:0 5px;float:left">
+                <div class="grid-item grid-view-item">
+                  <a href="#" class="grid-view-item__link">
+                    {% if product.title %}
+                    {%- assign compare_at_price = product.compare_at_price -%}
+                    {%- assign price = product.price -%}
+                    {%- assign price_varies = product.price_varies -%}
+                    {%- assign available = product.available -%}
+                    {% else %}
+                    {%- assign compare_at_price = 1999 -%}
+                    {%- assign price = 1999 -%}
+                    {%- assign price_varies = false -%}
+                    {%- assign available = true -%}
+                    {% endif %}
+                    <div class="grid-view-item__image">
+                      {% capture current %}{% cycle 1, 2, 3, 4, 5, 6 %}{% endcapture %}
+                      {{ 'product-' | append: current | placeholder_svg_tag: 'placeholder-svg' }}
+                    </div>
+                    <div class="h4 grid-view-item__title" {% if settings.enable_multilang %}data-translate="homepage.onboarding.product_title"{%endif%}>{{ 'homepage.onboarding.product_title' | t }}</div>
+                    <div class="grid-view-item__meta">
+                      <s class="product-price__price">{{ compare_at_price | money }}</s>
+                    </div>
+                  </a>
+                </div>
+              </div>
+              {% endfor %}
+
+              {% endfor %}
+            </div> 
+            {% if tabnew_collection =='none' %}
+
+            {% else %}
+            {% assign products_to_show = section.settings.product_list_limit %} 
+            {% if section.settings.display_infinite_scrolling_homepage %}
+
+            <div class="load-more">
+              <a href="javascript:void(0)" title="">
+                {% if settings.enable_multilang %}
+                <span class="lang1">{{ section.settings.product_list_infinite_scrolling_text | split: '|' | first }}</span>
+                <span class="lang2">{{ section.settings.product_list_infinite_scrolling_text | split: '|' | last }}</span>
+                {% else %}
+                {{ section.settings.product_list_infinite_scrolling_text | split: '|' | first }}
+                {% endif %}
+              </a>  
+            </div>
+            {% endif %}
+            {% assign number_colum = section.settings.collection_results_per_row1 %}
+            <script>
+              $(document).ready(function() {
+
+                var count_a = jQuery(".product-loadmore" ).width();
+                var width_item = count_a / {{ number_colum }};
+                jQuery(".product-loadmore .grid-item ").css("width", width_item);
+              });
+              var productsToShow = {{products_to_show}};
+              var totalProducts = {{collections[tabnew_collection].all_products_count}};
+              jQuery(".load-more a").click(function() {
+                if (jQuery('.load-product .products-grid .grid-item:hidden').length > 0) {
+                  jQuery('.load-product .products-grid .grid-item:hidden:lt('+productsToShow+')').each(function() {
+                    jQuery(this).show();
+                    {% if settings.product_item_no_hover %}
+                    jQuery(this).find('img').css('height','auto');              
+                    {% endif %}
+                    if (window.product_image_resize) {
+                      jQuery(this).find('img').fakecrop({ 
+                        fill: window.images_size.is_crop,
+                        widthSelector: ".load-product .products-grid .grid-item:first .product-image",
+                        ratioWrapper: window.images_size
+                      });
+                    }
+                  });        
+
+                  jQuery("window" ).scroll();
+                  if (jQuery('.load-product .products-grid .grid-item:hidden').length == 0) {
+                    //no more products
+                    jQuery(".load-product .load-more a").text("{{settings.product_list_no_more_product_text}}").addClass('disabled');
+                                                              }
+                                                              }
+                                                              });
+            </script>
+
+            {% endif %}
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+
+  </div>
+
+
+{% schema %}
+  {
+  	  "name": "Product Grid",
+      "class": "index-section",
+      "settings": [
+	
+      {
+        "type": "text",
+        "id": "loadmore_margin",
+        "label": "Margin",
+        "default": "0px 0px 0px 0px"
+      },
+
+          {
+            "type": "checkbox",
+            "id": "enable_full_width_load",
+            "label": "Enable Full Width"
+          },
+          {
+            "type": "text",
+            "id": "tabs_title_block",
+            "label": "Heading",
+            "default": "Product Grid"
+          },
+          {
+            "type": "text",
+            "id": "product_list_limit_all",
+            "label": "Number of new products to show",
+            "default": "30"
+          },
+          {
+            "type": "checkbox",
+            "id": "display_infinite_scrolling_homepage",
+            "label": " Show Button"
+          },
+          {
+            "type": "text",
+            "id": "product_list_infinite_scrolling_text",
+            "label": "Button label ",
+            "default": "Show More"
+          },
+          {
+            "type": "text",
+            "id": "product_list_no_more_product_text",
+            "label": "All products loaded Label",
+            "default": "All products loaded."
+          },
+          {
+            "type": "text",
+            "id": "product_list_limit",
+            "label": "Number of products to show at one time",
+            "default": "10"
+          },
+          {
+            "type": "select",
+            "id": "collection_results_per_row1",
+            "label": "Products per row",
+            "options": [
+              {
+                "value": "3",
+                "label": "3"
+              },
+              {
+                "value": "4",
+                "label": "4"
+              },
+              {
+                "value": "5",
+                "label": "5"
+              },
+              {
+                "value": "6",
+                "label": "6"
+              }
+            ],
+            "default": "5"
+          },
+          {
+            "type": "collection",
+            "id": "tabnew_collection",
+            "label": "Collection"
+          }
+
+	],
+    "presets": [
+    {
+      "name": "Product Grid",
+      "category": "Collection"
+    }
+  ]
+  }
+{% endschema %}
+
+{% stylesheet %}
+{% endstylesheet %}
+
+{% javascript %}
+{% endjavascript %}

@@ -1,0 +1,124 @@
+<!doctype html>
+<!--[if lt IE 7]><html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if IE 7]><html class="no-js lt-ie9 lt-ie8" lang="en"> <![endif]-->
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en"> <![endif]-->
+<!--[if IE 9 ]><html class="ie9 no-js"> <![endif]-->
+<!--[if (gt IE 9)|!(IE)]><!--> <html class="no-js"> <!--<![endif]-->
+<head>
+
+  <!-- Basic page needs ================================================== -->
+  <meta charset="utf-8">
+
+  <!-- Title and description ================================================== -->
+  <title>
+    {{ page_title }}{% if current_tags %} &ndash; tagged "{{ current_tags | join: ', ' }}"{% endif %}{% if current_page != 1 %} &ndash; Page {{ current_page }}{% endif %}{% unless page_title contains shop.name %} &ndash; {{ shop.name }}{% endunless %}
+  </title>
+
+  {% if page_description %}
+  <meta name="description" content="{{ page_description | escape }}">
+  {% endif %}
+
+
+  <!-- Helpers ================================================== -->
+  <link rel="canonical" href="{{ canonical_url }}">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+
+  <!-- Favicon -->
+  {% if settings.favicon != blank %}
+  <link rel="shortcut icon" href="{{ settings.favicon | img_url: '32x32' }}" type="image/png">
+  {% endif %}
+  {% include 'font-family' %}
+
+
+  <!-- Styles -->
+  {% if settings.layout_body =='body_ltr'%} 
+  {{ 'bootstrap.min.css' | asset_url | stylesheet_tag }}
+  {% elsif settings.layout_body == 'body_rtl' %}
+  {{ 'bootstrap.min.css' | asset_url | stylesheet_tag }}
+  {{ 'bootstrap-rtl.min.css' | asset_url | stylesheet_tag }}
+  {{ 'styles-rtl.css' | asset_url | stylesheet_tag }}
+  {% endif %}
+  <!-- Theme base and media queries -->
+  {{ 'owl.theme.css' | asset_url | stylesheet_tag }}
+  {{ 'selectize.bootstrap3.css' | asset_url | stylesheet_tag }}
+  {{ 'jquery.fancybox.css' | asset_url | stylesheet_tag }}
+  {{ 'styles.css' | asset_url | stylesheet_tag }}
+  {{ 'styles-setting.css' | asset_url | stylesheet_tag }}
+  {{ 'responsive.css' | asset_url | stylesheet_tag }}
+  {{ 'cleversoft_font.css' | asset_url | stylesheet_tag }}
+  {% if settings.display_csseditor %}
+  {{ 'bannereditor.css' | asset_url | stylesheet_tag }}
+  {% endif %}
+  {% if  settings.custom_preset_main == 'white' %}
+  {{ 'white.css' | asset_url | stylesheet_tag }}
+  {% endif %}
+  {% if  settings.custom_preset_main == 'dark' %}
+  {{ 'dark.css' | asset_url | stylesheet_tag }}
+  {% endif %}
+
+
+  <!-- Scripts -->
+  {% include 'head_scripts' %}
+
+  <!-- Header hook for plugins ================================================== -->
+  {{ content_for_header }}
+
+  <!--[if lt IE 9]>
+{{ '//html5shiv.googlecode.com/svn/trunk/html5.js' | script_tag }}
+<![endif]-->
+
+  {% comment %}
+  If you store has customers disabled, you can remove the following JS file
+  {% endcomment %}
+  {% if template contains 'customers' %}
+  {{ 'shopify_common.js' | shopify_asset_url | script_tag }}
+  {{ 'customer_area.js'  | shopify_asset_url | script_tag }}
+  {% endif %}
+
+</head>
+
+{% comment %}
+Add the page template as a class for easy page or template specific styling.
+{% endcomment %}
+<body id="{{ page_title | handle }}" class=" {% if customer %}customer-logged-in {% endif %}
+                                            {% if settings.layout_body =='body_ltr'%} ltr 
+                                            {% elsif settings.layout_body == 'body_rtl' %} rtl
+                                            {% endif %}
+                                            template-{{ template | replace: '.', ' ' | truncatewords: 1, '' | handle }}" >
+  <div id="loading"></div>
+  <div class="wrapper-container">
+    {% section 'header' %}
+    <div class="product-quickview"></div>
+    {% include 'breadcrumb' %}
+    <main class="main-content" >
+      {% if settings.header_layout == "header-vertical-left" %}
+      {% include 'header-search-cart' %}
+      {% endif %}
+      {% if template == "index" %}
+      {% if settings.slideshow_enable %}
+      <div id="block-top-container" class="">
+        <div class="row">
+          <div class="col-xs-12 col-sm-12 col-md-12 main-slider-container">
+            {% include 'home-revolution' %}
+          </div>
+        </div>
+      </div>
+      {% endif %}
+      {% endif %}
+      <div class="container main_container">
+        {{ content_for_layout }}
+      </div>
+    </main>
+    {% section 'footer' %}
+
+    {% include 'quick-view-product' %}
+
+    {% include 'popup-newsletter' %}
+    <div id="back-top" style="display: none;"><a class="" href="#top"><i class="cs-font clever-icon-up"></i></a></div>
+  </div>
+  {% include 'canvas-menu' %}
+  {% include 'search-autocomplete' %}
+  {% include 'footer_scripts' %}
+
+</body>
+</html>

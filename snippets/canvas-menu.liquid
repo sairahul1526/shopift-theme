@@ -1,0 +1,254 @@
+<div class="unero-off-canvas-layer"></div>
+<section id="offcanvas" class="megamenu-canvas ">
+  <div id="off-canvas-button">
+    <span class="off-canvas-nav"><i class="cs-font clever-icon-close"></i></span>			
+  </div>
+  {% include 'new-currency-top' %}
+  <nav class="offcanvas-mainnav container">
+    <ul class="nav navbar-nav megamenu">
+      {% for link in linklists.main-menu.links %}
+      {% assign hasMega = false %}
+      {% assign intMega = 0 %}
+      {% assign link_title = link.title | downcase %}
+      {% assign fullwidth = '' %}
+      {% for i in (1..5) %}
+      {% capture apmegamenu %}apmenuitem_enable_{{ i }}{% endcapture %}
+      {% capture apmegamenu_title %}apmenuitem_title_{{ i }}{% endcapture %}
+      {% assign megamenu_title = settings[apmegamenu_title] | strip | downcase %}
+      {% if settings[apmegamenu] %}
+      {% if link_title == megamenu_title %}
+      {% assign hasMega = true %}
+      {% assign intMega = i %}
+      {% endif %}
+      {% endif %}
+      {% endfor %}
+      {% if hasMega %}
+      {% capture apfullwidth %}apmenuitem_fullwidth_{{ intMega }}{% endcapture %}
+      {% if settings[apfullwidth] %}
+      {% assign fullwidth = 'full-width' %}
+      {% else %}
+      {% assign fullwidth = 'aligned-center' %}
+      {% endif %}
+      <li class="parent dropdown {{ fullwidth }} {% if link.active %}active{% endif %}">
+        <i class="cs-font clever-icon-plus"></i>
+        <a class="dropdown-toggle has-category" href="{{ link.url }}" title="{{ link.title }}">
+          <span class="menu-title">
+            {% if settings.enable_multilang %}
+            <span class="lang1">{{ link.title | split: '|' | first }}</span>
+            <span class="lang2">{{ link.title | split: '|' | last }}</span>
+            {% else %}
+            {{ link.title | split: '|' | first }}
+            {% endif %}
+          </span>
+        </a>
+        {% assign mega_link_handle = link.handle %}
+
+      </li>
+      {% else %}
+      {% if linklists[link.handle] != empty %}
+      <li class="parent dropdown {% if link.active %}active{% endif %}">
+        <h3>
+          <i class="cs-font clever-icon-plus"></i>
+          <a class="dropdown-toggle has-category" href="{{ link.url }}" title="{{ link.title }}">
+            <span class="">
+              {% if settings.enable_multilang %}
+              <span class="lang1">{{ link.title | split: '|' | first }}</span>
+              <span class="lang2">{{ link.title | split: '|' | last }}</span>
+              {% else %}
+              {{ link.title | split: '|' | first }}
+              {% endif %}
+            </span>
+          </a>
+        </h3>
+        <ul class="level-1">
+          {% for child_link in linklists[link.handle].links %}
+          {% if linklists[child_link.handle] != empty %}
+          <li class="parent dropdown-submenu {% if child_link.active %}active{% endif %}">
+            <h3><i class="cs-font clever-icon-plus"></i>
+              <a class="dropdown-toggle" href="{{ child_link.url }}" title="{{ child_link.title }}">
+                <span class="">
+                  {% if settings.enable_multilang %}
+                  <span class="lang1">{{ child_link.title | split: '|' | first }}</span>
+                  <span class="lang2">{{ child_link.title | split: '|' | last }}</span>
+                  {% else %}
+                  {{ child_link.title | split: '|' | first }}
+                  {% endif %}
+                </span>
+              </a>
+            </h3>
+            <ul class="level-2">
+              {% for child_link1 in linklists[child_link.handle].links %}
+              {% if linklists[child_link1.handle] != empty %}
+              <li class="parent dropdown-submenu {% if child_link1.active %}active{% endif %}">
+                <h3><i class="cs-font clever-icon-plus"></i>
+                  <a class="dropdown-toggle" href="{{ child_link1.url }}" title="{{ child_link1.title }}">
+                    <span class="">
+                      {% if settings.enable_multilang %}
+                      <span class="lang1">{{ child_link1.title | split: '|' | first }}</span>
+                      <span class="lang2">{{ child_link1.title | split: '|' | last }}</span>
+                      {% else %}
+                      {{ child_link1.title | split: '|' | first }}
+                      {% endif %}
+                    </span>
+                  </a>
+                </h3>
+                <ul class="level-3">
+                  {% for child_link2 in linklists[child_link1.handle].links %}
+                  <li class="{% if child_link2.active %}active{% endif %}">
+                    <a class="" href="{{ child_link2.url }}" title="{{ child_link2.title }}">
+                      <span class="">
+                        {% if settings.enable_multilang %}
+                        <span class="lang1">{{ child_link2.title | split: '|' | first }}</span>
+                        <span class="lang2">{{ child_link2.title | split: '|' | last }}</span>
+                        {% else %}
+                        {{ child_link2.title | split: '|' | first }}
+                        {% endif %}
+                      </span>
+                    </a>
+                  </li>
+                  {% endfor %}
+                </ul>
+              </li>
+              {% else %}
+              <li class="{% if child_link1.active %}active{% endif %}">
+                <a class="" href="{{ child_link1.url }}" title="{{ child_link1.title }}">
+                  <span class="">
+                    {% if settings.enable_multilang %}
+                    <span class="lang1">{{ child_link1.title | split: '|' | first }}</span>
+                    <span class="lang2">{{ child_link1.title | split: '|' | last }}</span>
+                    {% else %}
+                    {{ child_link1.title | split: '|' | first }}
+                    {% endif %}
+                  </span>
+                </a>
+              </li>
+              {% endif %}
+              {% endfor %}
+            </ul>
+          </li>
+          {% else %}
+          <li class="{% if child_link.active %}active{% endif %}">
+            <a class="" href="{{ child_link.url }}" title="{{ child_link.title }}">
+              <span class="">
+                {% if settings.enable_multilang %}
+                <span class="lang1">{{ child_link.title | split: '|' | first }}</span>
+                <span class="lang2">{{ child_link.title | split: '|' | last }}</span>
+                {% else %}
+                {{ child_link.title | split: '|' | first }}
+                {% endif %}
+              </span>
+            </a>
+          </li>
+          {% endif %}
+          {% endfor %}
+        </ul>
+
+      </li>
+      {% else %}
+      <li class="{% if link.active %}active{% endif %}">
+        <a class="" href="{{ link.url }}" title="{{ link.title }}" target="_self">
+          <span class="">
+            {% if settings.enable_multilang %}
+            <span class="lang1">{{ link.title | split: '|' | first }}</span>
+            <span class="lang2">{{ link.title | split: '|' | last }}</span>
+            {% else %}
+            {{ link.title | split: '|' | first }}
+            {% endif %}
+          </span>
+        </a>
+      </li>
+      {% endif %}
+      {% endif %}
+      {% endfor %}
+      {% if shop.customer_accounts_enabled %}
+      {% if customer %}
+
+      {% if settings.enable_wishlist %}
+      <li class="wishlist-menu">
+        <a href="/pages/wish-list" title="My Wishlist" {% if settings.enable_multilang %}data-translate="header.custom_link_wishlist"{%endif%}>{{ 'header.custom_link_wishlist' | t }}</a>
+      </li>
+      {% endif %}
+      <li><a href="/checkout"><span {% if settings.enable_multilang %}data-translate="header.custom_link_checkout"{%endif%}>{{ 'header.custom_link_checkout' | t }}</span></a></li>
+      <li>
+        <a href="/account/logout" {% if settings.enable_multilang %}data-translate="header.custom_link_logout"{%endif%}>{{ 'header.custom_link_logout' | t }}</a>
+
+        <a href="/account" {% if settings.enable_multilang %}data-translate="header.custom_link_account"{%endif%}>{{ 'header.custom_link_account' | t }}</a>
+      </li>
+    </ul>
+    {% else %}
+      {% if settings.enable_wishlist %}
+      <li class="wishlist-menu">
+        <a href="/pages/wish-list" title="My Wishlist" {% if settings.enable_multilang %}data-translate="header.custom_link_wishlist"{%endif%}>{{ 'header.custom_link_wishlist' | t }}</a>
+      </li>
+      {% endif %}
+      <li><a href="/checkout"><span {% if settings.enable_multilang %}data-translate="header.custom_link_checkout"{%endif%}>{{ 'header.custom_link_checkout' | t }}</span></a></li>
+      <li>
+        <a href="/account/login" {% if settings.enable_multilang %}data-translate="header.custom_link_login"{%endif%}>{{ 'header.custom_link_login' | t }}</a>
+      </li>
+      <li>
+        {% if shop.customer_accounts_optional %}
+        <a href="/account/register" {% if settings.enable_multilang %}data-translate="header.custom_link_create_account"{%endif%}>{{ 'header.custom_link_create_account' | t }}</a>
+        {% endif %}
+      </li>
+
+      {% endif %}
+      {% endif %}
+  </nav>
+</section>
+<script>
+  jQuery('.btn-menu-canvas').click(function(){
+    if(jQuery('#offcanvas').hasClass('active')){
+      jQuery('body').removeClass('off-canvas-active');
+      jQuery('#offcanvas').removeClass('active');
+      jQuery('.wrapper-container').removeClass('offcanvas-push');
+    }else{ 
+      jQuery('body').addClass('off-canvas-active');
+      jQuery('#offcanvas').addClass('active');
+      jQuery('.wrapper-container').addClass('offcanvas-push');
+    }  
+  });
+  jQuery('#off-canvas-button').click(function(){
+    jQuery('#offcanvas').removeClass('active');
+    jQuery('.wrapper-container').removeClass('offcanvas-push');
+  });
+  jQuery('#off-canvas-button').click(function(){
+    jQuery('body').removeClass('off-canvas-active');
+  });
+  jQuery(document).mouseup(function (e){
+
+    var container = jQuery("body #offcanvas");
+
+    if (!container.is(e.target) // if the target of the click isn't the container...
+        && container.has(e.target).length === 0) // ... nor a descendant of the container
+    {
+      jQuery('body').removeClass('off-canvas-active');
+      jQuery('body #offcanvas').removeClass('active');
+      jQuery('body .wrapper-container').removeClass('offcanvas-push');
+    }
+
+  });
+
+  jQuery("#offcanvas .navbar-nav ul").hide();
+  jQuery("#offcanvas .navbar-nav li h3 i").addClass("accordion-show");
+
+  jQuery("#offcanvas .navbar-nav li h3 i").click(function(){
+    if(jQuery(this).parent().next().is(":visible")){
+      jQuery(this).addClass("accordion-show");
+    }else{
+      jQuery(this).removeClass("accordion-show");
+    }
+    jQuery(this).parent().next().toggle(400);
+    if(jQuery(this).hasClass("clever-icon-plus")){
+      jQuery(this).removeClass("clever-icon-plus");
+      jQuery(this).addClass("clever-icon-minus");
+      jQuery(this).removeClass("icon_plus");
+
+    }else{
+      jQuery(this).removeClass("clever-icon-minus");
+      jQuery(this).addClass("clever-icon-plus");
+      jQuery(this).addClass("icon_plus");
+    }
+  });
+
+
+</script>

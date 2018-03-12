@@ -1,0 +1,9 @@
+{% case shortcode %}{% when 'name' %}
+{% if content contains 'title="' %}
+{% assign _content = content | split: 'title="' | last %}
+{{ _content | split: '"]' | first }}
+{% else %}empty{% endif %}
+{% else %}
+{% assign _content = content | split: '"]' | last %}
+{{ _content | split: '[/tab]' | first }}
+{% endcase %}

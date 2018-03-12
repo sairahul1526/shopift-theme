@@ -1,0 +1,31 @@
+{% if settings.enable_wishlist %}
+  {% if customer %}
+    {% assign value = item.id %}
+    {% capture itemID %}{{ item.id }}{% endcapture %}
+    {% for tag in customer.tags %}
+      {% capture tagID %}{{ tag }}{% endcapture %}
+      {% if tagID contains itemID %}
+        {% capture value %}x{{ tagID }}{% endcapture %}
+      {% endif %}
+      {% if value.size == 0 %}{% assign value = itemID %}{% endif %}
+    {% endfor %}
+
+    {% unless value.size == 0 %}
+      {% capture check %}{{ value.size | minus:itemID.size | money_without_currency | times:100 | divided_by:2 }}{% endcapture %}
+      {% assign check = check | split:'.' %}
+      {% if check[1] contains "5" %}{% assign display = false %}{% else %}{% assign display = true %}{% endif %}
+    {% endunless %}
+
+    {% if display %}
+      {% form 'customer' %}
+        <input type="hidden" name="contact[email]" value="{{ customer.email }}"/>
+        <input type="hidden" name="contact[tags]" value="{{ value }}" />
+        <button class="wishlist">add to wish list</button>
+      {% endform %}
+    {% else %}
+  <a class="wishlist" href="/pages/wish-list" title="Already in your wishlist, Go to wishlist"><span class="icon"></span><span>Added to wishlist</span></a>
+    {% endif %}
+  {% else %}
+  <a class="wishlist" href="/account/login" title="Add to wishlist"><span class="icon"></span><span>Add to wishlist</span></a>
+  {% endif %}
+{% endif %}

@@ -1,0 +1,545 @@
+{% comment %}
+Comments will not appear right after they are submitted, either to be checked for spam
+or to await moderation. When a comment is submitted, the browser is redirected to a page
+that includes the new comment id in its URL.
+Example: http://shopname.myshopify.com/blogs/news/2022072-my-post?comment=3721372
+
+More information:
+- http://docs.shopify.com/themes/liquid-variables/comment
+{% endcomment %}
+
+{% comment %}
+We're going to reference the number of comments below, so let's hold it in a variable.
+{% endcomment %}
+{% assign number_of_comments = article.comments_count %}
+
+{% comment %}
+If a comment was just submitted and it has no blank fields, we have an extra comment to count.
+{% endcomment %}
+{% if comment and comment.created_at %}
+{% assign number_of_comments = article.comments_count | plus: 1 %}
+{% endif %}
+
+
+<!--<header class="page-header">
+{% if current_tags %}
+<h2>{{ blog.title | link_to: blog.url }} &raquo; {{ current_tags.first }}</h2>
+{% else %}
+<h2>{{ blog.title }}</h2>
+{% endif %}
+</header>-->
+
+  {% assign blog_display_newsletter = section.settings.blog_display_newsletter %}
+  {% assign blog_title_newsletter = section.settings.blog_title_newsletter %}
+  {% assign blog_newsletter_content = section.settings.blog_newsletter_content %}
+  {% assign blog_newsletter_go = section.settings.blog_newsletter_go %}
+  {% assign blog_sub_title_newsletter = section.settings.blog_sub_title_newsletter %}
+  {% assign blog_mailing_list_form_action = section.settings.blog_mailing_list_form_action %}
+<div class="row">
+  <div class="col-xs-12 col-sm-9 col-md-9 col-lg-9 blog-detail col-main">
+    <div class="image">
+      <a href="{{ article.url }}">
+        {{ article | img_url: '1024x' | img_tag: article.title }}
+      </a>
+    </div>
+    <div class="article-content">
+      <div class="date-author">
+        <div class="left-blog">
+          <span class="date-time">
+            {{ article.published_at | date: '%b %d, %Y' }}
+          </span>
+        </div>
+      </div>
+      <header class="page-header">
+        <h1>
+          {% if settings.enable_multilang %}
+          <span class="lang1">{{ article.title | split: '|' | first }}</span>
+          <span class="lang2">{{ article.title | split: '|' | last }}</span>
+          {% else %}
+          {{ article.title | split: '|' | first }}
+          {% endif %}
+        </h1>
+      </header>
+      <div class="rte">
+        {% if settings.enable_multilang %}
+        <div class="lang1">{{ article.content | split: '|' | first }}</div>
+        <div class="lang2">{{ article.content | split: '|' | last }}</div>
+        {% else %}
+        {{ article.content | split: '|' | first }}
+        {% endif %}
+      </div>
+
+
+      {% comment %}
+      Show off meta information like comments and tags.
+      {% endcomment %}
+      <ul class="user-tags tags-blog row">
+        <li class=" col-xs-12 col-sm-12 col-md-12">
+          {% for tag in article.tags %}
+          <a href="{{ blog.url }}/tagged/{{ tag | handle }}">{{ tag }}</a>
+          {% endfor %}
+        </li>
+      </ul>
+      <ul class="user-tags share-blog row">
+        <li class=" col-xs-12 col-sm-12 col-md-7">
+          <span class="blog_author">{{ article.author }}</span> - <span class="date-time-bottom">{{ article.published_at | date: '%b %d, %Y' }}</span>
+        </li>
+        <li class="share-link col-xs-12 col-sm-12 col-md-5">
+          {% capture share_url %}{{ shop.url }}{{ article.url }}{% endcapture %}
+          {% if settings.icon_isocal_1 != blank %}
+          <a href="https://www.facebook.com/sharer/sharer.php?u={{ share_url }}" target="_blank" class="facebook" title="Facebook"><i class='fa fa-facebook'></i></a>
+          {% endif %}
+          {% if settings.icon_isocal_2 != blank %}
+          <a href="//twitter.com/share?url={{ share_url }}&text={{ product.title }}" target="_blank" class="twitter" title="Twitter"><i class='fa fa-twitter'></i></a>
+          {% endif %}
+          {% if settings.icon_isocal_3 != blank %}
+          <a href="//pinterest.com/pin/create/button/?url={{ share_url }}" target="_blank" class="vimeo" title="Pinterest"><i class="fa fa-pinterest-p"></i></a>
+          {% endif %}
+          {% if settings.icon_isocal_4 != blank %}
+          <a href="//plus.google.com/share?url={{ share_url }}" target="_blank" class="google-plus" title="Google plus"><i class='fa fa-google-plus'></i></a>
+          {% endif %}
+        </li>
+      </ul>
+
+      {% comment %}
+      Addthis
+      {% endcomment %}	
+
+
+      {% comment %}
+      Create links to the next and previous articles, if available.
+      {% endcomment %}
+
+      {% if blog.next_article or blog.previous_article %}
+
+      {% comment %}
+      If you only have elements floated in a container, you can use the
+      .clearfix class to force the parent to maintain its structure.
+      {% endcomment %}
+      <div class="action-btn">
+        {% if blog.previous_article %}
+        <span class="left">{{ '&larr; Previous Post' | link_to: blog.previous_article }}</span>
+        {% endif %}
+        {% if blog.next_article %}
+        <span class="right">{{ 'Next Post &rarr;' | link_to: blog.next_article }}</span>
+        {% endif %}
+      </div>
+      {% endif %}
+
+      {% if blog.comments_enabled? %}
+
+      {% comment %}
+      Just like our blog.liquid page, define how many comments should be on each page.
+      {% endcomment %}
+
+      <h2 class="title-comment" {% if settings.enable_multilang %}data-translate="blog.title_comment"{%endif%}>{{'blog.title_comment' | t }}</h2>
+
+      {% paginate article.comments by 5 %}
+
+      {% comment %}
+      #comments is required, it is used as an anchor link by Shopify.
+      {% endcomment %}
+      <div id="comments">
+
+        {% if comment and comment.created_at %}
+        <p class="note form-success">
+          {% if blog.moderated? %}
+          <span {% if settings.enable_multilang %}data-translate="blog.comment_moderated"{%endif%}>
+            {{'blog.comment_moderated' | t }}
+          </span>
+          {% else %}
+          <span {% if settings.enable_multilang %}data-translate="blog.comment_successfully"{%endif%}>
+            {{'blog.comment_successfully' | t }}
+          </span>
+          {% endif %}
+        </p>
+        {% endif %}
+
+        {% if number_of_comments > 0 %}
+        <ul>
+          {% comment %}If a comment was just submitted with no blank field, let's show it.{% endcomment %}
+          {% if comment and comment.created_at %}
+          <li id="{{ comment.id }}" class="comment first{% if article.comments_count == 0 %} last{% endif %}">
+            {% include 'comment' %}
+          </li>
+          {% endif %}
+
+          {% comment %}
+          Showing the rest of the comments.
+          {% endcomment %}
+          {% for comment in article.comments %}
+          <li id="{{ comment.id }}" class="comment{% unless number_of_comments > article.comments_count %}{% if forloop.first %} first{% endif %}{% endunless %}{% if forloop.last %} last {% endif %}">
+            {% include 'comment' %}
+          </li>
+          {% endfor %}
+        </ul>
+
+        {% if paginate.pages > 1 %}
+        <div class="text-center">
+          {% include 'pagination' %}
+        </div>
+        {% endif %}
+        {% endif %}
+
+        {% comment %}
+        Comment submission form
+        {% endcomment %}
+
+        {% form article %}
+        {% comment %}
+        #add-comment-title is used simply as an anchor link
+        {% endcomment %}
+        {% include 'form-errors-custom' %}
+
+        <div class="message">
+          <textarea {% if form.errors contains "body" %} class="error"{% endif %} name="comment[body]" id="comment-body" placeholder="Messenger">{{ form.body }}</textarea>
+        </div>
+
+        <div class="comment-form">
+          <input {% if form.errors contains "author" %} class="error"{% endif %} type="text" name="comment[author]" id="comment-author" value="{{ form.author }}" placeholder="Your name">
+          <input {% if form.errors contains "email" %} class="error"{% endif %} type="email" name="comment[email]" id="comment-email" value="{{ form.email }}" placeholder="Your mail">
+        </div>
+
+        <p class="note">All blog comments are checked prior to publishing</p>
+        <input type="submit" class="btn-secondary harman_btn4" value="Post Comment">
+        {% if form.errors %}
+        <script>
+          window.location.hash = '#add-comment-title';
+        </script>
+        {% endif %}
+
+        {% if form.posted_successfully? %}
+        <script>
+          window.location.hash = '#comments';
+        </script>
+        {% endif %}
+        {% endform %}
+      </div>
+      {% endpaginate %}
+      {% endif %}
+    </div>
+  </div>
+  <div class="col-xs-12 col-sm-4 col-md-3 col-lg-3 sidebar">
+      {% if section.settings.display_blog_aboutme %}
+    <div class="widget-title">
+      <h3>
+        {% if settings.enable_multilang %}
+        <span class="lang1">{{ section.settings.blog_aboutme_title | split: '|' | first }}</span>
+        <span class="lang2">{{  section.settings.blog_aboutme_title | split: '|' | last }}</span>
+        {% else %}
+        {{  section.settings.blog_aboutme_title | split: '|' | first }}
+        {% endif %}
+      </h3>
+      <div class="aboutme-container">
+        <img class="" src="{{ section.settings.blog_image_aboutme | img_url: '1024x1024' }}">
+
+        <div class="aboutme-content">
+          {% if settings.enable_multilang %}
+          <span class="lang1">{{ section.settings.blog_aboutme_content | split: '|' | first }}</span>
+          <span class="lang2">{{  section.settings.blog_aboutme_content | split: '|' | last }}</span>
+          {% else %}
+          {{  section.settings.blog_aboutme_content | split: '|' | first }}
+          {% endif %}
+        </div>
+        <div class="aboutme-name">
+          {% if settings.enable_multilang %}
+          <span class="lang1">{{ section.settings.blog_aboutme_name | split: '|' | first }}</span>
+          <span class="lang2">{{  section.settings.blog_aboutme_name | split: '|' | last }}</span>
+          {% else %}
+          {{  section.settings.blog_aboutme_name | split: '|' | first }}
+          {% endif %}
+        </div>
+      </div>
+      </div>
+      {% endif %}
+
+      {% if section.settings.display_blog_follow_us %}
+      <div class="widget-title">
+        <h3>
+          {% if settings.enable_multilang %}
+          <span class="lang1">{{ section.settings.blog_follow_title | split: '|' | first }}</span>
+          <span class="lang2">{{  section.settings.blog_follow_title | split: '|' | last }}</span>
+          {% else %}
+          {{  section.settings.blog_follow_title | split: '|' | first }}
+          {% endif %}
+        </h3>
+        <div class="followus-container">
+          <div class="followus-content">
+            {% if section.settings.blog_follow_column_4_icon_1 != blank %}
+            <a href="{{ section.settings.blog_follow_column_4_icon_link_1 }}">
+              <i class="{{ section.settings.blog_follow_column_4_icon_1 }}"></i>
+            </a>
+            {% endif %}
+            {% if section.settings.blog_follow_column_4_icon_2 != blank %}
+            <a href="{{ section.settings.blog_follow_column_4_icon_link_2 }}">
+              <i class="{{ section.settings.blog_follow_column_4_icon_2 }}"></i>
+            </a>
+            {% endif %}
+            {% if section.settings.blog_follow_column_4_icon_3 != blank %}
+            <a href="{{ section.settings.blog_follow_column_4_icon_link_3 }}">
+              <i class="{{ section.settings.blog_follow_column_4_icon_3 }}"></i>
+            </a>
+            {% endif %}
+            {% if section.settings.blog_follow_column_4_icon_4 != blank %}
+            <a href="{{ section.settings.blog_follow_column_4_icon_link_4 }}">
+              <i class="{{ section.settings.blog_follow_column_4_icon_4 }}"></i>
+            </a>
+            {% endif %}
+            {% if section.settings.blog_follow_column_4_icon_5 != blank %}
+            <a href="{{ section.settings.blog_follow_column_4_icon_link_5 }}">
+              <i class="{{ section.settings.blog_follow_column_4_icon_5 }}"></i>
+            </a>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+      {% endif %}
+      <div class="blog-newsletter">
+        {% include 'blog-newsletter' %}
+      </div>
+      {% include 'widget_article' %}
+      {% if section.settings.display_blog_banner %}
+      <div class="blog_banner">
+        <div class="blog-banner-iamge">
+
+          {% if section.settings.blog_banner_image  != blank %}
+            <img class="" src="{{ section.settings.blog_banner_image | img_url: '1024x1024' }}">
+      
+          
+          {% else %}
+          {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
+          {% endif %}
+        </div>
+        <div class="blog-banner-container">
+          <p class="blog-banner-title">
+            {% if settings.enable_multilang %}
+          <span class="lang1">{{ section.settings.blog_banner_title | split: '|' | first }}</span>
+          <span class="lang2">{{  section.settings.blog_banner_title | split: '|' | last }}</span>
+          {% else %}
+          {{  section.settings.blog_banner_title | split: '|' | first }}
+          {% endif %}
+          </p>
+          <a href="{{ section.settings.blog_banner_link }}">{{ section.settings.blog_banner_textlink }} <i class="cs-font clever-icon-arrow-right-bold"></i></a>
+        </div>
+      </div>
+      {% endif %}
+      <div class="widget widget-tags">
+        {% if section.settings.display_blog_tags %}
+        {% if blog.all_tags.size > 0 %}
+        <div class="widget-title">
+          <h3><span>Tags</span></h3>
+        </div>
+        <div class="widget-content">
+          <ul class="tags">
+            <li{% unless current_tags %} class="active"{% endunless %}>
+              <a href="{{ shop.url}}/blogs/{{ blog.handle }}">All</a>
+            </li>
+            {% for tag in blog.all_tags %}
+            {% if current_tags contains tag %}
+            <li class="active">{{ tag | link_to_remove_tag: tag }}</li>
+            {% else %}
+            <li>{{ tag | link_to_tag: tag }}</li>
+            {% endif %}
+            {% endfor %}
+          </ul>
+        </div>
+        {% endif %}
+        {% endif %}
+      </div>
+    </div>
+
+</div>
+
+{% schema %}
+  {
+    "name": "Blog Sidebar ",
+    "settings": [
+	{
+        "type": "header",
+        "content": "About Me"
+      },
+      {
+        "type": "checkbox",
+        "id": "display_blog_aboutme",
+        "label": "Show About Me ?"
+      },
+      {
+        "type": "text",
+        "id": "blog_aboutme_title",
+        "label": "Title",
+        "default": "About Me"
+      },
+      {
+        "type": "image_picker",
+        "id": "blog_image_aboutme",
+        "label": "About Me Images"
+      },
+      {
+        "type": "textarea",
+        "id": "blog_aboutme_content",
+        "label": "Content",
+        "default": "Content"
+      },
+      {
+        "type": "text",
+        "id": "blog_aboutme_name",
+        "label": "Name",
+        "default": "Name"
+      },
+      {
+        "type": "header",
+        "content": "Follow Us"
+      },
+      {
+        "type": "checkbox",
+        "id": "display_blog_follow_us",
+        "label": "Show Follow Us?"
+      },
+      {
+        "type": "text",
+        "id": "blog_follow_title",
+        "label": "Title"
+      },
+      {
+        "type": "text",
+        "id": "blog_follow_column_4_icon_1",
+        "label": "icon 1",
+        "default": "fa fa-rocket",
+        "info": "add class of font icon"
+      },
+      {
+        "type": "text",
+        "id": "blog_follow_column_4_icon_link_1",
+        "label": "Link Icon 1",
+        "default": "#"
+      },
+      {
+        "type": "text",
+        "id": "blog_follow_column_4_icon_2",
+        "label": "icon 2",
+        "default": "fa fa-rocket",
+        "info": "add class of font icon"
+      },
+      {
+        "type": "text",
+        "id": "blog_follow_column_4_icon_link_2",
+        "label": "Link Icon 2",
+        "default": "#"
+      },
+      {
+        "type": "text",
+        "id": "blog_follow_column_4_icon_3",
+        "label": "icon 3",
+        "default": "fa fa-rocket",
+        "info": "add class of font icon"
+      },
+      {
+        "type": "text",
+        "id": "blog_follow_column_4_icon_link_3",
+        "label": "Link Icon 3",
+        "default": "#"
+      },
+      {
+        "type": "text",
+        "id": "blog_follow_column_4_icon_4",
+        "label": "icon 4",
+        "default": "fa fa-rocket",
+        "info": "add class of font icon"
+      },
+      {
+        "type": "text",
+        "id": "blog_follow_column_4_icon_link_4",
+        "label": "Link Icon 4",
+        "default": "#"
+      },
+      {
+        "type": "text",
+        "id": "blog_follow_column_4_icon_5",
+        "label": "icon 5",
+        "default": "fa fa-rocket",
+        "info": "add class of font icon"
+      },
+      {
+        "type": "text",
+        "id": "blog_follow_column_4_icon_link_5",
+        "label": "Link Icon 5",
+        "default": "#"
+      },
+      {
+        "type": "header",
+        "content": "Banner Sidebar Blog"
+      },
+      {
+        "type": "checkbox",
+        "id": "display_blog_banner",
+        "label": "Show Banner Blog ?"
+      },
+      {
+        "type": "image_picker",
+        "id": "blog_banner_image",
+        "label": "Banner Images Blog"
+      },
+      {
+        "type": "text",
+        "id": "blog_banner_title",
+        "label": "Title"
+      },
+      {
+        "type": "text",
+        "id": "blog_banner_link",
+        "label": "Link"
+      },
+      {
+        "type": "text",
+        "id": "blog_banner_textlink",
+        "label": "Text Link"
+      },
+      {
+        "type": "header",
+        "content": "Blog Newsletter"
+      },
+      {
+        "type": "checkbox",
+        "id": "blog_display_newsletter",
+        "label": "Show newsletter home?",
+        "default": true
+      },
+      {
+        "type": "textarea",
+        "id": "blog_title_newsletter",
+        "label": "Title",
+        "default": "Content"
+      },
+      {
+        "type": "textarea",
+        "id": "blog_newsletter_content",
+        "label": "Placeholder",
+        "default": "Email for Newsletter"
+      },
+      {
+        "type": "textarea",
+        "id": "blog_newsletter_go",
+        "label": "Button Text",
+        "default": "subcribe"
+      },
+      {
+        "type": "textarea",
+        "id": "blog_sub_title_newsletter",
+        "label": "Sub Title",
+        "default": "Content"
+      },
+      {
+        "type": "text",
+        "id": "blog_mailing_list_form_action",
+        "label": "MailChimp form action URL",
+        "info": "[Where do I find my MailChimp form action URL?](http:\/\/docs.shopify.com\/support\/configuration\/store-customization\/where-do-i-get-my-mailchimp-form-action)"
+      }
+]
+  }
+{% endschema %}
+
+{% stylesheet %}
+{% endstylesheet %}
+
+{% javascript %}
+{% endjavascript %}

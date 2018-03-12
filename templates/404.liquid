@@ -1,0 +1,6 @@
+<div class="page-404">
+  <h1 {% if settings.enable_multilang %}data-translate="general.404.title"{%endif%}>{{ 'general.404.title' | t }}</h1>
+  <p class="sub-404" {% if settings.enable_multilang %}data-translate="general.404.subtext"{%endif%}>{{ 'general.404.subtext' | t }}</p>
+  <p class="text-404" {% if settings.enable_multilang %}data-translate="general.404.content"{%endif%}>{{ 'general.404.content' | t }}</p>
+  <a class="btn-shop-now"  href="/" {% if settings.enable_multilang %}data-translate="general.404.link"{%endif%}>{{ 'general.404.link' | t }}</a>
+</div>

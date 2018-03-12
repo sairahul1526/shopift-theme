@@ -1,0 +1,117 @@
+{% capture menuvideo %}menuitem_evideo_{{ intMega }}{% endcapture %}
+{% capture menuproduct %}menuitem_eproduct_{{ intMega }}{% endcapture %}
+{% capture menuhtml %}menuitem_ehtml_{{ intMega }}{% endcapture %}
+{% capture menuimage %}menuitem_eimage_{{ intMega }}{% endcapture %}
+{% capture menulink %}menuitem_eblocklinks_{{ intMega }}{% endcapture %}
+
+{% capture megamenu_position_image %}megamenu_position_image_{{ intMega }}{% endcapture %}
+{% capture megamenu_position_image_x %}position_image_ofsetx_{{ intMega }}{% endcapture %}
+{% capture megamenu_position_image_y %}position_image_ofsety_{{ intMega }}{% endcapture %}
+
+
+{% capture menu_link_image %}menu_link_image_{{ intMega }}{% endcapture %}
+{% capture megamenu_position_video %}megamenu_position_video_{{ intMega }}{% endcapture %}
+{% capture megamenu_position_video_x %}position_video_ofsetx_{{ intMega }}{% endcapture %}
+{% capture megamenu_position_video_y %}position_video_ofsety_{{ intMega }}{% endcapture %}
+
+{% capture megamenu_position_custom_html %}megamenu_position_custom_html_{{ intMega }}{% endcapture %}
+{% capture position_custom_html %}position_custom_html_{{ intMega }}{% endcapture %}
+{% capture menuitem_enable_custom %}menuitem_enable_custom_{{ intMega }}{% endcapture %}
+
+
+{% capture menu_colvideo %}menuitem_columns_blockvideo_{{ intMega }}{% endcapture %}
+{% capture menu_colproduct %}menuitem_columns_blockproducts_{{ intMega }}{% endcapture %}
+{% capture menu_colhtml %}menuitem_columns_blockhtml_{{ intMega }}{% endcapture %}
+{% capture menu_collink %}menuitem_columns_blocklinks_{{ intMega }}{% endcapture %}
+
+{% capture header_megamenu_style %}header_megamenu_style_{{ intMega }}{% endcapture %}
+{% capture width %}menuitem_width_{{ intMega }}{% endcapture %}
+
+{% capture menustyle %}style='width:{{ settings[width] }}'{% endcapture %}
+
+
+
+<div class="dropdown-sub sub-{{ intMega }} {{ container_menu }}" {{ menustyle }} >
+  <div class="dropdown-menu-inner {% if settings[header_megamenu_style] == 'megamenu_2' %}mega-style-2{%endif %} ">
+    {% if settings[menuimage] %}
+    {% if settings[megamenu_position_image] == 'left_top' %}
+    {% capture position_style %}style='left:{{ settings[megamenu_position_image_x] }}px;top:{{ settings[megamenu_position_image_y] }}px'{% endcapture %}
+    {% endif %}
+    {% if settings[megamenu_position_image] == 'left_bottom' %}
+    {% capture position_style %}style='left:{{ settings[megamenu_position_image_x] }}px;bottom:{{ settings[megamenu_position_image_y] }}px'{% endcapture %}
+    {% endif %}
+    {% if settings[megamenu_position_image] == 'right_top' %}
+    {% capture position_style %}style='right:{{ settings[megamenu_position_image_x] }}px;top:{{ settings[megamenu_position_image_y] }}px'{% endcapture %}
+    {% endif %}
+    {% if settings[megamenu_position_image] == 'right_bottom' %}
+    {% capture position_style %}style='right:{{ settings[megamenu_position_image_x] }}px;bottom:{{ settings[megamenu_position_image_y] }}px'{% endcapture %}
+    {% endif %}
+
+    {% capture menu_html_img %}mega_images_{{ intMega }}.jpg{% endcapture %}
+  <a class="image-left" href="{{ settings[menu_link_image]}}" {{position_style}} >
+    <img src="{{ menu_html_img | asset_url }}" alt="" />
+    </a>
+    {% endif %}
+    {% if settings[menuvideo] %}
+    {% if settings[megamenu_position_video] == 'left_top' %}
+    {% capture position_style_video %}style='left:{{ settings[megamenu_position_video_x] }}px;top:{{ settings[megamenu_position_video_y] }}px'{% endcapture %}
+    {% endif %}
+    {% if settings[megamenu_position_video] == 'left_bottom' %}
+    {% capture position_style_video %}style='left:{{ settings[megamenu_position_video_x] }}px;bottom:{{ settings[megamenu_position_video_y] }}px'{% endcapture %}
+    {% endif %}
+    {% if settings[megamenu_position_video] == 'right_top' %}
+    {% capture position_style_video %}style='right:{{ settings[megamenu_position_video_x] }}px;top:{{ settings[megamenu_position_video_y] }}px'{% endcapture %}
+    {% endif %}
+    {% if settings[megamenu_position_video] == 'right_bottom' %}
+    {% capture position_style_video %}style='right:{{ settings[megamenu_position_video_x] }}px;bottom:{{ settings[megamenu_position_video_y] }}px'{% endcapture %}
+    {% endif %}
+    <div class="mega-item-video" {{position_style_video }}>
+      {% capture menu_video %}menuitem_cvideo_{{ intMega }}{% endcapture %}
+      {% include 'menu-blockvideos' %}
+    </div>
+    {% endif %}
+    
+    {% if settings[menuitem_enable_custom] %}
+    {% if settings[megamenu_position_custom_html] =='top' %}
+    <div class="row">
+      {{ settings[position_custom_html] }}
+    </div>
+    {% endif %}
+    {% endif %}
+    <div class="row row-eq-height
+                {% if settings[header_megamenu_style] == "megamenu_2" %}text-float-right{% endif %}
+                
+                ">
+      {% if settings[menulink] %}
+      <div class="mega-item col-sm-{{ settings[menu_collink] }} col-md-{{ settings[menu_collink] }}">
+        {% capture menu_col_links %}menuitem_columns_{{ intMega }}{% endcapture %}
+        {% include 'menu-blocklinks2' %}
+      </div>
+      {% endif %}
+
+      {% if settings[menuproduct] %}
+      <div class="mega-item col-sm-{{ settings[menu_colproduct] }} col-md-{{ settings[menu_colproduct] }}">
+        {% capture collection_menu %}menuitem_cproduct_{{ intMega }}{% endcapture %}
+        {% capture collection_menu_title %}menuitem_tproduct_{{ intMega }}{% endcapture %}
+        {% capture collection_product_limit %}menuitem_nproduct_{{ intMega }}{% endcapture %}
+        {% include 'menu-blockproducts' %}
+      </div>
+      {% endif %}
+      
+    </div>
+     {% if settings[menuitem_enable_custom] %}
+    {% if settings[megamenu_position_custom_html] =='bottom' %}
+    <div class="row">
+      {{ settings[position_custom_html] }}
+    </div>
+    {% endif %}
+    {% endif %}
+  </div>
+</div>
+
+<style>
+    .dropdown-menu-inner > a.image-left{position:absolute}
+  .mega-menu.level-top .text-float-right .mega-col-inner{border-right:0;border-left: 0px solid #e1e1e1;padding-left:15px;}
+  .text-float-right > div{float:right}
+  .text-float-right{float:right}
+</style>

@@ -1,0 +1,38 @@
+{% if section.settings.collection_results_per_page != blank %}
+  {% assign product_per_page = section.settings.collection_results_per_page %}
+{% else %}
+  {% assign product_per_page = 8 %}
+{% endif %}
+
+
+<div class="row">
+  {% include 'collection-sidebar' %}
+  <div class="block-row col-md-9 col-sm-12 col-xs-12 col-main">
+    {% paginate collection.products by product_per_page %}
+	{% include 'page-header' %}    
+    {% include 'toolbar' %}
+    
+    {% comment %}
+      Use class grid-uniform to have evenly sized columns clear
+      each other properly at each breakpoint.
+    {% endcomment %}
+    <div class="product-list">
+      {% comment %}
+        Loop through our products in the current collection.
+        See the snippet 'product-grid-item' for the layout.
+      {% endcomment %}
+      {% for product in collection.products %}
+      {% include 'product-list-item' %}
+      {% else %}
+      <p style="text-align: center;" {% if settings.enable_multilang %}data-translate="collection.notice"{%endif%}>{{ 'collection.notice' | t }}</p>
+      {% endfor %}
+    </div>
+    
+    {% if paginate.pages > 1 %}
+    <div class="padding">
+      {% include 'pagination-page' %}
+    </div>
+    {% endif %}
+    {% endpaginate %}
+  </div>
+</div>

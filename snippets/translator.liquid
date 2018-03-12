@@ -1,0 +1,140 @@
+{{ 'cleversoft-lang2.js' | asset_url | script_tag }}
+<script>
+  var translator = {
+    current_lang : jQuery.cookie("language"),
+    init: function() {
+        translator.updateStyling();
+  		translator.updateInventoryText();  		
+    },
+    updateStyling: function() {
+        var style;
+        if (translator.isLang2()) {
+          style = "<style>*[data-translate] {visibility:hidden} .lang1 {display:none}</style>";  
+        
+        } else {
+          style = "<style>*[data-translate] {visibility:visible} .lang2 {display:none}</style>";
+     
+        }
+        jQuery('head').append(style);
+    },
+    updateLangSwitcher: function() {
+      if (translator.isLang2()) {
+        jQuery(".select-language li a[data-lang=2]").attr("class", "active");
+        jQuery(".select-language li a[data-lang=1]").attr("class", "");
+      }
+    },
+    getTextToTranslate: function(selector) {
+      var result = window.lang2;
+      //check if there is parameter
+      var params;
+      if (selector.indexOf("|") > 0) {
+        var devideList = selector.split("|");
+        selector = devideList[0];
+        params = devideList[1].split(",");
+      }
+      var selectorArr = selector.split('.');
+      if (selectorArr) {
+        for (var i = 0; i < selectorArr.length; i++) {
+          if(typeof(result) !== 'undefined') {
+            result = result[selectorArr[i]];
+          }
+        }
+      } else {
+        result = result[selector];
+      }
+      //check if result is object, case one and other
+      if (result && result.one && result.other) {
+        var countEqual1 = true;
+        for (var i = 0; i < params.length; i++) {
+          if (params[i].indexOf("count") >= 0) {
+            variables = params[i].split(":");
+            if (variables.length>1) {
+              var count = variables[1];
+              if (count > 1) {
+                countEqual1 = false;
+              }
+            }
+          }
+        }
+        if (countEqual1) {
+          result = result.one;
+        } else {
+          result = result.other;
+        }
+      }
+      //replace params
+      {% raw %}
+      if (params && params.length>0) {
+        result = result.replace(/{{\s*/g, "{{");
+        result = result.replace(/\s*}}/g, "}}");
+        for (var i = 0; i < params.length; i++) {
+          variables = params[i].split(":");
+          if (variables.length>1) {
+            result = result.replace("{{"+variables[0]+"}}", variables[1]);
+          }          
+        }
+      }
+      {% endraw %}
+
+      return result;
+    },
+    isLang2: function() {
+
+      return translator.current_lang && translator.current_lang == 2;
+    },
+    updateInventoryText: function() {
+      if (translator.isLang2()) {
+     
+          window.inventory_text = {
+        	in_stock: window.lang2.product.detail.instock_product,
+            many_in_stock: window.lang2.product.detail.manystock_product,
+            out_of_stock: window.lang2.product.detail.outstock_product,
+            add_to_cart: window.lang2.product.detail.add_cart,
+    		sold_out: window.lang2.product.sold_out,
+            unavailable: window.lang2.product.detail.unavailable
+          };
+      }
+    },
+    doTranslate: function(blockSelector) {
+      if (translator.isLang2()) {
+
+        jQuery(blockSelector + " [data-translate]").each(function(e) {          
+          var item = jQuery(this);
+          var selector = item.attr("data-translate");
+          var text = translator.getTextToTranslate(selector);
+          //translate only title
+          if (item.attr("translate-item")) {
+            var attribute = item.attr("translate-item");
+            if (attribute == 'blog-date-author') {
+              item.html(text);
+            } else if (attribute!="") {            
+              item.attr(attribute,text);
+            }
+          } else if (item.is("input")) {
+            item.val(text);
+          } else {
+            item.text(text);
+          }
+          item.css("visibility","visible");
+        });
+      }else{
+      	
+      }
+    }   
+  };
+  translator.init();
+          
+ jQuery(document).ready(function() {    
+    jQuery('.select-language a').on('click', function(){ 
+      if (jQuery('.select-language a').hasClass('active')){
+        jQuery('.select-language a').removeClass('active');
+      }else{
+      	jQuery(this).addClass('active');
+      }
+       var value = jQuery(this).data('lang');
+      jQuery.cookie('language', value, {expires:10, path:'/'});
+      location.reload();
+    });
+  translator.doTranslate("body");
+  });
+</script>

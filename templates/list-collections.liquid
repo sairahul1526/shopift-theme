@@ -1,0 +1,74 @@
+{% comment %}
+This page represents the /collections and /products pages.
+It is an optional, but highly recommended, template for your theme.
+
+More info:
+- http://docs.shopify.com/manual/configuration/store-customization/taking-control-of-collections-listing
+{% endcomment %}
+
+
+
+<div class="list-category">
+  {% comment %}
+  Loop through each collection, except 'frontpage'
+  {% endcomment %}
+
+  {% assign i = 1 %}
+
+  {% for collection in collections %}
+
+  {% capture col_class_name %}col-{{ i }}-item-content{% endcapture %}
+  {% if collection.image %}
+  {% assign collection_img =  collection.image | img_url: 'master' %}
+  {% endif %}
+  {% unless collection.handle == 'frontpage' %}
+  {% include 'collection-grid-item' %}
+  {% endunless %}
+  {% assign i = i | plus: 1 %}
+  {% endfor %}
+</div>
+
+
+
+<script>
+  jQuery(document).ready(function() {
+    var outwidth = jQuery('.list-category').width();
+    console.log(outwidth);
+    var $container = $('.list-category');
+
+
+
+     
+
+      isotope = function () {
+      $container.isotope({
+
+        layoutMode: 'masonry', 		
+        masonry: {
+          columnWidth: 1
+        }					
+      });
+    };
+    jQuery(window).load(function() {         
+      isotope();  	
+    });
+    jQuery(window).resize(isotope); 
+
+
+
+  });
+</script> 
+<style>
+  .main-content {
+    padding-bottom: 0px;
+  }
+  .collection-item{margin-bottom:0px;   margin-right: 0px;width:auto;float:left;}
+  .template-list-collections .container{padding:0;}
+  .list-category{}
+
+</style>
+
+
+
+
+

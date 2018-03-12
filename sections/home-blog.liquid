@@ -1,0 +1,276 @@
+
+<div class="home-blog" style="margin:{{section.settings.home_blog_margin}}">
+  <div class="container">
+    <div class="row">
+      <div class="main-blog {% if section.settings.show_blog_layout == 'slide' %}blog-slide {% endif %} {% if section.settings.show_blog_layout == 'grid' %} blog-gird {% endif %}">
+        {% if section.settings.blog_title != blank %}
+        <div class="heading-block">
+          <h3 class="title">
+            {% if settings.enable_multilang %}
+            <span class="lang1">{{ section.settings.blog_title | split: '|' | first }}</span>
+            <span class="lang2">{{ section.settings.blog_title | split: '|' | last }}</span>
+            {% else %}
+            {{ section.settings.blog_title | split: '|' | first }}
+            {% endif %}
+          </h3>
+        </div>
+        {% endif %}
+        {% assign home_block = section.settings.defaulthome_blogslider2 %}
+        {% assign selected_blog = blogs[home_block] | remove: "Drop" | downcase %}
+        {% if section.settings.show_blog_layout == 'grid' %}
+        <div class="col-lg-6 col-md-6 col-sm-12 box-content">
+          {% endif %}
+          <div id="latest-blogs" class="{{ section.settings.show_blog_layout_image }}">
+            {%- assign blog = blogs[section.settings.defaulthome_blogslider2] -%}
+            {% for article in blog.articles limit: section.settings.blog_limit %}
+            <div class="item">
+              <div class="blog-item"> 
+                <div class="main-blog-left">
+                  {% if section.settings.display_blog_date %}
+                  <div class="blog-time">
+                    <span class="blog-day">{{ article.published_at | date: '%d' }}</span>
+                    <span class="blog-month">{{ article.published_at | date: '%b' }}</span>
+                    {% if settings.show_blog_layout == 'slide' %}
+                    <span class="blog-year">, {{ article.published_at | date: '%Y' }}</span>
+                    {% endif %}
+                  </div>
+                  {% endif %}
+                  {% if section.settings.display_blog_image %}
+                  <div class="image">
+                    <img src="{{ article.image.src | img_url: '1024x1024' }}" alt="{{ article.image.alt }}">
+                  </div>
+                  {% endif %}
+                </div>
+
+
+                <div class="blog-content">
+                  <h3 class="p10">
+                    <a href="{{ article.url }}">
+                      {% if settings.enable_multilang %}
+                      <span class="lang1">{{ article.title | split: '|' | first  }}</span>
+                      <span class="lang2">{{ article.title | split: '|' | last }}</span>
+                      {% else %}
+                      {{ article.title | split: '|' | first }}
+                      {% endif %}
+                    </a>
+                  </h3>
+                  {% if section.settings.display_blog_author %}
+                  <span class="article__author">{{ 'blog.article.by_author' | t: author: article.author }}</span>
+                  {% endif %}
+                  {% if section.settings.display_blog_intro %}
+                  <div class="short-des">
+                    {% if article.excerpt.size > 0 %}
+                    {% if settings.enable_multilang %}
+                    <div class="lang1">{{ article.excerpt | split: '|' | first  }}</div>
+                    <div class="lang2">{{ article.excerpt | split: '|' | last }}</div>
+                    {% else %}
+                    {{ article.excerpt | split: '|' | first }}
+                    {% endif %}
+                    {% else %}
+                    <p>
+                      {% if settings.enable_multilang %}
+                      <span class="lang1">{{ article.content | split: '|' | first | strip_html | truncatewords: 15 }}</span>
+                      <span class="lang2">{{ article.content | split: '|' | last | strip_html | truncatewords: 15 }}</span>
+                      {% else %}
+                      {{ article.content | split: '|' | first }}
+                      {% endif %}
+                    </p>
+                    {% endif %}
+                  </div>
+                  {% endif %}
+                  {% if section.settings.display_blog_readmore %}
+                  <p class="button">
+                    <a href="{{ article.url }}" class="btn-readmore">
+                      {% if settings.enable_multilang %}
+                      <span class="lang1">{{ section.settings.blog_readmore | split: '|' | first }}</span>
+                      <span class="lang2">{{ section.settings.blog_readmore | split: '|' | last }}</span>
+                      {% else %}
+                      {{ section.settings.blog_readmore | split: '|' | first }}
+                      {% endif %}
+                    </a>
+                  </p>
+                  {% endif %}
+                </div>
+
+              </div>
+            </div>
+
+            {% endfor %}
+          </div>
+          {% if section.settings.display_blog_view_all %}
+          <div class="text-center">
+            <a href="{{ blog.url }}" class="btn">
+              {{ 'blog.article.view_all' | t }}
+            </a>
+          </div>
+          {% endif %}
+          {% if section.settings.show_blog_layout == 'grid' %}
+        </div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
+{% if section.settings.show_blog_layout == 'slide' %}
+
+<script>
+  $(document).ready(function() {
+
+    $("#latest-blogs").owlCarousel({
+      itemsCustom : [ 
+        [320, 1],
+        [450, 1],
+        [600, 2],
+        [700, 2],
+        [1000, 3],
+        [1200, 3],
+        [1400, 3],
+        [1600, 3]
+      ],
+      autoPlay : false,
+      stopOnHover : false,
+
+      lazyLoad : false,
+      lazyFollow : true,
+      lazyEffect : "fade",
+      pagination : true,
+
+      // Navigation
+      navigation : false,
+      navigationText : ['<i class="cs-font clever-icon-prev"></i>','<i class="cs-font clever-icon-next"></i>'],
+      rewindNav : true,
+      scrollPerPage : false,
+
+    });
+  })
+</script>
+{% endif %} 
+
+
+{% schema %}
+  {
+  
+	"name": "Blog",
+    "class": "index-section",
+    "settings": [
+      {
+        "type": "text",
+        "id": "home_blog_margin",
+        "label": "Margin",
+        "default": "0px 0px 0px 0px"
+      },
+      {
+        "type": "select",
+        "id": "show_blog_layout",
+        "label": "Sellect Layout",
+        "options": [
+          {
+            "value": "slide",
+            "label": "Carousel"
+          },
+          {
+            "value": "grid",
+            "label": "List"
+          }
+        ],
+        "default": "grid"
+      },
+{
+        "type": "select",
+        "id": "show_blog_layout_image",
+        "label": "Sellect Style Image",
+        "options": [
+          {
+            "value": "show",
+            "label": "Show Image"
+          },
+          {
+            "value": "hover",
+            "label": "Hover Show Image"
+          }
+        ],
+        "default": "hover"
+      },
+
+      {
+        "type": "checkbox",
+        "id": "display_blog_date",
+        "label": "Show date ",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "display_blog_intro",
+        "label": "Show Intro",
+        "default": true
+      },
+
+      {
+        "type": "checkbox",
+        "id": "display_blog_author",
+        "label": "Show author",
+        "default": true
+      },
+
+      {
+        "type": "checkbox",
+        "id": "display_blog_view_all",
+        "label": "Show 'View all' button",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "display_blog_image",
+        "label": "Display Image",
+        "default": true
+      },
+
+      {
+        "type": "checkbox",
+        "id": "display_blog_readmore",
+        "label": "Show Read More",
+        "default": true
+      },
+      {
+        "type": "text",
+        "id": "blog_readmore",
+        "label": "Button",
+        "default": "Read More"
+      },
+      {
+        "type": "blog",
+        "id": "defaulthome_blogslider2",
+        "label": "Blog"
+      },
+      {
+        "type": "text",
+        "id": "blog_title",
+        "label": "Heading",
+        "default": "Blog Posts"
+      },
+     
+      {
+        "type": "text",
+        "id": "blog_limit",
+        "label": "Posts",
+        "default": "3"
+      }
+	],
+    "presets": [
+        {
+          "name": "Blog posts",
+          "category": "Blog",
+          "settings": {
+            "defaulthome_blogslider2": "News",
+            "blog_limit": "3"
+          }
+        }
+      ]
+ }
+{% endschema %}
+
+{% stylesheet %}
+{% endstylesheet %}
+
+{% javascript %}
+{% endjavascript %}

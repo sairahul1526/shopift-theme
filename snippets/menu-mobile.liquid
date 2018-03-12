@@ -1,0 +1,37 @@
+<div class="menu-mobile">
+  <ul>
+    <li class="account-mobile">
+      account mobile
+    </li>
+    <li class="search-mobile">
+      <a class="icon-search"><i class="cs-font clever-icon-search-5"></i></a>
+      <div class="search-form">
+        {% include 'search-bar' %}
+      </div>
+    </li>
+    <li class="cart-mobile">
+      my cart
+    </li>
+    <li class="wishlist-mobile">
+      <a href="/pages/wish-list"><i class="cs-font clever-icon-heart-1"></i></a>
+    </li>
+  </ul>
+</div>
+<script>
+  $('.icon-search').click( function(){
+    if ( $('.search-mobile').hasClass('active') ) {
+      $('.search-mobile').removeClass('active');
+    } else {
+      $('.icon-search').removeClass('active');
+      $('.search-mobile').addClass('active');    
+    }
+  });
+    $('.dropdown-icon').click( function(){
+    if ( $('.top-currency').hasClass('active') ) {
+      $('.top-currency').removeClass('active');
+    } else {
+      $('.top-currency').removeClass('active');
+      $('.top-currency').addClass('active');    
+    }
+  });
+</script>

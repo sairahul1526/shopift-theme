@@ -1,0 +1,8 @@
+{% capture menup_video %}menuitem_cvideo_{{ intMega }}{% endcapture %}
+<div class="block-video">
+	<div class="widget-inner">
+		{% if settings[menup_video] != blank %}
+      		{{ settings[menup_video] }}
+        {% endif %}
+	</div>
+</div>

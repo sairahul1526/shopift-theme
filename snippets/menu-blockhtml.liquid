@@ -1,0 +1,13 @@
+<div class="block-html">
+	{% if settings[menu_html_title] != blank %}
+		<div class="menu-title">{{ settings[menu_html_title] }}</div>
+	{% endif %}
+	<div class="widget-inner">
+      	
+		
+     
+		{% if settings[menu_html_des] != blank %}
+			<div class="content">{{ settings[menu_html_des] }}</div>
+		{% endif %}
+	</div>
+</div>

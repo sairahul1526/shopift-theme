@@ -1,0 +1,100 @@
+{% comment %}
+This snippet is used to showcase each product during the loop,
+'for product in collection.products' in collection.liquid.
+
+This example has each product on it's own line for all breakpoints.
+{% endcomment %}
+
+{% comment %}
+Check if the product is on sale and set a variable to be used below.
+{% endcomment %}
+{% assign lable_sale = false %}
+{% if product.compare_at_price_min > product.price_min %}
+{% assign lable_sale = true %}
+{% endif %}
+
+{% comment %}
+Check if the product is sold out and set a variable to be used below.
+{% endcomment %}
+
+{% assign lable_out = true %}
+{% if product.available  %}
+{% assign lable_out = false %}
+{% endif %}
+
+{% assign on_sale = false %}
+{% if item.compare_at_price_min > item.price_min %}
+{% assign on_sale = true %}
+{% endif %}
+
+{% comment %}
+Check if the product is sold out and set a variable to be used below.
+{% endcomment %}
+
+{% assign sold_out = true %}
+{% if item.available  %}
+{% assign sold_out = false %}
+{% endif %}
+
+{% comment %}
+Set a class for sold-out and on-sale items
+{% endcomment %}
+{% assign delayTime = 100 | times : forloop.index %}
+<div id="product-{{ item.id }}" class="grid-item product-item">
+
+  {% comment %}
+  Link to your product with the 'within: collection' filter for the link to be aware of the collection.
+  This allows you to create collection-based navigation on the product page.
+
+  Results of using 'within: collection':
+  - Instead of a URL with /products/product-handle
+  you would get /collections/collection-handle/products/product-handle
+
+  For more info on navigation within a collection
+  - http://docs.shopify.com/support/your-store/collections/how-to-navigate-within-a-collection
+  {% endcomment %}
+  <div class="product-inner {% if sold_out %} out-stock-product {% endif %}">
+    <div class="product-image">
+      <a href="{{ item.url | within: collection }}" class="product-list-thumb product-grid-image">
+        <img src="{{ item.featured_image.src | product_img_url: 'medium' }}" alt="{{ item.featured_image.alt | escape }}"> 
+      </a>
+      {% if on_sale or sold_out %}
+      <div class="product-label">
+        {% if on_sale %}
+        {{ product.compare_at_price_max | minus:product.price | times:100 | divided_by:item.compare_at_price_max |round: 0 }}%
+        {% endif %}
+        {% if sold_out %}
+        <span>out of stock</span>
+        {% endif %}
+      </div>
+      {% endif %}
+      {% if product.description contains "[label-icon-new]" %}
+      <div class="label-new">{{ 'product.label_icon_new' | t }}</div>
+      {% endif %}
+    </div>
+    <div class="product-content">
+      <h3><a class="product-title" href="{{ item.url | within: collection }}">{{ item.title }}</a></h3>
+
+      <div class="price-box">
+        {% if on_sale %}
+        <p class="sale">
+          <span class="old-price"> {{ item.compare_at_price_min | money }}</span>
+          <span class="special-price">{% if item.price_varies %}<em>from </em>{% endif %}{{ item.price_min | money }}</span>
+        </p>
+        {% else %}
+        <p class="regular-product">
+          {% comment %}
+          You can show a leading 'from' or 'up to' by checking 'item.price_varies'
+          if your variants have different prices.
+          {% endcomment %}
+          <span >{% if item.price_varies %}<em>from </em>{% endif %}{{ item.price_min | money }}</span>
+        </p>
+        {% endif %}
+      </div>
+
+      {% if settings.display_product_reviews %}       
+      <span class="shopify-product-reviews-badge" data-id="{{ item.id }}"></span>
+      {% endif %}
+    </div>
+  </div>
+</div>

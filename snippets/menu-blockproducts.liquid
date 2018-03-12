@@ -1,0 +1,61 @@
+{% assign lable_sale = false %}
+{% if product.compare_at_price_min > product.price_min %}
+{% assign lable_sale = true %}
+{% endif %}
+
+{% comment %}
+Check if the product is sold out and set a variable to be used below.
+{% endcomment %}
+
+{% assign lable_out = true %}
+{% if product.available  %}
+{% assign lable_out = false %}
+{% endif %}
+
+{% assign imagesize = settings.product_menu_imagesize %}
+{% assign collection_name = settings[collection_menu] %}
+{% assign collection_products = collections[collection_name].products %}
+{% assign on_sale = false %}
+{% if settings[collection_menu_title] != blank %}
+<div class="menu-title"><a>{{ settings[collection_menu_title] }}</a></div>
+{% endif %}
+<div id="product-menu">
+  {% for product in collection_products limit:settings[collection_product_limit] %}
+
+  {% include 'product-grid-item' %}
+  {% endfor %}
+
+</div>
+
+<script>
+  $(document).ready(function() {
+    $("#product-menu").owlCarousel({
+      itemsCustom : [
+        [360, 1],
+        [450, 2],
+        [600, 2],
+        [700, 2],
+        [1000, {{ settings[collection_product_limit] }}],
+        [1200, {{ settings[collection_product_limit] }}],
+        [1400, {{ settings[collection_product_limit] }}],
+        [1600, {{ settings[collection_product_limit] }}]
+      ],
+      autoPlay : false,
+      stopOnHover : false,
+
+      lazyLoad : false,
+      lazyFollow : true,
+      lazyEffect : "fade",
+      pagination : false,
+
+      // Navigation
+      navigation : true,
+      navigationText : ['<i class="arrow_carrot-left"></i>','<i class="arrow_carrot-right"></i>'],
+      rewindNav : true,
+      scrollPerPage : false,
+
+    });
+
+  })
+
+</script>

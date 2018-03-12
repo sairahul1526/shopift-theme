@@ -1,0 +1,52 @@
+{% comment %}
+This template will be automatically generated for you if the file doesn't exist,
+but where's the fun in having no control? Define your layout below.
+
+The 'layout settings.customer_layout' line is inserted at the top of every customer account template.
+Your theme's settings determine to use the 'default' or 'theme' customer templates.
+More info:
+- http://www.tetchi.ca/shopify-theme-from-scratch-part-11/
+{% endcomment %}
+
+{% layout settings.customer_layout %}
+<div class="row">
+  <div class="col-md-4 col-sm-8 col-xs-12 col-sm-offset-2 col-md-offset-4"> 
+    <div class="create-an-account">
+      <h1 {% if settings.enable_multilang %}data-translate="customers.register.title"{%endif%}>{{ 'customers.register.title' | t }}</h1>
+
+      {% comment %}
+      This form must use 'create_customer'
+      {% endcomment %}
+      {% form 'create_customer' %}
+      {% include 'form-errors-custom' %}
+      <div id="first_name">
+        <label for="first_name" {% if settings.enable_multilang %}data-translate="customers.register.first_name"{%endif%}>{{ 'customers.register.first_name' | t }}<em>*</em></label>
+        <input type="text" value="" name="customer[first_name]" id="first_name" {% if form.errors contains "first_name" %} class="error"{% endif %} >
+      </div>
+
+      <div id="last_name">
+        <label for="last_name" {% if settings.enable_multilang %}data-translate="customers.register.last_name"{%endif%}>{{ 'customers.register.last_name' | t }}<em>*</em></label>
+        <input type="text" value="" name="customer[last_name]" id="last_name" {% if form.errors contains "last_name" %} class="error"{% endif %} >
+      </div>
+
+      <div id="email">
+        <label for="email" {% if settings.enable_multilang %}data-translate="customers.register.email"{%endif%}>{{ 'customers.register.email' | t }}<em>*</em></label>
+        <input type="email" value="" name="customer[email]" id="email" {% if form.errors contains "email" %} class="error"{% endif %}  >
+      </div>
+
+      <div id="create_password">
+        <label for="password" {% if settings.enable_multilang %}data-translate="customers.register.password"{%endif%}>{{ 'customers.register.password' | t }}<em>*</em></label>
+        <input type="password" value="" name="customer[password]" id="create_password" {% if form.errors contains "password" %} class="error"{% endif %}>
+      </div>
+
+      <div class="buttons-set">
+        <p><input type="submit" class="btn-login harman_btn5" {% if settings.enable_multilang %}data-translate="customers.register.link_create_account"{%endif%} value="{{ 'customers.register.link_create_account' | t }}"></p>
+      </div>
+      <p class="hr-login" {% if settings.enable_multilang %}data-translate="customers.register.or"{%endif%}><span>{{ 'customers.register.or' | t }}</span></p>
+      <div class="buttons-set">
+        <a title="Create an account" href="/account/login" class="btn-creatacc harman_btn5" {% if settings.enable_multilang %}data-translate="customers.register.link_sign_in"{%endif%}>{{ 'customers.register.link_sign_in' | t }}</a>
+      </div>
+      {% endform %}
+    </div>
+  </div>
+</div>

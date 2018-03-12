@@ -1,0 +1,89 @@
+<div class="load-product">
+  <div class="products-grid">
+    <div class="product-grid-isotope-parent">
+      <div class="products-grid product-grid-item product-grid-isotope1">
+        {% for product in collections[tabnew_collection].products limit:settings.product_list_limit_1 %}
+        {% include 'home_tab_product_grid_item' %}	  
+        {% endfor %}
+      </div>
+    </div>
+  </div> 
+</div>
+<script>
+
+  (function ($) { 
+
+    var items_min_width = 0;
+    {% if settings.isotope_items_min_width1 != blank %}
+    items_min_width = {{ settings.isotope_items_min_width1 }}
+      {% else %}
+      items_min_width = 250;
+    {% endif %} 
+
+
+    var $container = $('.product-grid-isotope1'),
+        settings_min_width ,
+        featured_item_width,
+        count_visible_items,
+        margin_right,
+        settings = {min_item_width : items_min_width, item_selector:'grid-item-isotope'},
+        $grid = $container,
+        setItemWidth = function() {
+          if (Modernizr.mq('only screen and (max-width: 28.875em)')) {
+            featured_item_width = settings_min_width = 150;
+          } else if (Modernizr.mq('only screen and (max-width: 45em)')) {
+            featured_item_width = settings_min_width = 180;
+          } else if (Modernizr.mq('only screen and (max-width: 790px)')) {
+            featured_item_width = settings_min_width = 220;
+          } else {
+            featured_item_width = settings_min_width = settings.min_item_width;
+          }
+          var number_of_items = 0;
+          margin_right = 0;
+          var available_width = parseInt($grid.width());
+          while(featured_item_width >= settings_min_width) {
+            number_of_items++;
+            featured_item_width = available_width / number_of_items
+          }
+          if (number_of_items > 1) number_of_items--;
+          // uncomment the following line to enforce an even number of columns
+          //if (Math.abs(number_of_items % 2)) number_of_items--;
+          count_visible_items = number_of_items;
+          featured_item_width = parseInt(available_width / number_of_items);
+        },
+        colWidth = function () {
+          setItemWidth();
+          columnWidth = featured_item_width - margin_right - 1;
+          $container.find('.grid-item-isotope').each(function() {
+            var $item = $(this),
+                multiplier_w = $item.attr('class').match(/item-w(\d)/),
+                multiplier_h = $item.attr('class').match(/item-h(\d)/),
+                width = multiplier_w ? columnWidth*multiplier_w[1] - 0 : columnWidth - 0 ;
+            $item.css({ width: width, });
+          });
+          return columnWidth;
+        },
+        isotope = function () {
+          $container.isotope({
+            resizable: false,
+            itemSelector: '.grid-item-isotope',
+            masonry: {
+
+              columnWidth: colWidth(),
+              fitWidth: true
+
+            }
+          });
+        };
+
+
+    $(window).smartresize(isotope); 
+
+    jQuery(window).load(function() { 
+      isotope(); 
+    });
+    jQuery(window).resize(isotope); 
+  }(jQuery)); 
+
+
+</script>

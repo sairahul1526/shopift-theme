@@ -1,0 +1,78 @@
+{% assign number_of_related_products_to_show = number_of_related_products | plus:1 %}
+
+{% assign current_product = product %}
+{% assign current_product_tags = product.tags %}
+{% assign found_first_match = false %}
+{% assign found_second_match = false %}
+{% assign first_related_product = true %}
+
+{% assign product_count = 1 %}
+
+{% paginate collections.all.products by 1000 %}
+{% for product in collections.all.products %}
+{% unless product.handle == current_product.handle %}
+{% for tag in product.tags %}
+{% if current_product_tags contains tag and tag != 'Made in USA' %}
+{% if found_first_match == false %}
+{% assign found_first_match = true %}
+{% assign first_match = tag %}
+{% elsif found_second_match == false %}
+{% assign found_second_match = true %}
+{% assign second_match = tag %}
+{% endif %}
+{% endif %}
+{% endfor %}
+
+{% if found_first_match == true %}
+{% if first_related_product == true %}
+{% assign first_related_product = false %}
+
+<section class="related-products">
+  {% if related_products_title != '' %}
+  <h2>{{ related_products_title }}</h2>
+  {% endif %}
+  <div class="products-grid">
+
+    {% endif %}
+
+    {% if product_count < number_of_related_products_to_show %}    
+    {% if product.tags contains first_match or product.tags contains second_match %}          
+    {% include 'related-product-item' with collection.handle %}
+    {% assign product_count = product_count | plus:1 %}
+    {% endif %}
+    {% endif %}
+    {% endif %}
+    {% endunless %}
+    {% endfor %}
+    {% if first_related_product == false %} </div> {% endif %}
+  {% endpaginate %}
+</section>
+<script>
+  $(document).ready(function() {
+    $(".related-products .products-grid").owlCarousel({
+      itemsCustom : [
+        [300, 2],
+        [600, 2],
+        [700, 3],
+        [1000, 4],
+        [1600, 4]
+      ],
+      autoPlay : true,
+      stopOnHover : false,
+
+      lazyLoad : true,
+      lazyFollow : true,
+      lazyEffect : false,
+      pagination : false,
+
+      // Navigation
+      navigation : true,
+      navigationText : ['<i class="cs-font clever-icon-prev"></i>','<i class="cs-font clever-icon-next"></i>'],
+      rewindNav : true,
+      scrollPerPage : false,
+
+    });
+
+  })
+
+</script>

@@ -1,0 +1,184 @@
+
+<!--Top Menu -->
+
+<div class=" megamenu">
+  <ul class="navbar-nav site-nav">
+    {% for link in linklists.main-menu.links %}
+    {% assign hasMega = false %}
+
+    {% assign intMega = 0 %}
+    {% assign link_title = link.title | downcase %}
+    {% assign fullwidth = '' %}
+    {% assign haslable = false %}
+    {% assign hasimg = false %}
+
+    {% for i in (1..5) %}
+
+
+    {% capture megamenu %}menuitem_enable_{{ i }}{% endcapture %}
+    {% capture megamenu_title %}menuitem_title_{{ i }}{% endcapture %}
+    {% capture lablenew %}menuitem_title_label_{{ i }}{% endcapture %}
+    {% capture labledisplay %}enable_hot_{{ i }}{% endcapture %}
+    {% capture enableimg %}enable_img_{{ i }}{% endcapture %}
+    {% assign megamenu_title = settings[megamenu_title] | strip | downcase %}
+
+    {% if settings[megamenu] %}
+
+    {% if link_title == megamenu_title %}
+    {% assign hasMega = true %}
+    {% assign intMega = i %}
+
+
+    {% if settings[enableimg] %}
+    {% assign hasimg = true %}
+    {% endif %}
+
+    {% if settings[labledisplay] %}
+    {% assign haslable = true %}
+    {% assign lable_new = settings[lablenew]  %}
+    {% else %}
+    {% assign lable_new = '' %}
+    {% endif %}
+
+
+
+    {% endif %}
+    {% endif %}
+
+    {% endfor %}
+
+    {% if hasMega %}
+    {% capture menufullwidth %}menuitem_fullwidth_{{ intMega }}{% endcapture %}
+    {% if settings[menufullwidth] %}
+    {% assign fullwidth = 'full-width' %}
+    {% assign container_menu ='container' %}
+    {% else %}
+    {% assign fullwidth = 'aligned-center' %}
+    {% assign container_menu = '' %}
+    {% endif %}
+    <li class="menu-dropdown  mega-menu  level-top {{ fullwidth }} {% if link.active %}active{% endif %}">
+      <a class="dropdown-toggle" href="{{ link.url }}">
+        {% if settings.enable_multilang %}
+        <span class="lang1">{{ link.title | split: '|' | first }}</span>
+        <span class="lang2">{{ link.title | split: '|' | last }}</span>
+        {% else %}
+        <span>{{ link.title | split: '|' | first }}</span>
+        {% endif %} <i class="cs-font clever-icon-down"></i>
+        {% if haslable %}
+        <span class="lable-menu lable-new-{{ intMega }}">
+          {% if settings.enable_multilang %}
+          <span class="lang1">{{ lable_new | split: '|' | first }}</span>
+          <span class="lang2">{{ lable_new | split: '|' | last }}</span>
+          {% else %}
+          <span>{{ lable_new | split: '|' | first }}</span>
+          {% endif %}
+        </span>
+        {% endif %}
+      </a>
+      {% assign mega_link_handle = link.handle %}
+      {% include settings.header_megamenu_style %}
+    </li>
+    {% else %}
+    {% if linklists[link.handle] != empty %}
+    <li class="menu-dropdown  level-top {% if settings.display_megamenu and items_list contains cat %} mega-menu {% endif %}  {% if link.active %}active{% endif %}">
+      <a class="dropdown-toggle has-category" href="{{ link.url }}">
+        {% if settings.enable_multilang %}
+        <span class="lang1">{{ link.title | split: '|' | first }}</span>
+        <span class="lang2">{{ link.title | split: '|' | last }}</span>
+        {% else %}
+        <span>{{ link.title | split: '|' | first }}</span>
+        {% endif %}<i class="cs-font clever-icon-down"></i>
+      </a>
+      <div class="dropdown-sub level1">
+        <ul>
+          {% for child_link in linklists[link.handle].links %}
+          {% if linklists[child_link.handle] != empty %}
+          <li class="parent dropdown-submenu {% if child_link.active %}active{% endif %}">
+            <a class="dropdown-toggle"  href="{{ child_link.url }}">
+              {% if settings.enable_multilang %}
+              <span class="lang1">{{ child_link.title | split: '|' | first }}</span>
+              <span class="lang2">{{ child_link.title | split: '|' | last }}</span>
+              {% else %}
+              <span>{{ child_link.title | split: '|' | first }}</span>
+              {% endif %}<i class="cs-font clever-icon-arrow-right"></i>
+            </a>
+            <div class="dropdown-menu level2">
+              <ul>
+                {% for child_link1 in linklists[child_link.handle].links %}
+                {% if linklists[child_link1.handle] != empty %}
+                <li class="parent dropdown-submenu {% if child_link1.active %}active{% endif %}">
+                  <a class="dropdown-toggle"  href="{{ child_link1.url }}">
+                    {% if settings.enable_multilang %}
+                    <span class="lang1">{{ child_link1.title | split: '|' | first }}<i class="cs-font clever-icon-arrow-right"></i></span>
+                    <span class="lang2">{{ child_link1.title | split: '|' | last }}<i class="cs-font clever-icon-arrow-right"></i></span>
+                    {% else %}
+                    <span>{{ child_link1.title | split: '|' | first }}<i class="cs-font clever-icon-arrow-right"></i></span>
+                    {% endif %}
+                  </a>
+                  <div class="dropdown-menu level3">
+                    <ul>
+                      {% for child_link2 in linklists[child_link1.handle].links %}
+                      <li class="{% if child_link2.active %}active{% endif %}">
+                        <a class="" href="{{ child_link2.url }}">
+                          {% if settings.enable_multilang %}
+                          <span class="lang1">{{ child_link2.title | split: '|' | first }}</span>
+                          <span class="lang2">{{ child_link2.title | split: '|' | last }}</span>
+                          {% else %}
+                          <span>{{ child_link2.title | split: '|' | first }}</span>
+                          {% endif %}
+                        </a>
+                      </li>
+                      {% endfor %}
+                    </ul>
+                  </div>
+                </li>
+                {% else %}
+                <li class="{% if child_link1.active %}active{% endif %}">
+                  <a class="" href="{{ child_link1.url }}">
+                    {% if settings.enable_multilang %}
+                    <span class="lang1">{{ child_link1.title | split: '|' | first }}</span>
+                    <span class="lang2">{{ child_link1.title | split: '|' | last }}</span>
+                    {% else %}
+                    <span>{{ child_link1.title | split: '|' | first }}</span>
+                    {% endif %}
+                  </a>
+                </li>
+                {% endif %}
+                {% endfor %}
+              </ul>
+            </div>
+          </li>
+          {% else %}
+          <li class="{% if child_link.active %}active{% endif %}">
+            <a class="" href="{{ child_link.url }}">
+              {% if settings.enable_multilang %}
+              <span class="lang1">{{ child_link.title | split: '|' | first }}</span>
+              <span class="lang2">{{ child_link.title | split: '|' | last }}</span>
+              {% else %}
+              <span>{{ child_link.title | split: '|' | first }}</span>
+              {% endif %}
+            </a>
+          </li>
+          {% endif %}
+          {% endfor %}
+        </ul>
+      </div>
+    </li>
+    {% else %}
+    <li class="{% if link.active %}active{% endif %} level-top">
+      <a class="" href="{{ link.url }}" target="_self">
+        {% if settings.enable_multilang %}
+        <span class="lang1">{{ link.title | split: '|' | first }}</span>
+        <span class="lang2">{{ link.title | split: '|' | last }}</span>
+        {% else %}
+        <span>{{ link.title | split: '|' | first }}</span>
+        {% endif %}
+      </a>
+    </li>
+    {% endif %}
+    {% endif %}
+    {% endfor %}
+  </ul>
+</div>  
+
+<!-- End Menu -->

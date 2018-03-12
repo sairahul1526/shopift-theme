@@ -1,0 +1,192 @@
+
+{% comment %}
+Regular page content goes here.
+{% endcomment %}
+<div class="about-page">
+  <div class="container">
+    <div class="about-banner">
+      {% if section.settings.enable_about_banner %}
+      <div class="images">
+        <img class="b-lazy" src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" data-src="{{ section.settings.bg_about_banner | img_url: '1600x1600' }}" width="100%" height="100%">
+      </div>
+      {% endif %}
+    </div>
+
+    {% if section.settings.enable_about_text %}
+    <div class="about-text-info row">
+      <div class="col-xs-12 col-sm-12 col-md-8 about-content">
+        <div class="row">
+          <div class="info-item">
+            <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3 info-left">
+              {% if section.settings.title_about_text != blank %}
+              <div class="title-about"> 
+                {% if settings.enable_multilang %}
+                <div class="lang1">{{ section.settings.title_about_text | split: '|' | first }}</div>
+                <div class="lang2">{{  section.settings.title_about_text | split: '|' | last }}</div>
+                {% else %}
+                {{  section.settings.title_about_text | split: '|' | first }}
+                {% endif %}
+              </div>               
+              {% endif %}
+            </div>
+            <div class="col-xs-12 col-sm-9 col-md-9 col-lg-9 info-right">
+              {% if section.settings.sub_title_about_text != blank %}
+              <div class="text-info"> 
+                {% if settings.enable_multilang %}
+                <div class="lang1">{{ section.settings.sub_title_about_text | split: '|' | first }}</div>
+                <div class="lang2">{{  section.settings.sub_title_about_text | split: '|' | last }}</div>
+                {% else %}
+                {{  section.settings.sub_title_about_text | split: '|' | first }}
+                {% endif %}
+              </div>               
+              {% endif %}
+            </div>
+          </div>
+
+          <div class="info-item">
+            <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3 info-left">
+              {% if section.settings.title_about_text2 != blank %}
+              <div class="title-about"> 
+                {% if settings.enable_multilang %}
+                <div class="lang1">{{ section.settings.title_about_text2 | split: '|' | first }}</div>
+                <div class="lang2">{{  section.settings.title_about_text2 | split: '|' | last }}</div>
+                {% else %}
+                {{  section.settings.title_about_text2 | split: '|' | first }}
+                {% endif %}
+              </div>               
+              {% endif %}
+            </div>
+            <div class="col-xs-12 col-sm-9 col-md-9 col-lg-9 info-right">
+              {% if section.settings.sub_title_about_text2 != blank %}
+              <div class="text-info"> 
+                {% if settings.enable_multilang %}
+                <div class="lang1">{{ section.settings.sub_title_about_text2 | split: '|' | first }}</div>
+                <div class="lang2">{{  section.settings.sub_title_about_text2 | split: '|' | last }}</div>
+                {% else %}
+                {{  section.settings.sub_title_about_text2 | split: '|' | first }}
+                {% endif %}
+              </div>               
+              {% endif %}
+            </div>
+          </div>
+
+          <div class="info-item contact-items">
+            <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3 info-left">
+              {% if section.settings.title_about_text3 != blank %}
+              <div class="title-about"> 
+                {% if settings.enable_multilang %}
+                <div class="lang1">{{ section.settings.title_about_text3 | split: '|' | first }}</div>
+                <div class="lang2">{{  section.settings.title_about_text3 | split: '|' | last }}</div>
+                {% else %}
+                {{  section.settings.title_about_text3 | split: '|' | first }}
+                {% endif %}
+              </div>               
+              {% endif %}
+            </div>
+            <div class="col-xs-12 col-sm-9 col-md-9 col-lg-9 info-right">
+              {% if section.settings.sub_title_about_text3 != blank %}
+              <div class="text-info"> 
+                {% if settings.enable_multilang %}
+                <div class="lang1">{{ section.settings.sub_title_about_text3 | split: '|' | first }}</div>
+                <div class="lang2">{{  section.settings.sub_title_about_text3 | split: '|' | last }}</div>
+                {% else %}
+                {{  section.settings.sub_title_about_text3 | split: '|' | first }}
+                {% endif %}
+              </div>               
+              {% endif %}
+            </div>
+          </div>
+        </div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+  jQuery('.main-content > .container').removeClass('container');
+</script>
+
+{% schema %}
+  {
+    "name": "About us",
+    "settings": [
+		 {
+        "type": "header",
+        "content": "About Banner"
+      },
+      {
+        "type": "checkbox",
+        "id": "enable_about_banner",
+        "label": "Enable About Banner?"
+      },
+      {
+        "type": "image_picker",
+        "id": "bg_about_banner",
+        "label": "About Images"
+      },
+      {
+        "type": "header",
+        "content": "About Text"
+      },
+      {
+        "type": "checkbox",
+        "id": "enable_about_text",
+        "label": "Enable About Text?"
+      },
+      {
+        "type": "header",
+        "content": "Item 1"
+      },
+      {
+        "type": "text",
+        "id": "title_about_text",
+        "label": "Title",
+        "default": "Text Default"
+      },
+      {
+        "type": "textarea",
+        "id": "sub_title_about_text",
+        "label": "Sub Title",
+        "default": "Text Default"
+      },
+      {
+        "type": "header",
+        "content": "Item 2"
+      },
+      {
+        "type": "text",
+        "id": "title_about_text2",
+        "label": "Title",
+        "default": "Text Default"
+      },
+      {
+        "type": "textarea",
+        "id": "sub_title_about_text2",
+        "label": "Sub Title",
+        "default": "Text Default"
+      },
+      {
+        "type": "header",
+        "content": "Item 3"
+      },
+      {
+        "type": "text",
+        "id": "title_about_text3",
+        "label": "Title",
+        "default": "Text Default"
+      },
+      {
+        "type": "textarea",
+        "id": "sub_title_about_text3",
+        "label": "Sub Title",
+        "default": "Text Default"
+      }
+	]
+  }
+{% endschema %}
+
+{% stylesheet %}
+{% endstylesheet %}
+
+{% javascript %}
+{% endjavascript %}

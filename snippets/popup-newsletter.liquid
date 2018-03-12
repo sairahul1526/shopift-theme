@@ -1,0 +1,127 @@
+{% if settings.display_popup_newsletter %}
+<script type="text/javascript">// <![CDATA[
+  jQuery(document).ready(function() {    //
+    var $popupwapper        = jQuery('#wapper-popup'),
+        popupnewsletter         = jQuery('#popup-newsletter'),
+        popuppage        = window.location.pathname,
+        conf_close_popup = '';
+    $popupwapper.css({'position':'relative'});
+    jQuery('.wrapper #popup-newsletter').remove();
+    $popupwapper.append(popupnewsletter);
+
+    if (jQuery.cookie('emailpopup') != 'closed') {
+      openpopup();
+    };
+    jQuery('#checkBox').click(function(){
+
+      if(jQuery("#checkBox").is(':checked')){
+        console.log('checked'); // unchecked
+        conf_close_popup = 'ok';
+      }
+      else{
+        console.log('unchecked'); // unchecked
+      }
+    });
+    jQuery('#popup-newsletter .btn.close').click(function(e) {
+      e.preventDefault();    
+      //closepopup();    
+      if(conf_close_popup == 'ok'){
+        closepopup();
+      }else{
+        jQuery('#popup-newsletter').hide();
+      }
+
+    });
+    jQuery('body').keydown(function(e) {
+      if( e.which == 27) {popup-newsletter
+      closepopup();
+                          jQuery('body').unbind('keydown');
+                         }
+    });
+    jQuery('#mc_embed_signup form').submit(function() {
+      if (jQuery('#mc_embed_signup .email').val() != '') {
+        closepopup();
+      }
+    });
+    function closepopup () {
+      jQuery('#popup-newsletter .popupnewsletter').fadeOut(600, function() {
+        jQuery('#popup-newsletter .popup-overlay').fadeOut(600, function() {
+          jQuery('#popup-newsletter').hide();
+          jQuery.cookie('emailpopup', 'closed', {expires:1, path:'/'});
+        });
+      })
+    }
+    function openpopup () {
+      jQuery('#popup-newsletter').fadeIn(600, function() {
+        jQuery('#popup-newsletter .popupnewsletter').fadeIn(600);
+      });
+    }
+    jQuery(document).mouseup(function (e){
+
+      var container = jQuery(".popupnewsletter");
+
+      if (!container.is(e.target) // if the target of the click isn't the container...
+          && container.has(e.target).length === 0) // ... nor a descendant of the container
+      {
+        e.preventDefault();
+        closepopup();
+      }
+
+    });  
+  });
+  // ]]
+  // ]]></script>
+<div id="wapper-popup">
+  <div id="popup-newsletter" style="display: none;">
+    <div class="popup-overlay"></div>
+    <div class="popupnewsletter" style="display: none;">
+      <div class="newsletter-popup">
+        <div class="newsletter-content"><a class="btn close" title="Close"><span aria-hidden="true" class="cs-font clever-icon-close-1"></span></a>
+          <div class="logo-newsletter col-md-6 hidden-sm hidden-xs">
+            <a href="/"><img src="{{ 'logo_popupnews.png' | asset_url }}" alt="{{ shop.name }}" /></a>
+          </div>
+          <div class="col-md-6 col-sm-12 col-xs-12 content-newsletter">
+            <div class="wr-content-newsletter">
+              <h2 class="title">
+                {% if settings.enable_multilang %}
+                <span class="lang1">{{ settings.popup_newsletter_title | split: '|' | first }}</span>
+                <span class="lang2">{{  settings.popup_newsletter_title | split: '|' | last }}</span>
+                {% else %}
+                {{  settings.popup_newsletter_title | split: '|' | first }}
+                {% endif %}
+              </h2>
+              <p class="sub-title">
+                {% if settings.enable_multilang %}
+                <span class="lang1">{{ settings.popup_newsletter_sub_title | split: '|' | first }}</span>
+                <span class="lang2">{{ settings.popup_newsletter_sub_title | split: '|' | last }}</span>
+                {% else %}
+                {{  settings.popup_newsletter_sub_title | split: '|' | first }}
+                {% endif %}
+              </p>
+              <div id="email-subscibe">
+                <div id="mc_embed_signup">{% include 'newsletter-form' %}</div>
+                <!--End mc_embed_signup--></div>
+              <h3 class="message">
+                {% if settings.enable_multilang %}
+                <span class="lang1">{{ settings.popup_newsletter_message | split: '|' | first }}</span>
+                <span class="lang2">{{  settings.popup_newsletter_message | split: '|' | last }}</span>
+                {% else %}
+                {{  settings.popup_newsletter_message | split: '|' | first }}
+                {% endif %}
+              </h3>
+              <div class="checkbox-group form-group-top clearfix">
+                <input type="checkbox" id="checkBox">
+                <label for="checkBox"> 
+                  <span class="check"></span>
+                  <span class="box"></span>
+                  <span {% if settings.enable_multilang %}data-translate="popup_newletter.show_popup"{%endif%}>{{ 'popup_newletter.show_popup' | t }}</span>
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endif %}

@@ -1,0 +1,207 @@
+{% if settings.slideshow_enable %}
+
+<style>
+  #rev_slider, #rev_slider ul{overflow:hidden; height:{{ settings.slider_startheight }}px; }
+  #rev_slider ul{margin-bottom:0;}
+</style>
+
+<div class="main-slider">
+  {% if settings.option_slideshow == 'slideshow_auto'  %}
+  <div class="container">
+    {% endif  %}
+    <div class="fullwidthbanner-container">
+      <div id="rev_slider" class="rev_slider loadding-image fullwidthabanner">
+        <ul>
+          {% for i in (1..5) %}
+          {% capture enable %}slide_{{ i }}_enable{% endcapture %}
+
+          {% if settings[enable] %}
+          {% capture transition %}slide_transition_{{ i }}{% endcapture %}
+
+          {% capture thumb %}slide_image{{ i }}.jpg{% endcapture %}
+          {% capture slide_title %}slide_title_{{ i }}{% endcapture %} 
+          {% capture title_effect %}slide_titleeffect_{{ i }}{% endcapture %} 
+          {% capture title_position_x %}slide_title_x_{{ i }}{% endcapture %}
+          {% capture title_position_y %}slide_title_y_{{ i }}{% endcapture %}        
+
+          {% capture video_webm %}video_webm_{{ i }}{% endcapture %} 
+          {% capture video_ogv %}video_ogv_{{ i }}{% endcapture %}
+          {% capture video_mp4 %}video_mp4_{{ i }}{% endcapture %}  
+
+          {% capture enable_image %}enable_image_{{ i }}{% endcapture %}
+          {% capture enable_video %}enable_video_{{ i }}{% endcapture %} 
+
+
+          {% capture text_content %}slide_text_{{ i }}{% endcapture %}   
+          {% capture content_effect %}slide_texteffect_{{ i }}{% endcapture %} 
+          {% capture content_position_x %}slide_text_x_{{ i }}{% endcapture %}
+          {% capture content_position_y %}slide_text_y_{{ i }}{% endcapture %}
+
+
+
+          {% capture button %}slide_button_text_{{ i }}{% endcapture %}   
+          {% capture button_effect %}slide_buttoneffect_{{ i }}{% endcapture %}        
+          {% capture button_position_x %}slide_button_x_{{ i }}{% endcapture %}
+          {% capture button_position_y %}slide_button_y_{{ i }}{% endcapture %}        
+          {% capture button_link %}slide_button_link_{{ i }}{% endcapture %}
+
+          <li class="rev_slider_{{i}}" data-transition="{{ settings[transition] }}" data-slotamount="7" data-masterspeed="500" data-thumb="{{ thumb | asset_url }}" data-saveperformance="off" data-title="0{{i}}">
+            {% if settings[enable_image] %}
+            <img src="{{thumb | asset_url}}" data-bgposition="center center" data-bgfit="cover" data-bgrepeat="no-repeat" alt="" />
+            {% endif %}
+            {% if settings[enable_video] %}
+            <video loop="true" autoplay="true" id="video_player_id">
+              {% if settings[video_webm] != blank %}
+              <source class="webm" type="video/webm" src="{{ settings[video_webm] }}"><source>
+              {% endif %}
+              {% if settings[video_ogv] != blank %}
+              <source class="ogv" type="video/ogv" src="{{ settings[video_ogv]}}"></source>
+            {% endif %}
+            {% if settings[video_mp4] != blank %}
+              <source class="mp4" type="video/mp4" src="{{ settings[video_mp4] }}"></source>
+            {% endif %}
+            </video>	
+          {% endif %}
+          {% if settings[slide_title] != '' %}
+          <div class="tp-caption {{settings[title_effect]}} mt-title" data-x="{{settings[title_position_x]}}" data-y="{{settings[title_position_y]}}" data-speed="500" data-start="1000" data-endspeed="500"  data-easing="Linear.easeNone" data-elementdelay="0.1" data-endelementdelay="0.1">
+            {{settings[slide_title]}}
+          </div>            
+          {% endif %}
+
+          {% if settings[text_content] != '' %}
+          <div class="tp-caption {{settings[content_effect]}} mt-content"  data-x="{{settings[content_position_x]}}" data-y="{{settings[content_position_y]}}" data-endspeed="500" data-speed="500" data-start="1400" data-easing="Linear.easeNone" data-elementdelay="0.1" data-endelementdelay="0.1">
+            {{ settings[text_content] }}
+          </div>
+          {% endif %} 
+
+
+          {% if settings[button] != '' %}
+          <div  class="tp-caption {{settings[button_effect]}} mt-button button-readmore"  data-x="{{settings[button_position_x]}}" data-y="{{settings[button_position_y]}}" data-endspeed="500" data-speed="500" data-start="1700" data-easing="Linear.easeNone" data-elementdelay="0.1" data-endelementdelay="0.1">
+            <a class="harman_btn4" href="{{settings[button_link]}}" >
+              {{ settings[button] }}
+            </a>
+          </div>
+
+          {% endif %}
+      </li>
+    {% endif %}
+
+    {% endfor %}
+
+    </ul>
+</div>
+</div>
+
+{% if settings.option_slideshow == 'slideshow_auto'  %}
+</div>
+{% endif  %}
+{% if settings.option_slideshow == 'slideshow_auto'  %}
+<style>
+  .main-slider video#video_player_id{height:100%;}
+</style>
+<script>
+  jQuery(function() {
+
+
+    setTimeout(function() {jQuery("#rev_slider").removeClass("loadding-image");}, 3000);
+    if(jQuery('#rev_slider').length > 0)
+      jQuery('#rev_slider').show().revolution({
+        dottedOverlay: 'none',
+        delay: {{ settings.slideshow_time }},
+        startwidth: {{ settings.slider_startwidth }},
+        startheight: {{ settings.slider_startheight }},
+
+
+        navigationType:"both",                  
+        navigationArrows:"",        
+        navigationStyle: 'preview3',             
+        touchenabled:"on",                      
+        onHoverStop:"on",        
+
+        hideSliderAtLimit: 0,
+        hideCaptionAtLimit: 0,
+        hideAllCaptionAtLilmit: 0,
+        startWithSlide: 0
+      });
+    /* End Home Slider */
+  });
+</script>
+
+{% endif  %}
+{% if settings.option_slideshow == 'slideshow_fullwidth'  %}
+
+<script>
+  jQuery(function() {
+
+    setTimeout(function() {jQuery("#rev_slider").removeClass("loadding-image");}, 3000);
+    if(jQuery('#rev_slider').length > 0)
+      jQuery('#rev_slider').show().revolution({
+        dottedOverlay: 'none',
+        delay: {{ settings.slideshow_time }},
+        startwidth: {{ settings.slider_startwidth }},
+        startheight: {{ settings.slider_startheight }},
+
+        fullWidth:"on",
+        forceFullWidth:"on",
+
+        navigationType:"both",                  
+        navigationArrows:"",        
+        navigationStyle: 'preview3',             
+        touchenabled:"on",                      
+        onHoverStop:"on",        
+
+        hideSliderAtLimit: 0,
+        hideCaptionAtLimit: 0,
+        hideAllCaptionAtLilmit: 0,
+        startWithSlide: 0
+      });
+    /* End Home Slider */
+  });
+</script>
+{% endif %}
+{% if settings.option_slideshow == 'slideshow_fullheight_width'  %}
+<style>
+
+</style>
+<script type="text/javascript">
+
+  var revapi;
+var header_height = jQuery('.header-container' ).outerHeight();
+    
+    var heightimgrs = jQuery( window ).height() - header_height;
+ console.log(heightimgrs);
+    $('.fullwidthbanner-container').css('max-height', heightimgrs);
+  jQuery(document).ready(function() {
+   setTimeout(function() {jQuery("#rev_slider").removeClass("loadding-image");}, 3000);
+    
+    revapi = jQuery('#rev_slider').revolution(
+      {
+        dottedOverlay: 'none',
+        delay: {{ settings.slideshow_time }},
+        startwidth: {{ settings.slider_startwidth }},
+        startheight: {{ settings.slider_startheight }},
+        navigationType:"both",                  
+        navigationArrows:"",        
+        navigationStyle: 'preview3',             
+        touchenabled:"on",                      
+        onHoverStop:"on",        
+
+        hideSliderAtLimit: 0,
+        hideCaptionAtLimit: 0,
+        hideAllCaptionAtLilmit: 0,
+        startWithSlide: 0,
+        hideThumbs:10,
+        fullWidth:"off",
+        fullScreen:"on",
+        fullScreenOffsetContainer: ""
+
+      });
+
+  });	//ready
+
+</script>
+
+
+{% endif %}
+</div>
+{% endif %}

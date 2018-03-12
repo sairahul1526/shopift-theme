@@ -1,0 +1,7 @@
+<ul class="dropdown-menu" role="menu"> 
+  {% if settings.top_bar_linklist != blank %}
+  {% for link in linklists[settings.top_bar_linklist].links %}
+  <li><a href="{{ link.url }}" title="{{ link.title }}">{{ link.title }}</a></li>
+  {% endfor %}
+  {% endif %}
+</ul>

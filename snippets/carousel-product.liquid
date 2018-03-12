@@ -1,0 +1,49 @@
+{% capture row_limit %}
+{{ row_limit_setting | times: 5 }}
+{% endcapture %}
+
+<div class="box-content">
+  <div id="{{ owl_id }}" class="owl-control owl_collection">
+    {% for product in collections[tabs_collection].products limit: product_limit %}          
+    {% assign current_collection = collections[tabs_collection] %}
+    {% include 'product-grid-item' %}
+
+    {% else %}
+    {% for i in (1..product_limit) %}
+    <div class="grid__item_add {{ grid_item_width }}">
+      <div class="grid-view-item">
+        <a href="#" class="grid-view-item__link">
+          {% if product.title %}
+          {%- assign compare_at_price = product.compare_at_price -%}
+          {%- assign price = product.price -%}
+          {%- assign price_varies = product.price_varies -%}
+          {%- assign available = product.available -%}
+          {% else %}
+          {%- assign compare_at_price = 1999 -%}
+          {%- assign price = 1999 -%}
+          {%- assign price_varies = false -%}
+          {%- assign available = true -%}
+          {% endif %}
+          <div class="grid-view-item__image">
+            {% capture current %}{% cycle 1, 2, 3, 4, 5, 6 %}{% endcapture %}
+            {{ 'product-' | append: current | placeholder_svg_tag: 'placeholder-svg' }}
+          </div>
+          <div class="h4 grid-view-item__title" {% if settings.enable_multilang %}data-translate="homepage.onboarding.product_title"{%endif%}>{{ 'homepage.onboarding.product_title' | t }}</div>
+          <div class="grid-view-item__meta">
+            <s class="product-price__price">{{ compare_at_price | money }}</s>
+          </div>
+        </a>
+      </div>
+    </div>
+    {% endfor %}
+    {% endfor %}
+  </div>
+</div>
+
+<script>
+  $(document).ready(function() {
+    var count_a = jQuery(".tabs-product-home.grid .container" ).width();
+    var width_item = count_a / {{ number_colum }};
+    jQuery(".tabs-product-home.grid .container .grid-item ").css("width", width_item);
+  });
+</script>

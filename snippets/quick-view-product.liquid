@@ -1,0 +1,80 @@
+<!-- Begin quick-view-template -->
+<div class="clearfix" id="quickview-popup" style="display:none">
+  
+    {% assign content = product.description | remove: "[disable-icon-new]" %}
+  {% assign content = content | remove: "[item-gallery]" %}
+  {% assign content = content | remove: "[disable-icon-sale]" %}
+  {% assign content = content | remove: "[icon-new-always]" %}
+  {% if content contains '[countdown]' %}
+  {% assign content = content | split: '[/countdown]' | last %}
+  {% endif %}
+  {% if content contains '[video]' %}
+  {% assign content = content | split: '[/video]' | last %}
+  {% endif %}
+  {% if content contains '[short-description]' %}
+  {% assign content = content | split: '[/short-description]' | last %}
+  {% endif %}
+  {% if content contains '[custom_html]' %}
+  {% assign content = content | split: '[/custom_html]' | last %}
+  {% endif %}
+  {% if content contains '[tabs]' %}
+  {% assign content = content | split: '[/tabs]' | last %}
+  {% endif %}
+  <div class="overlay"></div>
+  <div class="product-content clearfix">
+    <div class="product-img col-xs-6">
+      <div class="quickview-featured-image"></div>
+      <div class="more-view">
+        <ul class="product-photo-thumbs {% if settings.style_moreview == 'horizontal' %} quickview-more-views-owlslider {% else %} quickview-more-view-wrapper-jcarousel {% endif %}">
+        </ul>
+      </div>
+    </div>
+
+    <div class="product-shop col-xs-6">
+      <div class="product-item">
+        <h2 class="product-title"><a>&nbsp;</a></h2>
+
+
+
+
+
+        <div class="product-details clearfix" id="add-to-cart-form">
+          <form action="/cart/add" method="post" class="variants">
+
+            <div class="prices">
+              <span class="text-price"> Price: </span>
+              <span class="compare-price"></span>
+              <span class="price"></span>
+            </div>
+            <p class="product-description"></p>
+
+            <select name='id' style="display:none"></select>
+            <div class="wrap-button">
+              <div class="wrap-qty">
+                <div class="custom-qty">
+                  <input type="text" id="quantity" class="quantity" name="quantity" value="1">
+                  <div class="btn-plus">
+                    <span class="dec button down-qty">-</span>
+                    <span class="inc button up-qty">+</span>
+                  </div>
+
+                </div>
+              </div>
+           
+              <div class="actions">
+                <button type="button" class="btn add-to-cart-btn" id="add-to-cart-btn"><span class="span-1" {% if settings.enable_multilang %}data-translate="product.detail.add_cart"{%endif%}>{{'product.detail.add_cart' | t}}</span></button>
+              </div>
+            </div>
+          </form>
+        </div>
+
+      </div>
+    </div>  
+    <a href="javascript:void(0)" class="close-popup"><i class="cs-font clever-icon-close"></i></a> 
+  </div>
+</div>
+<!-- End of quick-view-template -->
+<script type="text/javascript">  
+ 
+ Shopify.doNotTriggerClickOnThumb=!1;var selectCallbackQuickview=function(e,r){var a=jQuery(".product-quickview .product-item");if(addToCart=a.find(".add-to-cart-btn .span-1"),productPrice=a.find(".price"),comparePrice=a.find(".compare-price"),d=a.find(".total-price span"),e){e.available?addToCart.removeClass("disabled").removeAttr("disabled").text("Add to Cart"):addToCart.val("Sold Out").addClass("disabled").attr("disabled","disabled"),productPrice.html(Shopify.formatMoney(e.price,"{{ shop.money_format }}")),e.compare_at_price>e.price?(comparePrice.html(Shopify.formatMoney(e.compare_at_price,"{{ shop.money_format }}")).show(),productPrice.addClass("on-sale")):(comparePrice.hide(),productPrice.removeClass("on-sale"));var t=a.find(".product-inventory span");e.available?null!=e.inventory_management?t.text(e.inventory_quantity+" in stock"):t.text("Many in stock"):t.text("Out of stock");var i=/([0-9]+[.|,][0-9]+[.|,][0-9]+)/g,c=jQuery(".product-quickview .price").text().match(i);if(c||(i=/([0-9]+[.|,][0-9]+)/g,c=jQuery(".product-quickview .price").text().match(i)),c){var o=c[0],d=o.replace(/[.|,]/g,"")*parseInt(jQuery(".product-quickview input[name=quantity]").val()),n=Shopify.formatMoney(d,window.money_format);n=n.match(i)[0];var p=new RegExp(o,"g"),u=jQuery(".product-quickview .price").html().replace(p,n);jQuery(".product-quickview .total-price span").html(u)}if(Currency.convertAll("{{ shop.currency }}",jQuery(".currencies_ul .currency.selected").data("currency"),"span.money","money_format"),e&&e.featured_image){var l=Shopify.resizeImage(e.featured_image.src,"small");l=l.replace(/https?:/,""),jQuery(".product-quickview .quickview-more-views img").each(function(){if(jQuery(this).attr("src")==l)return jQuery(this).parent().trigger("click"),!1})}}else addToCart.text("Unavailable").addClass("disabled").attr("disabled","disabled")};
+</script>

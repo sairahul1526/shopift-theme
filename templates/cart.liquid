@@ -1,0 +1,100 @@
+<div id="cart">
+
+  <h1 {% if settings.enable_multilang %}data-translate="page_cart.title"{%endif%}>{{ 'page_cart.title' | t }}</h1>
+  <!-- Begin empty cart -->
+  {% if cart.item_count == 0 %}
+  <div class="row">
+    <div class="col-lg-12 expanded-message">
+      <br>
+      <br>
+      <h2 class="tc" {% if settings.enable_multilang %}data-translate="page_cart.cart_empty"{%endif%}>{{ 'page_cart.cart_empty' | t }}!</h2>
+    </div>
+  </div>
+  <!-- End empty cart -->
+
+  <!-- Begin cart -->
+  {% else %}
+  <div class="row">
+    <div class="col-lg-12">
+      <!--h1>Your cart</h1-->
+      <form action="/cart" method="post" id="cartform" class="fix-shadow">
+        <div class="col-md-8 col-sm-8 cart-list">
+          <table>
+            <thead>
+              <tr>
+                <th class="image" {% if settings.enable_multilang %}data-translate="page_cart.name"{%endif%}>{{ 'page_cart.name' | t }}</th>
+                <th class="item">&nbsp;</th>
+                <th class="qty" {% if settings.enable_multilang %}data-translate="page_cart.qty"{%endif%}>{{ 'page_cart.qty' | t }}</th>
+                <th class="price" {% if settings.enable_multilang %}data-translate="page_cart.price"{%endif%}>{{ 'page_cart.price' | t }}</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for item in cart.items %}
+              <tr>
+                <td class="image">
+                  <div class="product_image">
+                    <a href="{{ item.url }}">
+                      <img src="{{ item | img_url: 'compact' }}"  alt="{{ item.product.title }}" />
+                    </a>
+                  </div>
+                  <a class="remove-cart" href="/cart/change?line={{ forloop.index }}&quantity=0" class="cart"><i class="cs-font clever-icon-close"></i></a>
+                </td>
+                <td class="item">
+                  <a href="{{ item.url }}">
+                    {{ item.product.title }}
+                    {% if item.product.variants.size > 1 %}
+                    <span class="variant_title">{{ item.variant.title }}</span>
+                    {% endif %}
+                  </a>
+                </td>
+                <td class="qty">
+                  <input type="text" size="4" name="updates[]" id="updates_{{ item.id }}" value="{{ item.quantity }}" onfocus="this.select();" class="tc item-quantity" />
+                </td>
+                <td class="price">{{ item.line_price | money }}</td>
+              </tr>
+              {% endfor %}
+
+            </tbody>
+          </table>
+        </div>
+        <div class="col-md-4 col-sm-4 subtotal-container">
+          <div class="subtotal"><p class="t-title" {% if settings.enable_multilang %}data-translate="page_cart.total_price"{%endif%}>{{ 'page_cart.total_price' | t }} :</p>
+            <p class="price"><span class="total"><strong>{{ cart.total_price | money }}</strong></span></p>
+          </div>
+          <div class="cart-comment">
+            {% if settings.cart_notes %}
+            <h3 class="add-comments" {% if settings.enable_multilang %}data-translate="page_cart.comments"{%endif%}>{{ 'page_cart.comments' | t }}</h3>
+            <textarea name="note" class="input-full" id="cartSpecialInstructions">{{ cart.note }}</textarea>
+            {% endif %}
+
+            {% comment %}
+            If notes are used, adjust the column width
+            {% endcomment %}
+
+            {% comment %}
+            name="checkout" is required for the update button to work
+            {% endcomment %}
+
+          </div>
+
+
+
+          <div class="cart-buttons inner-right inner-left">
+
+            <input type="submit" id="update-cart" class="btn" name="update" {% if settings.enable_multilang %}data-translate="page_cart.update_cart"{%endif%} value="{{ 'page_cart.update_cart' | t}}" />
+            <input type="submit" id="checkout" class="harman_btn5 btn" name="checkout" {% if settings.enable_multilang %}data-translate="page_cart.checkout_button"{%endif%} value="{{ 'page_cart.checkout_button' | t}}" />
+          </div>
+        </div>
+      </form>
+    </div>
+    <div class="clearfix"></div>
+
+  </div>
+
+  {% endif %}
+
+
+  <!-- End cart -->
+
+</div> 
+

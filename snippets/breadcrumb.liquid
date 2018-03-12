@@ -1,0 +1,64 @@
+{% if settings.display_breadcrumb %}
+{% comment %}
+Documentation - http://docs.shopify.com/support/your-website/navigation/creating-a-breadcrumb-navigation
+{% endcomment %}
+{% unless template == 'index' %}
+<div class="clearfix breadcrumb-wrap">
+  <div class="breadcrumb">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="breadcrumb_position">
+
+
+            <a href="/" title="Back to the frontpage">Home</a>  
+            {% if template contains 'product' %}  
+            {% if collection %}
+            <span class="icon"></span>  
+            {% if collection.handle %}
+            {% capture url %}/collections/{{ collection.handle }}{% endcapture %}
+            {{ collection.title | link_to: url }}
+            {% endif %}
+            {% endif %}
+
+            <span class="icon"></span>
+            <strong>{{ product.title }}</strong>
+
+            {% elsif template contains 'collection' and collection.handle %}
+
+            {% if current_tags %}
+            <span class="icon"></span>
+            {% capture url %}/collections/{{ collection.handle }}{% endcapture %}
+            {{ collection.title | link_to: url }}
+            <span class="icon"></span>
+            <strong>{{ current_tags.first }}</strong>
+            {% else %}
+            <span class="icon"></span>
+            <strong>{{ collection.title }}</strong>
+            {% endif %}
+
+            {% elsif template == 'article' %}
+
+            <span class="icon"></span>
+            {{ blog.title | link_to: blog.url }}
+            <span class="icon"></span>
+            <strong>{{ article.title }}</strong>
+
+            {% elsif template contains 'page' %}
+
+            <span class="icon"></span>
+            <strong>{{ page.title }}</strong>
+
+            {% else %}
+            <span class="icon"></span>
+            <strong>{{ page_title }}</strong>
+            {% endif %}
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>  
+{% endunless %}
+{% endif %}

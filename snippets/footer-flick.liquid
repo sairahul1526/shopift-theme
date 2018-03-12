@@ -1,0 +1,17 @@
+<div id="flick-footer" class="content">
+    {% for i in (1..6) %}   
+    {% capture modulo %}{{ i | modulo:1 }}{% endcapture %}    
+  	{% if modulo == '0' %}
+    	
+      {% capture footer_flick %}footer_flick_{{ i }}.jpg{% endcapture %}
+      {% capture footer_flick %}footer_flick_{{ i | plus: 0 }}.jpg{% endcapture %}
+ 
+        <div class="item">       
+         
+            <img src="{{ footer_flick | asset_url }}" alt="" />
+         
+        </div>    
+
+    {% endif %}
+    {% endfor %}
+  </div>

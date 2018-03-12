@@ -1,0 +1,14 @@
+<div class="widget widget-recent-articles">
+  <div class="widget-title">
+ 	 <h3><span>{{'blog.widget_blog_title' | t }}</span></h3>
+  </div>
+  <div class="widget-content">
+    	<ul>
+    {% for article in blog.articles limit:10 %}
+      <li class="article">
+     	 <p><a href="{{ article.url }}">{{ article.title }}</a> <em> {{ article.published_at | date: "%B %d, %Y" }}</em></p>
+      </li>
+    {% endfor %}
+    </ul>
+  </div>
+</div>

@@ -1,0 +1,42 @@
+{% comment %}
+  This snippet is used to showcase each collection during the loop,
+  'for product in collection.products' in list-collections.liquid.
+{% endcomment %}
+
+{% assign delayTime = 200 | times : forloop.index %}
+<div class=" collection-item">
+
+  {% comment %}
+    Use capture to put the collection title in a variable that is used in liquid filters
+  {% endcomment %}
+  
+  {% capture collection_title %}{{ collection.title | escape }}{% endcapture %}
+  <div class="product-top">
+    {% if collection.empty? %}
+        {% capture current %}{% cycle 1, 2, 3, 4, 5, 6 %}{% endcapture %}
+        {{ 'collection-' | append: current | placeholder_svg_tag: 'placeholder-svg' }}
+      {% else %}
+    <a href="{{ collection.url }}" title="{{ collection_title }}">
+      {% if collection.image %}
+      {{ collection.image.src | collection_img_url: 'master' | img_tag: collection_title }}
+      {% else %}
+      {{ collection.products.first.featured_image | product_img_url: 'master' | img_tag: collection_title }}
+      {% endif %}
+      {% endif %}
+    </a>
+    <a href="{{ collection.url }}" class="view">&nbsp;</a>
+  </div>
+  <div class="collection-title-wrapper">
+    <div class="collection-title">
+      <h3 class="h5">
+        {% if collection.empty? %}
+          {{ 'homepage.onboarding.collection_title' | t }}
+        {% else %}
+           <a href="{{ collection.url }}" title="Browse our {{ collection_title }} collection">{{ collection.title }}</a>
+        {% endif %}
+       
+      </h3>
+     
+    </div>
+  </div>
+</div>

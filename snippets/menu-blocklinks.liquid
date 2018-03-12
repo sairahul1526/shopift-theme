@@ -1,0 +1,20 @@
+<div class="row row-eq-height">
+	{% if linklists[mega_link_handle] != empty %}
+		{% for bocklink_title in linklists[mega_link_handle].links %}
+			<div class="col-sm-{{ settings[menu_col_links] }}">
+				<div class="mega-col-inner ">
+                  <div class="menu-title"><a href="{{ bocklink_title.url }}">{{ bocklink_title.title }}</a></div>
+					<div class="widget-inner">
+						<ul class="nav-links">
+							{% if linklists[bocklink_title.handle] != empty %}
+								{% for sub_link in linklists[bocklink_title.handle].links %}
+									<li class="{% if sub_link.active %}active{% endif %}"><a href="{{ sub_link.url }}" title="{{ sub_link.title }}">{{ sub_link.title }}</a></li>
+								{% endfor %}
+							{% endif %}
+						</ul>
+					</div>
+				</div>
+			</div>
+		{% endfor %}
+	{% endif %}
+</div>

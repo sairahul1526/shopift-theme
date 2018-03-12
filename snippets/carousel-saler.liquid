@@ -1,0 +1,48 @@
+{% capture row_limit %}
+{{ row_limit_setting | times: 5 }}
+{% endcapture %}
+
+<div class="box-content">
+  <div id="{{ owl_id }}" class="owl-control owl_collection">
+    {% for product in collections[tabnew_collection].products limit: row_limit %}          
+    {% assign current_collection = collections[tabnew_collection] %}
+    {% include 'product-grid-item' %}
+    {% endfor %}
+  </div>
+</div>
+
+<script>
+  $(document).ready(function() {
+    $("#{{owl_id}}").owlCarousel({
+      itemsCustom : [
+      	[320, 1],
+        [360, 1],
+        [450, 1],
+        [600, 2],
+      	[700, 1],
+        [768, 1],
+        [1000, {{row_limit_setting}}],
+        [1200, {{row_limit_setting}}],
+        [1400, {{row_limit_setting}}],
+        [1600, {{row_limit_setting}}]
+      ],
+      autoPlay : false,
+      stopOnHover : false,
+
+      lazyLoad : false,
+      lazyFollow : true,
+      lazyEffect : "fade",
+      pagination : false,
+
+      // Navigation
+      navigation : true,
+      navigationText : ['<i class="arrow_carrot-left"></i>','<i class="arrow_carrot-right"></i>'],
+      rewindNav : true,
+      scrollPerPage : false,
+
+    });
+
+  })
+
+</script>
+

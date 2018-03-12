@@ -1,0 +1,62 @@
+{% comment %}
+-----------------------------------------------------------------------------
+Hey there! This is the markup for the While Supplies Last scarcity banner.
+
+If you need to make markup or styling changes, then this is the spot.
+
+If you have questions please don't hesitate to contact us. We'll reply within
+one business day.
+
+https://ethercycle.com/while-supplies-last/support/
+-----------------------------------------------------------------------------
+{% endcomment %}
+
+{% assign shopData = shop.metafields.while-supplies-last %}
+{% assign prodData = product.metafields.while-supplies-last %}
+
+
+{% capture buySoonMessageOrig %}{{prodData.buy_soon_message}}{% endcapture %}
+{% if buySoonMessageOrig == blank %}
+  {% capture buySoonMessageOrig %}{{shopData.buy_soon_message}}{% endcapture %}
+{% endif %}
+
+{% capture quantityThreshold %}{{prodData.quantity_threshold}}{% endcapture %}
+{% if quantityThreshold == blank %}
+  {% capture quantityThreshold %}{{shopData.quantity_threshold}}{% endcapture %}
+{% endif %}
+{% assign quantityThreshold = quantityThreshold | plus: 0 %}
+
+{% capture fontColor %}{{prodData.font_color}}{% endcapture %}
+{% if fontColor == blank %}
+  {% capture fontColor %}{{shopData.font_color}}{% endcapture %}
+{% endif %}
+
+{% capture fontSize %}{{prodData.font_size}}{% endcapture %}
+{% if fontSize == blank %}
+  {% capture fontSize %}{{shopData.font_size}}{% endcapture %}
+{% endif %}
+
+{% capture styleString %}{% if fontSize != blank %}font-size:{{fontSize}};{% endif %}{% endcapture %}
+{% capture styleString %}{{styleString}}{% if fontColor != blank %}color:{{fontColor}};{% endif %}{% endcapture %}
+
+{% assign replacementText = '' %}
+
+{% for variant in product.variants %}
+  {% assign inventoryManagement = variant.inventory_management %}
+  {% assign inventoryCount = variant.inventory_quantity %}
+  {% if inventoryCount <= quantityThreshold and inventoryCount > 0 and inventoryManagement == 'shopify' %}
+    {% if product.variants.size > 1 %}
+      {% capture replacementText%}{{replacementText}}{% if replacementText != '' %}, {% endif %} {{inventoryCount}} {{variant.title}}{% endcapture %}
+    {% else %}
+      {% capture replacementText%}{{replacementText}}{% if replacementText != '' %}, {% endif %} {{inventoryCount}}{% endcapture %}
+    {% endif %}
+  {% endif %}
+{% endfor %}
+
+{% if replacementText != '' %}
+  {% capture buySoonMessage %}{{ buySoonMessageOrig | replace: "$number$", replacementText}}{% endcapture %}
+  <div class="while-supplies-last" style="{{styleString}}padding:10px 0px;">
+    {{buySoonMessage}}
+  </div>
+{% endif %}
+

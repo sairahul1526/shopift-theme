@@ -1,0 +1,42 @@
+<div class="shortcode-accordion">
+  <header class="page-header">
+    <h2>{{ page.title }}</h2>
+  </header>
+
+  {% comment %}
+  Regular page content goes here.
+  {% endcomment %}
+  <div class="rte">
+
+
+    {% assign content = page.content %}
+    {% if content contains '[accordions]' %}
+    {% assign content = content | split: '[/accordions]' | last %}
+    {% endif %}
+  {{ content }}
+    <div class="panel-group" id="accordion">
+      
+        {% if page.content contains '[accordions]' %}
+        {% capture accordions %}{% include 'content-shortcode' content: page.content shortcode: '[accordions]' %}{% endcapture %}
+        {% assign accordions = accordions | strip | split: '[/accordion]' %}
+        {% if accordions.size > 0 %}
+        {% for _accordion in accordions %}
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h4 class="panel-title">
+            <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#accordion-{{ forloop.index }}">
+              {% include 'shortcode-accordion' content: _accordion shortcode: 'name' %}
+            </a>
+          </h4>
+        </div>
+        <div id="accordion-{{ forloop.index }}" class="panel-collapse collapse contents">
+          {% include 'shortcode-accordion' content: _accordion %}
+        </div>
+        </div>
+        {% endfor %}
+        {% endif %}
+        {% endif %}
+      
+    </div>
+  </div>
+</div>

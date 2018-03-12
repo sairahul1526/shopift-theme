@@ -1,0 +1,48 @@
+<!-- Footer scripts -->
+{{ 'bootstrap.min.js' | asset_url | script_tag }}  
+{{ 'api.jquery.js' | shopify_asset_url | script_tag }}
+{{ 'option_selection.js' | shopify_asset_url | script_tag }}
+
+{% if template contains 'product' %}
+
+{{ 'jquery.jcarousel.latest.min.js' | asset_url | script_tag }}
+{{ 'jquery.elevateZoom-3.0.8.min.js' | asset_url | script_tag }}
+{{ 'jquery.fancybox.pack.js' | asset_url | script_tag }}
+{% endif %}
+{{ 'jquery.fakecrop.js' | asset_url | script_tag }}
+{%  include 'new-currency' %}
+{{ 'jquery.history.js' | asset_url | script_tag }}
+{{ 'gosh-scrip.js' | asset_url | script_tag }}
+{{ 'modernizr.custom.js' | asset_url | script_tag }}
+{{ 'classie.js' | asset_url | script_tag }}
+{{ 'modernizr.js' | asset_url | script_tag }}
+{{ 'ajax.jquery.js' | asset_url | script_tag }}
+
+
+{% if settings.display_ticky_menu %}
+<script>
+  var header_height = jQuery('#header-content' ).outerHeight();
+  
+  jQuery(window).load(function() { 
+    jQuery('#header-content' ).height(header_height);
+     });
+  jQuery(window).resize(function() {
+    var header_height = jQuery('#header-content' ).outerHeight();
+     jQuery('#header-content' ).height(header_height);
+   })
+  jQuery(window).scroll(function() {  
+    
+    var scroll = jQuery(window).scrollTop();
+    if (scroll > 50) {
+      jQuery("#header-content .header").addClass("is-ticky");
+    }else{
+      jQuery("#header-content .header").removeClass("is-ticky");
+    }
+  });
+</script>
+{% endif %}
+<script>
+  jQuery(window).load(function() { 
+    var bLazy = new Blazy();
+  });
+</script>

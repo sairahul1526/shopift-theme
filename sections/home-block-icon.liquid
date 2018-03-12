@@ -1,0 +1,232 @@
+
+<div class="block-icon
+            {% if section.settings.use_icon_style == 'stack' %}stack{% endif %}
+            {% if section.settings.use_icon_style == 'stack_left' %}stack-left{% endif %}
+            {% if section.settings.use_icon_style == 'icon_left' %}icon-left{% endif %}
+            {% if section.settings.use_icon_style == 'icon_right' %}icon_right{% endif %}
+            " style="margin:{{section.settings.home_block_icon}}">
+  {% if section.settings.enable_block_home_icon_full %}
+  <div class="">
+    {% else %}
+    <div class="container">
+      {% endif %}
+      <div class="row" >
+        {% if section.blocks.size > 0 %}
+        {% for block in section.blocks %}
+        <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
+          <div class="feature-box-hover">
+            <div class="feature-box">
+              <div class="feature-box-icon primary">
+                {% if block.settings.use_icon_image == 'icon' %}
+                <i class="{{block.settings.block_icon_1}}"></i>
+                {% else %}
+                {% if block.settings.image != blank %}
+
+                <img class="b-lazy" alt="" src="{{ block.settings.image | img_url: '2048x'}}">
+
+                {% else %}
+                {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
+                {% endif %}
+                {% endif %}
+              </div>
+              <div class="feature-box-info">
+                <h4>
+                  {% if settings.enable_multilang %}
+                  <span class="lang1">{{ block.settings.block_icon_title_1 | split: '|' | first }}</span>
+                  <span class="lang2">{{ block.settings.block_icon_title_1 | split: '|' | last }}</span>
+                  {% else %}
+                  {{ block.settings.block_icon_title_1 | split: '|' | first }}
+                  {% endif %}
+                </h4>
+                <p>
+                  {% if settings.enable_multilang %}
+                  <span class="lang1">{{ block.settings.block_icon_subtitle_1 | split: '|' | first }}</span>
+                  <span class="lang2">{{ block.settings.block_icon_subtitle_1 | split: '|' | last }}</span>
+                  {% else %}
+                  {{ block.settings.block_icon_subtitle_1 | split: '|' | first }}
+                  {% endif %}
+                </p>
+                <a href="{{block.settings.link }}">
+                  {% if settings.enable_multilang %}
+                  <span class="lang1">{{ block.settingsblock_icon_lable_link | split: '|' | first }}</span>
+                  <span class="lang2">{{ block.settings.block_icon_lable_link | split: '|' | last }}</span>
+                  {% else %}
+                  {{ block.settings.block_icon_lable_link | split: '|' | first }}
+                  {% endif %}
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {% endfor %}
+        {% endif %}
+      </div>
+
+    </div>
+    <style>
+      .feature-box-icon.primary{border:2px solid {{section.settings.color_icon}}; }
+      .feature-box-icon.primary i{ color:{{section.settings.color_icon}};background: {{section.settings.color_icon_bg}} }
+      .feature-box-icon.primary:hover{border:2px solid {{section.settings.color_icon_bg_hover}}; }
+      .feature-box-icon.primary:hover i{ color:{{section.settings.color_icon_hover}};background: {{section.settings.color_icon_bg_hover}} }
+    </style>
+  </div>
+
+
+{% schema %}
+  {
+  
+	"name": "Feature Boxes",
+    "class": "index-section",
+    "max_blocks": 3,
+    "settings": [
+      
+	 {
+        "type": "checkbox",
+        "id": "enable_block_home_icon_full",
+        "label": "Enable Fullwidth"
+      },
+	  {
+        "type": "text",
+        "id": "home_block_icon",
+        "label": "Margin",
+        "default": "0px 0px 0px 0px"
+      },
+  		{
+          "type": "select",
+          "id": "use_icon_style",
+          "label": "Use style",
+          "default": "stack",
+          "options": [
+            {
+              "value": "stack",
+              "label": "Stack"
+            },
+            {
+              "value": "stack_left",
+              "label": "Stack Left"
+            },
+            {
+              "value": "icon_left",
+              "label": "Icon Left"
+            },
+            {
+              "value": "icon_right",
+              "label": "Icon Right"
+            }
+          ]
+        },
+      {
+        "type": "color",
+        "id": "color_icon",
+        "label": "Icon Label Color",
+        "default": "#fff",
+        "info": "Default Value: #fff"
+      },
+      {
+        "type": "color",
+        "id": "color_icon_bg",
+        "label": "Background Icon",
+        "default": "#2d2d2d",
+        "info": "Default Value: #2d2d2d"
+      },
+      {
+        "type": "color",
+        "id": "color_icon_hover",
+        "label": "Icon Hover Color",
+        "default": "#2d2d2d",
+        "info": "Default Value: #2d2d2d"
+      },
+      {
+        "type": "color",
+        "id": "color_icon_bg_hover",
+        "label": "Icon Hover Background Color",
+        "default": "#fff",
+        "info": "Default Value: #fff"
+      }
+  
+	],
+    "blocks": [
+        {
+          "type": "block",
+          "name": "Block",
+          "settings": [
+      	 {
+          "type": "select",
+          "id": "use_icon_image",
+          "label": "Use",
+          "default": "icon",
+          "options": [
+            {
+              "value": "icon",
+              "label": "Icon"
+            },
+            {
+              "value": "image",
+              "label": "Image"
+            }
+          ]
+        },
+          {
+            "type": "text",
+            "id": "block_icon_1",
+            "label": "Icon ",
+            "default": "fa fa-plane"
+          },
+          {
+            "type": "image_picker",
+            "id": "image",
+            "label": "Image"
+          },
+          {
+            "type": "text",
+            "id": "block_icon_title_1",
+            "label": "Heading ",
+            "default": "Heading"
+          },
+          {
+            "type": "text",
+            "id": "block_icon_subtitle_1",
+            "label": "Subheading ",
+            "default": "subheading"
+          },
+          {
+            "type": "text",
+            "id": "block_icon_lable_link",
+            "label": "Label Link",
+            "default": "Optional link  →"
+          },
+  
+          {
+            "type": "url",
+            "id": "link",
+            "label": "Link"
+          }
+         ]
+      }
+	],
+    "presets": [
+        {
+          "name": "Feature Boxes",
+          "category": "Text",
+          "blocks": [
+            {
+              "type": "block"
+            },
+            {
+              "type": "block"
+            },
+            {
+              "type": "block"
+            }
+          ]
+        }
+  	]
+ }
+{% endschema %}
+
+{% stylesheet %}
+{% endstylesheet %}
+
+{% javascript %}
+{% endjavascript %}

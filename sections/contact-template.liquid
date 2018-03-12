@@ -1,0 +1,152 @@
+
+{% comment %}
+This page template is a requirement if you are submitting your theme to the Shopify Theme Store.
+Be sure to select page.contact as the template from the admin page to have this template take effect.
+
+For information on adding more fields, visit:
+- http://docs.shopify.com/support/configuration/store-customization/adding-fields-to-the-liquid-contact-form
+{% endcomment %}
+
+{% comment %}
+Google Map
+{% endcomment %}
+
+
+<div class="contactus-page">
+  {% comment %}
+  Regular page content goes here.
+  {% endcomment %}
+  <div class="rte">
+    {{ page.content }}
+  </div>
+
+  {% comment %}
+  Contact form starts here
+  {% endcomment %}
+  <div class="row">
+
+    {% if section.settings.display_google_map %}
+    <div class="col-md-12 col-sm-12 col-sx-12 maps">
+      {% if section.settings.google_map_code != blank %}
+      {{ section.settings.google_map_code }}
+      {% endif %}
+    </div>
+    {% endif %}
+    <div class="col-md-6 col-sm-6 col-sx-12">
+      <div class="content-top">
+        {% if settings.enable_multilang %}
+        <div class="lang1">{{ section.settings.contact_top | split: '|' | first }}</div>
+        <div class="lang2">{{ section.settings.contact_top | split: '|' | last }}</div>
+        {% else %}
+        {{ section.settings.contact_top | split: '|' | first }}
+        {% endif %}
+      </div>
+      <div class="content-bottom">
+        {% if settings.enable_multilang %}
+        <div class="lang1">{{ section.settings.contact_bottom | split: '|' | first }}</div>
+        <div class="lang2">{{ section.settings.contact_bottom | split: '|' | last }}</div>
+        {% else %}
+        {{ section.settings.contact_bottom | split: '|' | first }}
+        {% endif %}
+      </div>
+    </div>
+    <div class="col-md-6 col-sm-6 col-xs-12">
+      {% form 'contact' %}
+      {% comment %}
+      Successful message
+      {% endcomment %}
+      {% if form.posted_successfully? %}
+      <p class="note form-success" {% if settings.enable_multilang %}data-translate="page_cms.contact_successt"{%endif%}>
+        {{ 'page_cms.contact_success' | t }}
+      </p>
+      {% endif %}
+      {% include 'form-errors-custom' %}
+      <div id="contactFormWrapper">
+        {% if section.settings.contact_title != blank %}
+        <h2>
+          {% if settings.enable_multilang %}
+          <span class="lang1">{{ section.settings.contact_title | split: '|' | first }}</span>
+          <span class="lang2">{{ section.settings.contact_title | split: '|' | last }}</span>
+          {% else %}
+          {{ section.settings.contact_title | split: '|' | first }}
+          {% endif %}
+        </h2>
+        {% endif %}
+        <textarea rows="4" name="contact[body]" id="contactFormMessage" {% if settings.enable_multilang %}data-translate="page_cms.contact_yourcomment" translate-item="placeholder"{% endif %} placeholder="{{ 'page_cms.contact_yourcomment' | t }}"></textarea>
+
+        <input type="email" name="contact[email]" id="contactFormEmail" autocorrect="off" autocapitalize="off" {% if settings.enable_multilang %}data-translate="page_cms.contact_youremail" translate-item="placeholder"{% endif %} placeholder="{{ 'page_cms.contact_youremail' | t }}">
+
+        <input type="text" name="contact[name]" id="contactFormName" {% if settings.enable_multilang %}data-translate="page_cms.contact_yourname" translate-item="placeholder"{% endif %} placeholder="{{ 'page_cms.contact_yourname' | t }}">
+
+        <input type="submit" class="btn left" {% if settings.enable_multilang %}data-translate="page_cms.contact_button"{%endif%} value="{{ 'page_cms.contact_button' | t }}">
+      </div>
+      {% endform %}
+    </div>    
+
+  </div>
+</div>
+<script>
+ 
+</script>
+{% schema %}
+  {
+    "name": "Contact",
+    "settings": [
+		 {
+        "type": "textarea",
+        "id": "contact_top",
+        "label": "Content top",
+        "default": "Content"
+      },
+      {
+        "type": "text",
+        "id": "contact_title",
+        "label": "Contact Title",
+        "default": "title"
+      },
+      {
+        "type": "text",
+        "id": "contact_your_name",
+        "label": "Placeholder text in Your Name"
+      },
+      {
+        "type": "text",
+        "id": "contact_phone_number",
+        "label": "Placeholder text in Your Phone"
+      },
+      {
+        "type": "text",
+        "id": "contact_your_email",
+        "label": "Placeholder text in Your Email"
+      },
+      {
+        "type": "text",
+        "id": "contact_your_comment",
+        "label": "Placeholder text in Your Comment"
+      },
+      {
+        "type": "checkbox",
+        "id": "display_google_map",
+        "label": "Enable Google Maps?",
+        "default": true
+      },
+      {
+        "type": "textarea",
+        "id": "google_map_code",
+        "label": "Google Map Code"
+      },
+      {
+        "type": "textarea",
+        "id": "contact_bottom",
+        "label": "Content bottom",
+        "default": "Content"
+      }
+	]
+  }
+{% endschema %}
+
+{% stylesheet %}
+{% endstylesheet %}
+
+{% javascript %}
+{% endjavascript %}

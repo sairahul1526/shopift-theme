@@ -1,0 +1,25 @@
+<div class="share-links">
+  <span>Share on: </span>
+  {% capture share_url %}{{ shop.url }}{{ product.url }}{% endcapture %}
+  {% if settings.icon_isocal_1 != blank %}
+  <a href="https://www.facebook.com/sharer/sharer.php?u={{ share_url }}" target="_blank" class="facebook" title="Facebook">
+    {{ settings.icon_isocal_1 }}
+  </a>
+  {% endif %}
+  {% if settings.icon_isocal_2 != blank %}
+  <a href="//twitter.com/share?url={{ share_url }}&text={{ product.title }}" target="_blank" class="twitter" title="Twitter">
+    {{ settings.icon_isocal_2 }}
+  </a>
+  {% endif %}
+  {% if settings.icon_isocal_3 != blank %}
+  <a href="//pinterest.com/pin/create/button/?url={{ share_url }}&description={{ product.title }}&media={{ featured_image.src | img_url: 'original' }}" target="_blank" class="vimeo" title="vimeo">
+    {{ settings.icon_isocal_3 }}
+  </a>
+  {% endif %}
+  {% if settings.icon_isocal_4 != blank %}
+  <a href="//plus.google.com/share?url={{ share_url }}" target="_blank" class="google-plus" title="Google plus">
+    {{ settings.icon_isocal_4 }}
+  </a>
+  {% endif %}
+
+</div>

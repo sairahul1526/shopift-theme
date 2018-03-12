@@ -1,0 +1,253 @@
+
+{{ 'instafeed.min.js' | asset_url | script_tag }}
+<section class="instagram-bottom">
+  {% if section.settings.show_instagram_boxed %}
+  <div class="">
+    {% else %}
+    <div class="container">
+      {% endif  %}
+      {% if section.settings.instagram_title != blank %}
+      <h3>
+        {% if settings.enable_multilang %}
+        <span class="lang1">{{ section.settings.instagram_title | split: '|' | first }}</span>
+        <span class="lang2">{{ section.settings.instagram_title | split: '|' | last }}</span>
+        {% else %}
+        {{ section.settings.instagram_title | split: '|' | first }}
+        {% endif %}
+      </h3>
+      {% endif %}
+      {% if section.settings.instagram_des != blank %}
+      <div class="instagram-content">
+        <span>&nbsp;</span>
+
+        {% if settings.enable_multilang %}
+        <span class="lang1">{{ section.settings.instagram_des | split: '|' | first }}</span>
+        <span class="lang2">{{ section.settings.instagram_des | split: '|' | last }}</span>
+        {% else %}
+        {{ section.settings.instagram_des | split: '|' | first }}
+        {% endif %}
+      </div>
+      {% endif %}
+
+      <div id="instafeed" class="content"></div>  
+      {% if section.settings.display_instagram_button %}
+      {% if section.settings.instagram_button_text != blank %}
+      <a href="{{ section.settings.instagram_button_link }}" target="_blank" title="{{ section.settings.instagram_button_text }}" class="btn-instagram">
+        {% if settings.enable_multilang %}
+        <span class="lang1">{{ section.settings.instagram_button_text | split: '|' | first }}</span>
+        <span class="lang2">{{ section.settings.instagram_button_text | split: '|' | last }}</span>
+        {% else %}
+        {{ section.settings.instagram_button_text | split: '|' | first }}
+        {% endif %}
+      </a>		
+      {% endif %}
+      {% endif %}
+      {% if section.settings.show_instagram_boxed %}
+    </div>
+    {% endif  %}
+
+
+
+    {% if section.settings.show_carousel_layout_instagram == 'grid' %}
+    <script>
+      var feed = new Instafeed({
+        get: "user",    
+
+        {% if section.settings.user-id != blank %} userId: {{ section.settings.user-id }}, {% endif %}
+        {% if section.settings.accessToken != blank %}accessToken: '{{ section.settings.accessToken }}', {% endif %}
+
+        clientId: '{{ section.settings.client-id }}',
+        limit: '{{ section.settings.limit }}',
+        resolution: '{{ section.settings.resolution_instagram }}',
+        after: function() {
+        jQuery('#instafeed > a').attr( "target", "_blank" );
+        var count_a = jQuery("#instafeed" ).width();
+        var width_item = count_a / {{ section.settings.limit_of_columns }} - 0.3 ;
+        jQuery("#instafeed a").css("width", width_item);
+        jQuery('#instafeed > a').addClass('col-md-2');
+        jQuery('#instafeed ').addClass('row');
+      }
+                               });
+      feed.run();
+
+    </script>
+    {% endif %}
+    {% if section.settings.show_carousel_layout_instagram == 'slide' %}
+    <script>
+
+      var feed = new Instafeed({
+        get: "user",    
+
+        {% if section.settings.user-id != blank %} userId: {{ section.settings.user-id }}, {% endif %}
+        {% if section.settings.accessToken != blank %}accessToken: '{{ section.settings.accessToken }}', {% endif %}
+
+        clientId: '{{ section.settings.client-id }}',
+        limit: '{{ section.settings.limit }}',
+        resolution: '{{ section.settings.resolution_instagram }}',
+        after: function() {
+        jQuery('#instafeed > a').attr( "target", "_blank" );
+        jQuery("#instafeed").owlCarousel({
+        itemsCustom : [
+        [320, 1],
+        [360, 1],
+        [450, 2],
+        [600, 2],
+        [700, 3],
+        [1000, 4],
+        [1200, 6],
+        [1400, 8],
+        [1600, 8]
+        ],
+        autoPlay : false,
+        stopOnHover : false,
+
+        lazyLoad : false,
+        lazyFollow : true,
+        lazyEffect : "fade",
+        pagination : false,
+
+        // Navigation
+        navigation : true,
+        navigationText : ['<i class="cs-font clever-icon-prev"></i>','<i class="cs-font clever-icon-next"></i>'],
+        rewindNav : true,
+        scrollPerPage : false,
+      });
+      }
+      });
+      feed.run();
+
+    </script>
+
+    {% endif %}
+    <div class="clearfix"></div>
+    </section>
+{% schema %}
+  {
+  
+	"name": " Instagram",
+    "class": "index-section",
+    "settings": [
+      {
+        "type": "text",
+        "id": "home_instagram_5",
+        "label": "Margin",
+        "default": "0px 0px 0px 0px"
+      },
+      {
+        "type": "checkbox",
+        "id": "show_instagram_boxed",
+        "label": "Enable Full Width"
+      },
+      {
+        "type": "select",
+        "id": "show_carousel_layout_instagram",
+        "label": "Layout",
+        "options": [
+          {
+            "value": "slide",
+            "label": "Carousel "
+          },
+          {
+            "value": "grid",
+            "label": "Grid "
+          }
+        ],
+        "default": "slide"
+      },
+      {
+        "type": "select",
+        "id": "resolution_instagram",
+        "label": "Resolution ",
+        "options": [
+          {
+            "value": "thumbnail",
+            "label": "Thumbnail(Default) - 150x150 "
+          },
+          {
+            "value": "low_resolution",
+            "label": "Low Resolution - 306x306"
+          },
+          {
+            "value": "standard_resolution",
+            "label": "Standard Resolution - 612x612"
+          }
+        ]
+      },
+      {
+        "type": "text",
+        "id": "instagram_title",
+        "label": "Heading",
+        "default": " Instagram"
+      },
+      {
+        "type": "text",
+        "id": "instagram_des",
+        "label": "Instagram Description",
+        "default": "Instagram has become one of the most important marketing channel these days so its important to leverage the benefits of your Instagram traffic by showing real authentic photos on your Shopify store."
+      },
+      {
+        "type": "checkbox",
+        "id": "display_instagram_button",
+        "label": " Show Button",
+        "default": true
+      },
+      {
+        "type": "text",
+        "id": "instagram_button_text",
+        "label": "Button Label ",
+        "default": "FOLLOW @ INSTAGRAM"
+      },
+      {
+        "type": "text",
+        "id": "instagram_button_link",
+        "label": "Button Link"
+      },
+      {
+        "type": "text",
+        "id": "client-id",
+        "label": "Client Id",
+        "default": "3a81a9fa2a064751b8c31385b91cc25c",
+        "info": "[Where do I find Client ID?](http:\/\/doc.zooextension.com\/shopify\/ione\/#get-a-instagram-clientid-key)"
+      },
+      {
+        "type": "text",
+        "id": "user-id",
+        "label": "User Id",
+        "default": "11707579"
+      },
+      {
+        "type": "text",
+        "id": "accessToken",
+        "label": "Access Token",
+        "default": "53102326.3a81a9f.ab5bb63e2ce94c6994b48e507bf66db4",
+        "info": "In order to display your photos you need an Access Token from Instagram. To get yours, simply click the button above and log into Instagram. You can also use the button on [Log in and get your Access Token and User ID](https:\/\/instagram.com\/oauth\/authorize\/?client_id=3a81a9fa2a064751b8c31385b91cc25c&scope=basic+public_content&response_type=code&redirect_uri=https:\/\/smashballoon.com\/instagram-feed\/instagram-token-plugin\/)."
+      },
+      {
+        "type": "text",
+        "id": "limit",
+        "label": "Number of Photos",
+        "default": "10",
+        "info": "Number of photos to show initially"
+      },
+      {
+        "type": "text",
+        "id": "limit_of_columns",
+        "label": "Number of Columns",
+        "default": "10"
+      }
+	],
+    "presets": [
+        {
+          "name": " Instagramm",
+          "category": "ADVANCED BLOCK"
+          
+        }
+  	]
+ }
+{% endschema %}
+
+{% stylesheet %}
+{% endstylesheet %}
+
+{% javascript %}
+{% endjavascript %}

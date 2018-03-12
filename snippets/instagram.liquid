@@ -1,0 +1,106 @@
+
+
+{% if settings.show_instagram %}
+{{ 'instafeed.min.js' | asset_url | script_tag }}
+<section class="instagram-bottom">
+  {% if settings.show_instagram_boxed %}
+  <div class="container">
+  {% endif  %}
+    {% if settings.instagram_title != blank %}
+    <h3>{{ settings.instagram_title }}</h3>
+    {% endif %}
+    {% if settings.instagram_des != blank %}
+    <div class="instagram-content">
+      <span>&nbsp;</span>
+
+      {{ settings.instagram_des }}
+
+    </div>
+    {% endif %}
+
+    <div id="instafeed" class="content"></div>  
+    {% if settings.display_instagram_button %}
+    {% if settings.instagram_button_text != blank %}
+    <a href="{{ settings.instagram_button_link }}" target="_blank" title="{{ settings.instagram_button_text }}" class="btn-instagram">
+      {{ settings.instagram_button_text }}
+    </a>		
+    {% endif %}
+    {% endif %}
+  {% if settings.show_instagram_boxed %}
+  </div>
+  {% endif  %}
+</section>
+
+
+{% if settings.show_carousel_layout == 'grid' %}
+<script>
+  var feed = new Instafeed({
+    get: "user",    
+
+    {% if settings.user-id != blank %} userId: {{ settings.user-id }}, {% endif %}
+    {% if settings.accessToken != blank %}accessToken: '{{ settings.accessToken }}', {% endif %}
+
+    clientId: '{{ settings.client-id }}',
+    limit: '{{ settings.limit }}',
+    resolution: '{{ settings.resolution_instagram }}',
+    after: function() {
+    jQuery('#instafeed > a').attr( "target", "_blank" );
+    var count_a = jQuery("#instafeed" ).width();
+    var width_item = count_a / {{ settings.limit_of_columns }} - 0.3 ;
+    jQuery("#instafeed a").css("width", width_item);
+    jQuery('#instafeed > a').addClass('col-md-2');
+    jQuery('#instafeed ').addClass('row');
+  }
+                           });
+  feed.run();
+
+</script>
+{% endif %}
+{% if settings.show_carousel_layout == 'slide' %}
+<script>
+ 
+  var feed = new Instafeed({
+    get: "user",    
+
+    {% if settings.user-id != blank %} userId: {{ settings.user-id }}, {% endif %}
+    {% if settings.accessToken != blank %}accessToken: '{{ settings.accessToken }}', {% endif %}
+   
+    clientId: '{{ settings.client-id }}',
+    limit: '{{ settings.limit }}',
+     resolution: '{{ settings.resolution_instagram }}',
+    after: function() {
+    jQuery('#instafeed > a').attr( "target", "_blank" );
+    jQuery("#instafeed").owlCarousel({
+    itemsCustom : [
+    [320, 1],
+    [360, 1],
+    [450, 2],
+    [600, 2],
+    [700, 3],
+    [1000, 4],
+    [1200, 6],
+    [1400, 8],
+    [1600, 8]
+    ],
+    autoPlay : false,
+    stopOnHover : false,
+
+    lazyLoad : false,
+    lazyFollow : true,
+    lazyEffect : "fade",
+    pagination : false,
+
+    // Navigation
+    navigation : true,
+    navigationText : ['<i class="cs-font clever-icon-preview"></i>','<i class="cs-font clever-icon-next"></i>'],
+    rewindNav : true,
+    scrollPerPage : false,
+  });
+  }
+  });
+  feed.run();
+
+</script>
+{% endif %}
+{% endif %}
+<div class="clearfix"></div>

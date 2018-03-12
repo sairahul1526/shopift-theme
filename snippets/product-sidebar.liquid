@@ -1,0 +1,26 @@
+<div class="col-xs-3 sidebar">
+  {% if settings.display_sidebar_categories_detail %}
+  <div class="widget sidebar-links">
+    <div class="widget-title"><h3><span>{{ settings.sidebar_categories_title }}</span></h3></div>
+    <div class="widget-content">
+      <ul>
+        {% if settings.style_categories == 'style_show_all' %}
+        {% for category in collections %}
+        <li><a href="{{ category.url }}" {% if collection.handle == category.handle %} class="active" {% endif %}>{{ category.title }}</a></li>     
+        {% endfor %}
+        {% else %}
+        
+        {% assign items = settings.categories_items | split:"," | strip | downcase %}
+        {% for category in collections %}
+        {% assign cat = category.title | downcase %}
+        {% if items contains cat %}
+        <li><a href="{{ category.url }}" {% if collection.handle == category.handle %} class="active" {% endif %}>{{ category.title }}</a></li>     
+        {% endif %}
+        {% endfor %}
+        {% endif %}
+      </ul>
+    </div>
+  </div>
+  {% endif %}
+
+</div>

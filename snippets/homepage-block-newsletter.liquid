@@ -1,0 +1,27 @@
+<div class="newsletter">
+  {% if settings.home_newsletter_title != blank %}
+  <div class="title_newsletter">
+    {{ settings.home_newsletter_title }}
+  </div>
+  {% endif %}
+  {% if settings.home_newsletter_subtitle != blank %}
+  <div class="subtitle_newsletter">
+    {{ settings.home_newsletter_subtitle }}
+  </div>
+  {% endif %}
+  <div class="content">
+    <form action="{{ settings.mailing_list_form_action }}" method="post" name="mc-embedded-subscribe-form" target="_blank" class="input-group">
+      <div class="input-group newsletter_form_content">
+        <input  class="input__field input-group-field" type="email" value="" name="EMAIL" aria-label="Email Address" placeholder="{{ settings.footer_newsletter_content }}">
+        <span class="input-group-btn">
+          <input type="submit" class="btn harman_btn4" value="{{ settings.footer_newsletter_go }}" name="subscribe">
+        </span>
+      </div>
+    </form>
+  </div>
+  {% if settings.home_newsletter_subtitle_2 != blank %}
+  <div class="subtitle2_newsletter">
+    {{ settings.home_newsletter_subtitle_2 }}
+  </div>
+  {% endif %}
+</div>

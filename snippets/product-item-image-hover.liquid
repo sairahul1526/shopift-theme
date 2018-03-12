@@ -1,0 +1,10 @@
+{% if settings.product_image_hover %}
+<span class="product-image-hover" data-idproduct="{{ product.id }}">
+  {% for image in product.images %}
+  {% if forloop.first != true %}
+  <img alt="{{ product.title }}" src="{{ image.src | product_img_url: 'large' }}">
+  {% break %}
+  {% endif %}
+  {% endfor %}
+</span>
+{% endif %}

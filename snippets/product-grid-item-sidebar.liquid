@@ -1,0 +1,147 @@
+{% comment %}
+This snippet is used to showcase each product during the loop,
+'for product in collection.products' in collection.liquid.
+
+This example has three products per column on desktop, two on
+our medium breakpoint, and a single row on small screens.
+{% endcomment %}
+
+{% comment %}
+Check if the product is on sale and set a variable to be used below.
+{% endcomment %}
+
+
+{% assign lable_sale = false %}
+{% if product.compare_at_price_min > product.price_min %}
+{% assign lable_sale = true %}
+{% endif %}
+
+{% comment %}
+Check if the product is sold out and set a variable to be used below.
+{% endcomment %}
+
+{% assign lable_out = true %}
+{% if product.available  %}
+{% assign lable_out = false %}
+{% endif %}
+
+{% comment %}
+Set a class for sold-out and on-sale items
+{% endcomment %}
+
+{% assign product_limitation = 0 %}
+{% if settings.display_infinite_scrolling_homepage %}
+{% assign product_limitation = settings.product_list_limit | plus: 0 %}
+{% assign productIndex = forloop.index |minus:1 | modulo: product_limitation %}
+{% else %}
+{% assign productIndex = forloop.index |minus:1 %}
+{% endif %}
+
+{% assign delayTime = 200 | times : productIndex %}
+{% if settings.collection_results_per_row1 != blank and settings.collection_results_per_row1 != '5' %}
+{% assign product_grid = 12 | divided_by: settings.collection_results_per_row1 %}
+{% assign columns = 12 | divided_by: product_grid %}
+<div class="grid-{{product_grid}} {% if settings.product_image_border%} grid-item-border {% endif %} {% if settings.product_image_crop%} crop_image {% else %} no_crop_image {% endif %} grid-item product-item {% if sold_out %} sold-out{% endif %}{% if on_sale %} on-sale{% endif %} wow fadeIn" data-wow-delay="{{delayTime}}ms" id="product-{{ product.id }}" {%if settings.display_infinite_scrolling_homepage and forloop.index > product_limitation %} style="display:none" {% endif %}>
+
+  {% else %}
+  <div class="{% if settings.product_image_border%} grid-item-border {% endif %} {% if settings.product_image_crop%} crop_image {% else %} no_crop_image {% endif %} grid-item product-item {% if sold_out %} sold-out{% endif %}{% if on_sale %} on-sale{% endif %} wow fadeIn" data-wow-delay="{{delayTime}}ms" id="product-{{ product.id }}" {%if settings.display_infinite_scrolling_homepage and forloop.index > product_limitation %} style="display:none" {% endif %}>
+    {% endif %}
+    {% comment %}
+    Link to your product with the 'within: collection' filter for the link to be aware of the collection.
+    This allows you to create collection-based navigation on the product page.
+
+    Results of using 'within: collection':
+    - Instead of a URL with /products/product-handle
+    you would get /collections/collection-handle/products/product-handle
+
+    For more info on navigation within a collection
+    - http://docs.shopify.com/support/your-store/collections/how-to-navigate-within-a-collection
+
+    {% endcomment %}
+    <div class="product-top">
+      <div class="product-grid-image">
+        <a href="{{ product.url | within: collection }}" class="product-grid-image">
+          <img src="{{ product.featured_image.src | product_img_url: 'large' }}" alt="{{ product.featured_image.alt | escape }}">
+        </a>
+      </div>
+
+      {% if lable_sale or lable_out %}
+      <div class="product-label">
+        {% if lable_sale %}
+        <strong class="label">Sale</strong>
+        {% endif %}
+        {% if lable_out %}
+        <strong class="sold-out-label">Sold Out</strong>
+        {% endif %}
+      </div>
+      {% endif %}
+
+    </div>
+
+    <div class="product-bottom">
+      <h3><a class="product-title" href="{{ product.url | within: collection }}">{{ product.title }}</a></h3>
+      {% if settings.display_product_reviews %}
+      <span class="shopify-product-reviews-badge" data-id="{{ product.id }}"></span>
+      {% endif %}
+      <div class="product_loop hover">
+        <div class="product_loop_switcher">
+          <div class="price-box">
+            {% if lable_sale %}
+            <p class="sale">
+              <span class="old-price"> {{ product.compare_at_price_min | money }}</span>
+              <span class="special-price">{% if product.price_varies %}<em>from </em>{% endif %}{{ product.price_min | money }}</span>
+            </p>
+            {% else %}
+            <p class="regular-product">
+              {% comment %}
+              You can show a leading 'from' or 'up to' by checking 'product.price_varies'
+              if your variants have different prices.
+              {% endcomment %}
+              <span >{% if product.price_varies %}<em>from </em>{% endif %}{{ product.price_min | money }}</span>
+            </p>
+            {% endif %}
+          </div>
+          <div class="add-to-cart">
+            {% assign variantCount = product.variants | size %}
+            <form action="/cart/add" method="post" class="variants" id="product-actions-{{ product.id }}" enctype="multipart/form-data" style="padding:0px;">    
+              {% if lable_out %}
+              <input class="add-to-cart-btn" type="submit" value="{{'product.detail.unavailable' | t}}" disabled="disabled" />
+              {% else %}
+              {% if variantCount > 1 %}
+              <button class="add-to-slect-btn" type="button" onclick="window.location.href='{{product.url}}'">{{'product.detail.sellect_option' | t}}</button>
+              {% else %}
+              <input type="hidden" name="id" value="{{ product.variants[0].id }}" />      
+              <button class="add-to-cart-btn" type="submit">{{'product.detail.add_cart' | t}}</button>
+              {% endif %}
+              {% endif %}
+            </form>
+          </div>
+        </div>
+      </div>
+      {% if settings.product_style_images_click %}
+      <ul id="color-swatch-item">  
+        {% for option in product.options %}
+        {% if option == 'Color' %}
+        {% assign index = forloop.index0 %}
+        {% assign colorlist = '' %}
+        {% assign color = '' %}
+        {% for variant in product.variants %}
+        {% capture color %}
+        {{ variant.options[index] }}
+        {% endcapture %}
+        {% unless colorlist contains color %} 
+        {% if variant.image.src != blank %}
+        <li><a href="javascript:void(0);" data-image="{{ variant.image.src | img_url: 'large' }}"><img src="{{ color | downcase | strip_newlines | strip_html | remove: '  ' | append: '.png' | replace: ' ', '-' | asset_url }}" alt="{{ color }}" /></a></li>
+        {% endif %}
+        {% capture tempList %}
+        {{colorlist | append: color | append: ' '}}
+        {% endcapture %}
+        {% assign colorlist = tempList %}
+        {% endunless %}
+        {% endfor %}
+        {% endif %}
+        {% endfor %}
+      </ul>
+      {% endif %}
+    </div>
+  </div>
